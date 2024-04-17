@@ -4,3 +4,6 @@
 [submodule "app_Backend"]
 	path = app_Backend
 	url = https://github.com/alexbaar/app_Backend_.git
+[submodule "app2"]
+	path = app2
+	url = /Users/aleksandrabartosiak/Desktop/app
