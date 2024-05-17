@@ -6,7 +6,7 @@ SETUP:
 
 3. paste the URL: 
 
-   https://github.com/alexbaar/app.git
+   https://github.com/Redback-Operations/redback-smartbike-mobile.git
 
 choose where to save the project on your computer
 
@@ -23,7 +23,6 @@ inside the file add:
 
 7. VS Code -> run your backend     
 
-   https://github.com/alexbaar/app_Backend_
 
 8. Android Studio -> run the project
 
