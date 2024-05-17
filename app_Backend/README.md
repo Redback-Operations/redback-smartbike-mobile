@@ -1,7 +1,7 @@
 
 1.Open terminal on your machine and type : 
 
-        git clone https://github.com/alexbaar/app_backend.git
+        https://github.com/Redback-Operations/redback-smartbike-mobile.git
 
 2. then:
 
