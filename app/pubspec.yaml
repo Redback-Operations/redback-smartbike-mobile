@@ -1,3 +1,4 @@
+
 name: phone_app
 description: A new Flutter project.
 publish_to: 'none'
@@ -17,15 +18,17 @@ dependencies:
   path_provider: ^2.0.2
   provider: ^6.1.2
   uuid: ^4.4.0
-  intl: ^0.17.0
+  intl: ^0.19.0
   analog_clock: ^0.1.1
+  url_launcher: ^6.1.7
+  social_login_buttons: ^1.0.7
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^6.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-
-
 
 flutter:
   uses-material-design: true
@@ -33,4 +36,9 @@ flutter:
     - lib/assets/
     - lib/assets/redbacklogo.png
     - lib/assets/img/
+    - lib/assets/VRgame.png
     - .env
+
+
+
+    

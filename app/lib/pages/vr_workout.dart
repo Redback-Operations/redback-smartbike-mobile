@@ -3,16 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/components/bottom_button.dart';
-import 'package:phone_app/pages/workout_summary.dart';
+import 'package:phone_app/pages/workout_summary.dart' as WrkSummary;
 import 'package:phone_app/utilities/constants.dart';
 import 'package:provider/provider.dart';
 import '../components/main_app_background.dart';
 import '../components/workout_metric_box.dart';
-import '../models/workout_type.dart';
-import '../provider/user_data_provider.dart';
-import '../provider/wrk_type_provider.dart';
 import '../services/workout_values_generator.dart';
 import 'package:http/http.dart' as http;
+import '../provider/wrk_type_provider.dart';
 
 // TODO: in Django models change the user, workout_type to not be null
 
@@ -28,7 +26,9 @@ class _WorkoutState extends State<Workout> {
   late Timer _timer = Timer(Duration.zero, () {});
   int _elapsedSeconds = 0;
   bool _isRunning = false;
-  late String _sessionId;
+  bool _continueSendingData =
+      true; // need to control for when we finish workout, so no data is sent beyond that point
+  late String? _sessionId;
 
   // random values declared
   late double speedVal;
@@ -103,7 +103,9 @@ class _WorkoutState extends State<Workout> {
     inclineVal = WorkoutValues.generateIncline(1);
 
     // send the data to backend every second
-    sendWorkoutData();
+    if (_continueSendingData) {
+      sendWorkoutData();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -258,9 +260,12 @@ class _WorkoutState extends State<Workout> {
                             child: Container(
                               width: 300,
                               child: BottomButton(
-                                  onTap: () {
+                                  onTap: () async {
                                     _pauseTimer();
                                     // TODO: make sure values were being saved to backend, we need them for summary
+                                    // mmark as wrkout finished in backend
+                                    await updateWrkFinished();
+
                                     // reset values
                                     setState(() {
                                       WorkoutValues.resetValues();
@@ -269,7 +274,8 @@ class _WorkoutState extends State<Workout> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => WorkoutSummary(),
+                                        builder: (context) =>
+                                            WrkSummary.WorkoutSummary(),
                                       ),
                                     );
                                   },
@@ -289,52 +295,90 @@ class _WorkoutState extends State<Workout> {
     );
   }
 
-  Future<String> getSessionId() async {
+  // ensure to retrieve the sess id first
+  Future<String?> getSessionId() async {
     return Provider.of<WorkoutTypeProvider>(context, listen: false)
-        .workoutType!
-        .sessionId!;
+        .workoutType
+        ?.sessionId;
   }
 
-  // Send a POST request to Django
+  // send a POST request to Django, once we have current session_id from the provider
   void sendWorkoutData() async {
-    // retrieve the base URL from the environment variables
+    try {
+      // Load the base URL from the environment variables
+      await dotenv.load(fileName: ".env");
+      String? baseURL = dotenv.env['API_URL_BASE'];
+
+      // Retrieve the current session_id generated in the last page
+      _sessionId = await getSessionId();
+
+      if (_sessionId == null) {
+        print('Error: session_id is null');
+        return;
+      }
+
+      if (baseURL != null && _sessionId != null) {
+        String apiUrl = '$baseURL/workoutdata/';
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          body: json.encode({
+            'speed': double.parse(speedVal.toStringAsFixed(2)),
+            'rpm': rpmVal,
+            'distance': double.parse(distanceVal.toStringAsFixed(2)),
+            'heart_rate': heartRateVal,
+            'temperature': double.parse(temperatureVal.toStringAsFixed(2)),
+            'incline': inclineVal,
+            'timestamp': DateTime.now().toIso8601String(),
+            'session_id': _sessionId,
+          }),
+          headers: {'Content-Type': 'application/json'},
+        );
+
+        if (mounted) {
+          if (response.statusCode == 201) {
+            print('Workout settings sent successfully');
+          } else {
+            print(
+                'Error sending message: ${response.body} ${response.statusCode}');
+          }
+        }
+      } else {
+        print('BASE_URL is not defined in .env file');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  // update the 'processed' value in WorkoutType in backend, which will trigger the start of data clean & analysis work
+  Future<void> updateWrkFinished() async {
     await dotenv.load(fileName: ".env");
     String? baseURL = dotenv.env['API_URL_BASE'];
-
-    // retrieve the current session_id that was generated in the last page
     _sessionId = await getSessionId();
 
-    // 2. Send the workout settings to Django; there a session_id is also generated and the subsequent data points from workout itself will
-    // also have that session_id so that you can match both tables
+    String apiUrl = '$baseURL/finish_workout/';
+    final response = await http.patch(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'session_id': _sessionId,
+        'finished':
+            true, // change value to true from the previous, default value false; it will trigger data clean & analysis in backend (see django views: wrk_finished)
+      }),
+    );
 
-    if (baseURL != null) {
-      String apiUrl = '$baseURL/workoutdata/';
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        body: json.encode({
-          // there is a session_id that will be generated in Django
-          'speed': double.parse(speedVal.toStringAsFixed(2)),
-          'rpm': rpmVal,
-          'distance': double.parse(distanceVal.toStringAsFixed(2)),
-          'heart_rate': heartRateVal,
-          'temperature': double.parse(temperatureVal.toStringAsFixed(2)),
-          'incline': inclineVal,
-          'timestamp': DateTime.now().toIso8601String(),
-          'session_id': _sessionId,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-      if (mounted) {
-        // make sure we send the msg first, then dispose of widget
-        if (response.statusCode == 201) {
-          print('Workout settings sent successfully');
-        } else {
-          print(
-              'Error sending message: ${response.body} ${response.statusCode} ');
-        }
-      }
+    if (response.statusCode == 200) {
+      setState(() {
+        _continueSendingData =
+            false; // stop sending workout data; need this as there might still be some left in backlog
+      });
+      // If the server returns a successful response
+      print('Successfully recorded the end of this workout');
     } else {
-      print('BASE_URL is not defined in .env file');
+      // If the server did not return a successful response
+      throw Exception('Failed to update');
     }
   }
 }

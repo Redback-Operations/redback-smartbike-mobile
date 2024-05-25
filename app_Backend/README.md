@@ -1,7 +1,7 @@
 
 1.Open terminal on your machine and type : 
 
-        https://github.com/Redback-Operations/redback-smartbike-mobile.git
+        git clone https://github.com/alexbaar/app_backend.git
 
 2. then:
 
@@ -40,8 +40,32 @@
  
 
 16. then type:
+    
+        	pip install django
+    
+        	pip install Django djangorestframework
+    
+        	pip install python-dotenv
+    
+for data analysis:
 
-        pip install Django djangorestframework
+		pip install numpy
+    
+		pip install matplotlib
+
+		pip install scimitar-learn
+
+for celery async manager: 
+
+		pip install redis
+
+		pip install celery
+
+		pip install Django-celery-results
+additional:
+
+		python -m pip install Pillow
+
 
 18. then go one level up. type:
 
@@ -53,11 +77,9 @@
 
 23. you should see: README.md, backend_server and other
 
-24. add a .env to store sensitive data.
-    first in VS Code in terminal type:
+24. add a .env file at project level to store sensitive data:
 
-        pip install python-dotenv
-    
+        
 then at project root add a new file called ' .env ' inside specify the following values:
     
         SECRET_KEY
@@ -65,6 +87,19 @@ then at project root add a new file called ' .env ' inside specify the following
         EMAIL_BACKEND
     
         DEFAULT_FROM_EMAIL
+
+like this: 
+
+	# SECURITY WARNING: keep the secret key used in production secret!
+	SECRET_KEY = "django-insecure-p+o(#sfioy$e*&gh_uw7dhoi8swlc0@xc3uu^$qikr80w)*z9d"
+
+	# email functionality
+	EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+	# settings.py
+	# email address used when sending emails from Django app (like when resetting password or else)
+	DEFAULT_FROM_EMAIL = "put_your_email.com"
+
 
 
 26. type :                           (if you work with python, not python3, then type: python manage.py makemigrations)

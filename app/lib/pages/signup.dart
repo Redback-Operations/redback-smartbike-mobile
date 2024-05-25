@@ -208,9 +208,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: 5),
                   BottomButton(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        signUp();
+                        await signUp();
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),

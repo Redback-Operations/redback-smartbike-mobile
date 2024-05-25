@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 import '../models/workout_type.dart';
 
 class WorkoutTypeProvider with ChangeNotifier {

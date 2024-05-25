@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart';
 import 'package:phone_app/components/input_text_field.dart';
 import 'package:phone_app/pages/password_reset_page.dart';
+import 'package:phone_app/services/social_media_authentication.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_data_provider.dart';
+import '../utilities/http_interceptor.dart';
 import 'home_page.dart';
 import 'package:phone_app/components/bottom_button.dart';
 import 'package:phone_app/components/text_tap_button.dart';
@@ -12,6 +16,9 @@ import 'package:phone_app/utilities/constants.dart';
 import 'package:phone_app/pages/signup.dart';
 import '../components/login_signup_background.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 void main() {
   runApp(LoginApp());
@@ -39,6 +46,21 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController idController = TextEditingController();
   String errorMessage = '';
+  late GoogleSignIn _googleSignIn;
+
+  static const List<String> scopes = <String>[
+    'email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+  }
 
   @override
   void dispose() {
@@ -62,6 +84,10 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
 
+    await handleLoginResponse(response);
+  }
+
+  Future<void> handleLoginResponse(Response response) async {
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
 
@@ -177,6 +203,26 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   buttonText: 'Log In',
                 ),
+                SizedBox(height: 10),
+                SocialLoginButton(
+                  height: 50,
+                  buttonType: SocialLoginButtonType.google,
+                  onPressed: () async {
+                    await _handleGoogleSignIn();
+                    var response = await socialMediaLogin();
+                    await handleLoginResponse(response);
+                  },
+                ),
+                SizedBox(height: 10),
+                SocialLoginButton(
+                  height: 50,
+                  buttonType: SocialLoginButtonType.facebook,
+                  onPressed: () async {
+                    await handleFacebookSignIn();
+                    var response = await socialMediaLogin();
+                    await handleLoginResponse(response);
+                  },
+                ),
                 SizedBox(height: 25),
                 TextTapButton(
                   onTap: () {
@@ -197,5 +243,62 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      await _googleSignIn.signOut(); // Ensure previous session is cleared
+      var account = await _googleSignIn.signIn();
+      await SocialMediaAuthentication().handleGoogleSignIn(account);
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
+
+  Future<void> handleFacebookSignIn() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance
+          .login(permissions: ['public_profile', 'email']);
+      if (result.status == LoginStatus.success) {
+        final account = await FacebookAuth.instance.getUserData();
+        await SocialMediaAuthentication().handleFacebookSignIn(account);
+      } else {
+        print(result.status);
+        print(result.message);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
+
+  Future<Response> socialMediaLogin() async {
+    if (SocialMediaAuthentication.userData == null) {
+      return Future(() => Response("message: 'User data Not Found!'", 400));
+    }
+
+    await dotenv.load(fileName: ".env");
+    String? baseURL = dotenv.env[
+        'API_URL_BASE']; // only the partial, network specific to each team member
+    final apiUrl = '$baseURL/login-sm/';
+
+    final interceptor = MyHttpInterceptor(http.Client());
+
+    final response = await interceptor.post(
+      Uri.parse(apiUrl),
+      {
+        'email': SocialMediaAuthentication.userData?.email,
+        'username': SocialMediaAuthentication.userData?.name,
+        'login_id': SocialMediaAuthentication.userData?.id,
+        'login_type': SocialMediaAuthentication.userData?.type.name,
+        'user_created': DateTime.now().toIso8601String(), // record exact d&t
+      },
+    );
+
+    print(response);
+    return response;
   }
 }

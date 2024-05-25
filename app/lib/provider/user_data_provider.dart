@@ -28,4 +28,10 @@ class UserDataProvider extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  Future<void> clearSession() async {
+    // clear user session
+    _userDetails = null;
+    notifyListeners();
+  }
 }

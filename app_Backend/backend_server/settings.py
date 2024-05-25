@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 
 # load environment variables from .env file from project root
+print(Path('.'))
 env_path = Path('.') / '.env'
 load_dotenv(env_path)
 
@@ -39,7 +40,9 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
-    "192.168.1.104",
+    "192.168.1.102",
+    "192.168.1.6"
+    '*'   # means all
 ]
 
 # Application definition
@@ -164,5 +167,34 @@ LOGGING = {
 
 '''
 
+# logging for data cleaning
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'), # this is where the log file will be and open to see entries within 
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# for clean&analysis automation CELERY (see celery, utils, tasks, views)
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

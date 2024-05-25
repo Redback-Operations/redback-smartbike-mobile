@@ -58,14 +58,14 @@ class _MyWorkoutState extends State<MyWorkout> {
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'Cycling');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout2(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'Cycling',
@@ -75,14 +75,14 @@ class _MyWorkoutState extends State<MyWorkout> {
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'Running');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout3(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'Running',
@@ -92,14 +92,14 @@ class _MyWorkoutState extends State<MyWorkout> {
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'Yoga');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout4(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'Yoga',
@@ -109,14 +109,14 @@ class _MyWorkoutState extends State<MyWorkout> {
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'Pilates');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout5(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'Pilates',
@@ -126,31 +126,31 @@ class _MyWorkoutState extends State<MyWorkout> {
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'Aerobic');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout6(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'Aerobic',
                           width: 300,
                         ),
-                        SizedBox(height: 10), // Jumba button
+                        SizedBox(height: 10),
                         ActivityButton(
                           onTap: () {
                             Provider.of<WorkoutTypeProvider>(context,
-                                listen: false)
+                                    listen: false)
                                 .updateWorkoutType(name: 'High Intensity');
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SetWorkout7(
-                                    title: '',
-                                  )),
+                                        title: '',
+                                      )),
                             );
                           },
                           buttonText: 'High Intensity',

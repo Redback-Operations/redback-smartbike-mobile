@@ -1,0 +1,41 @@
+# Ignore the virtual environment folder
+backend_server/.venv/
+
+# Ignore database files
+*.sqlite3
+
+# Ignore compiled Python files
+*.pyc
+
+# Ignore .env
+*.env
+
+# Ignore local settings file (if you have one)
+backend_server/settings/local.py
+
+# Ignore static files (if served from a separate server or CDN)
+backend_server/static/
+
+# Ignore media files (user-uploaded content)
+backend_server/media/
+
+# Ignore log files
+*.log
+
+# Ignore IDE or text editor configuration files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore temporary files
+*.bak
+*.swp
+
+# Ignore environment configuration files
+.env
+.env.local
+.env.*.local
+
+# Ignore Django migrations
+backend_server/*/migrations/

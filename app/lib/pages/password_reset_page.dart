@@ -1,13 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PasswordResetPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
   Future<void> requestPasswordReset(BuildContext context) async {
-    final csrfToken = 'your-csrf-token'; // Get the CSRF token from somewhere
+    await dotenv.load(fileName: ".env");
+    String? baseURL = dotenv.env['API_URL_BASE'];
+    final apiUrl = '$baseURL/password-reset/';
+
+    // TODO: Find the solution for: Get the CSRF token
+    final csrfToken = 'your-csrf-token';
+
     final response = await http.post(
       Uri.parse('http://192.168.1.31:8000/password_reset/'),
       headers: {
@@ -43,7 +49,8 @@ class PasswordResetPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('Failed to send reset email. Please try again later.'),
+            content:
+                Text('Failed to send reset email. Please try again later.'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),

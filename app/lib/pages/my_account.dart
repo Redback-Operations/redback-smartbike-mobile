@@ -117,20 +117,6 @@ class _MyAccount extends State<MyAccount> {
                 ),
                 const SizedBox(height: 10),
                 AccountContainer(
-                  fieldName: "Sign Out",
-                  typeIcon: Icons.exit_to_app,
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                      (route) =>
-                          false, // Clear all routes except the new login page.
-                    );
-                  },
-                  arrowOptional: null,
-                ),
-                const SizedBox(height: 10),
-                AccountContainer(
                   fieldName: "TERMINATE ACCOUNT",
                   typeIcon: Icons.cancel,
                   onPressed: () {

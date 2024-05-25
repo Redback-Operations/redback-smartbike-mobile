@@ -14,5 +14,5 @@ class SignupSerializer(serializers.Serializer):
         print(data['password1'])
         print(data['password2'])
         if data['password1'] != data['password2']:
-            raise serializers.ValidationError("Passwords do not match")
+            raise serializers.ValidationError("Passwords do not match x")
         return data

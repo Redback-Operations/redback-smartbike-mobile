@@ -1,7 +1,7 @@
 # Import necessary modules and classes
 
-from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage
-from .serializers import UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, WorkoutEntrySerializer, WorkoutTypeSerializer
+from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
+from .serializers import UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, WorkoutEntrySerializer, WorkoutTypeSerializer, SocialMediaUserSerializer, WorkoutAnalysisSerializer
 from .forms import UserCreationForm,SignUpForm,LoginForm
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,8 +19,16 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
+from django.db.models import Q
+from datetime import datetime
+import hashlib
+from .tasks import clean_workout_data_task, analyse_workout_data_task
+from rest_framework import viewsets
+from rest_framework.response import Response
+import logging
+from celery import chain
 
-
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, "home.html")
@@ -129,6 +137,70 @@ def signup(request, format=None):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message": "Failed to create user.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+#                                   USER SOCIAL MEDIA SIGN UP AND LOGIN
+@api_view(['POST'])
+def social_media_login(request, format=None):
+    if request.method == 'POST':
+        fetched_email = request.data.get("email")
+        fetched_username =  ("username")
+        fetched_image = request.data.get("image")
+        fetched_timestamp = request.data.get("user_created")
+        fetched_id = request.data.get("login_id")
+        fetched_type = request.data.get("login_type")
+
+        user_is_enrolled = MyUser.objects.filter(Q(login_id=fetched_id) & Q(login_type=fetched_type) & Q(email=fetched_email)).first()
+        user_is_registered = MyUser.objects.filter(Q(login_id__isnull=True) & Q(login_type__isnull=True) & Q(email=fetched_email)).exists()
+
+        if user_is_enrolled != None:
+            account_details = AccountDetails.objects.filter(email=fetched_email)
+            serializer = AccountDetailsSerializer(account_details, many=True)
+
+            return Response({
+                'message': 'Login successful',
+                'id':user_is_enrolled.id,
+                'account_details': serializer.data,
+            }, status=status.HTTP_200_OK)
+           
+        elif user_is_registered:
+           return Response({"message": "User is already registered directly to the platform", "code": 1001}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer = SocialMediaUserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                
+                account_details = AccountDetails.objects.filter(email=fetched_email)
+                account_serializer = AccountDetailsSerializer(account_details, many=True)
+
+                return Response({
+                    'message': 'Login successful - new user',
+                    'id':serializer.data["id"],
+                    'account_details': account_serializer.data,
+                }, status=status.HTTP_200_OK)
+
+            elif serializer.errors.get('username') != "my user with this username already exists.":
+                suffix = str(datetime.now())[-5:]
+                request.data.update({"username": fetched_username + suffix})
+                serializer = SocialMediaUserSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    
+                    account_details = AccountDetails.objects.filter(email=fetched_email)
+                    account_serializer = AccountDetailsSerializer(account_details, many=True)
+
+                    return Response({
+                        'message': 'Login successful - new user',
+                        'id':serializer.data.id,
+                        'account_details': account_serializer.data,
+                    }, status=status.HTTP_200_OK)
+                else:
+                    return Response({"message": "Failed to create user.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"message": "Failed to create user.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -278,3 +350,73 @@ def wrk_data(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+#                                   AUTOMATE DATA ANALYSIS (see also: utils, tasks)
+
+# viewset handles WorkoutType objects and triggers the data processing tasks upon creation or update of values
+class WorkoutViewSet(viewsets.ModelViewSet):
+    queryset = WorkoutType.objects.all()
+    serializer_class = WorkoutTypeSerializer
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        chain(
+            clean_workout_data_task.s(instance.id),
+            # analysis only happens after processing is complete
+            analyse_workout_data_task.s(instance.id)
+        ).apply_async()
+
+
+
+#                                   UPDATE FINISHED WORKOUT in WorkoutType 'finished' to True
+
+@api_view(['PATCH'])
+@csrf_exempt  
+def wrk_finished(request):
+    try:
+        session_id = request.data.get('session_id')
+        finished = request.data.get('finished')
+
+        if session_id is None or finished is None:
+            logger.error('session_id and finished fields are required')
+            return Response({'error': 'session_id and finished fields are required'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+        workout = WorkoutType.objects.filter(session_id=session_id).first()
+        if workout is None:
+            logger.error(f'WorkoutType not found for session_id: {session_id}')
+            return Response({'error': 'WorkoutType not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        workout.finished = finished
+        workout.save()
+        logger.info(f'WorkoutType updated for session_id: {session_id}, finished: {finished}')
+
+        # Trigger Celery tasks if finished is set to True
+        if finished:
+            chain(
+                clean_workout_data_task.s(workout.session_id),
+                analyse_workout_data_task.s(workout.session_id)
+            ).apply_async()
+            logger.info(f'Triggered Celery tasks for session_id: {session_id}')
+
+        return Response({'status': 'success', 'finished': workout.finished}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        logger.error(f'An error occurred while processing the request: {e}')
+        print(f"An error occurred: {e}")
+        return Response({'error': 'An error occurred while processing the request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+#                                   FETCH DATA ANALYSIS FOR A SESSION_ID that was passed
+# TODO: implement in flutter for dashboard
+@api_view(['GET'])
+def get_analysis(request, session_id):
+    try:
+        workout_analysis = WorkoutAnalysis.objects.get(session_id=session_id)
+        serializer = WorkoutAnalysisSerializer(workout_analysis)
+        return Response(serializer.data)
+    except WorkoutAnalysis.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

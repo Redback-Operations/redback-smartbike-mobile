@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'provider/user_data_provider.dart';
 
 void main() {
-
   runApp(MyApp());
 }
 

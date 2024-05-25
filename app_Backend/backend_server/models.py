@@ -19,6 +19,8 @@ class MyUser(models.Model):
     username = models.CharField(max_length=20, unique = True)
     password = models.CharField(max_length=20)
     user_created = models.DateTimeField(null = True, max_length=50)
+    login_type = models.CharField(null = True, max_length=20)
+    login_id = models.CharField(null = True, max_length=50, unique = True)
 
     # generate the id, starting at 1000, and add 1 to each new user
     def save(self, *args, **kwargs):
@@ -176,6 +178,8 @@ class WorkoutType(models.Model):
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     created_at = models.DateTimeField(default=timezone.now)
+    finished = models.BooleanField(default=False) 
+    processed = models.BooleanField(default=False)      # this feature is used to automate data processing; by default is False, when changed to TRue it will trigger data clean & proc
 
     
 
@@ -205,3 +209,14 @@ class WorkoutEntry(models.Model):
     # this is for admin interface
     def __str__(self):
         return f"Workout for {self.user.username} - {self.workout_type.name}"
+    
+
+
+class WorkoutAnalysis(models.Model):
+    session_id = models.ForeignKey(WorkoutType, on_delete=models.CASCADE, related_name='session_id_workoutanalysis', to_field='session_id')
+    avg_speed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    max_speed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    total_distance = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    avg_heart_rate = models.IntegerField(null=True, blank=True)
+    workout_duration = models.IntegerField(null=True, blank=True)
+    avg_temperature = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
