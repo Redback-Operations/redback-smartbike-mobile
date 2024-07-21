@@ -24,15 +24,28 @@ inside the file add:
 7. VS Code -> run your backend     
 
 
-8. Android Studio -> run the project
+8. From VSCode open lib/main.dart -> Press run (play button) on top right\
+   Alternatively - Android Studio -> run the project
 
 
 * SAVE CHANGES: save only the fully working feature that is completed
 
+When working on any new feature or fix, create new branch first\
+`git checkout -b <name of fix or feature work>`
+
+Try to commit as soon as you have something working like button created, API integrate, library added, etc. This will help track of changes better for reviewers.
+
+`git add .` or `git add <filename>`\
+`git commit -m="<changes you made>"`\
+`git push` - you might need to push upstream first if working on new branch
+
+or
+
 Android Studio -> Git -> commit    commit ... commit
 Android Studio -> Git -> push      commit ... commit
 
-* SUBSEQUENT USE: it is a good habit to pull any changes to the repo made by other users, before starting to work on a new feature:
+
+* SUBSEQUENT USE: it is a good habit to pull any changes to the repo made by other users, before starting to work on a new feature on new branch:
 
 Android Studio -> Git -> Pull...
 
@@ -42,3 +55,11 @@ This way in the original project that you have open you will discard your work a
 manually re-apply your work (copy-paste) into the original project.
 
 If in doubt, contact your project leader . 
+
+### IDE Environment and SDK version info (this is when the app successfully worked last time)
+IDE: Android Studio Iguana | 2023.2.1, Xcode Version 15.4 (15F31d)\
+Flutter version: 3.22.3 Stable\
+Dart: 3.4.4\
+DevTools: 3.34.3
+
+Happy coding!
