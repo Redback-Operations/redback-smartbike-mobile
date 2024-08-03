@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_app/pages/mqqt_test.dart';
 import 'package:phone_app/provider/wrk_type_provider.dart';
 import 'pages/login.dart';
 // for passing user data throughout the app:
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
+        // home: MqttTest(), // comment out to test MQTT
         home: LoginPage(), // Set LoginPage as the initial page
       ),
     );
