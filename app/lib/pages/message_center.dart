@@ -21,19 +21,12 @@ class MessageCenter extends StatefulWidget {
 }
 
 class _MessageCenterState extends State<MessageCenter> {
-  int _currentIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
           title: Text(
             'My Messages',
             style: kSubSubTitleOfPage,
@@ -56,7 +49,5 @@ class _MessageCenterState extends State<MessageCenter> {
               ),
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex));
-  }
+        ));}
 }

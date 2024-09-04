@@ -24,8 +24,6 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccount extends State<MyAccount> {
-  // because my account will branch out of settings
-  int _currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +131,6 @@ class _MyAccount extends State<MyAccount> {
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex));
+        ));
   }
 }
