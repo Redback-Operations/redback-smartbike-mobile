@@ -1,30 +1,33 @@
 import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:phone_app/components/reset_password_session.dart';
-import 'package:phone_app/pages/password_reset_otp_validate_page.dart';
-import 'login.dart';
-import 'signup.dart';
-import '../components/login_signup_background.dart';
+import 'package:http/http.dart' as http;
+
 import '../components/bottom_button.dart';
+import '../components/input_text_field.dart';
+import '../components/login_signup_background.dart';
+import '../components/reset_password_session.dart';
 import '../components/text_tap_button.dart';
 import '../utilities/constants.dart';
+import 'login.dart';
+import 'signup.dart';
 
-class PasswordResetPage extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final cache = ResetPasswordSession(); // Access the singleton instance
+class PasswordResetCreateNewPasswordPage extends StatelessWidget {
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController rePasswordController = TextEditingController();
 
-  PasswordResetPage({super.key});
+  final cache = ResetPasswordSession();
 
-  Future<void> requestPasswordReset(BuildContext context) async {
+  PasswordResetCreateNewPasswordPage({super.key});
+
+  Future<void> submitPassword(BuildContext context) async {
     showLoader(context);
-
     await dotenv.load(fileName: ".env");
     String? baseURL = dotenv.env['API_URL_BASE'];
-    final apiUrl = '$baseURL/user/password_reset/';
+    final apiUrl = '$baseURL/user/password_reset/new_password';
     const csrfToken = 'your-csrf-token';
-    String email = emailController.text;
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -33,25 +36,27 @@ class PasswordResetPage extends StatelessWidget {
         'X-CSRFToken': csrfToken,
       },
       body: jsonEncode({
-        'email': email,
+        'email': cache.email,
+        'otp_token': cache.otpToken,
+        'password': passwordController.text,
+        're_password': rePasswordController.text,
       }),
     );
 
     Navigator.pop(context);
 
+    final responseData = jsonDecode(response.body);
+
     if (response.statusCode == 200) {
-      cache.email = email;
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Reset Email Sent'),
+            title: const Text('Password updated Successfully!'),
             content: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Check your email to get the OTP to reset the password'),
-                SizedBox(height: 10),
-                Text('You will receive an email within the next couple of minutes. \n The OTP will be valid for 4 minutes Only.'),
+                Text('Please login with your new password')
               ],
             ),
             actions: <Widget>[
@@ -59,9 +64,7 @@ class PasswordResetPage extends StatelessWidget {
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => PasswordResetOtpValidatePagePage())
-                  );
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -74,7 +77,7 @@ class PasswordResetPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to send reset email. Please try again later.'),
+            content: Text(responseData['error']),
             actions: <Widget>[
               TextButton(
                 child: const Text('OK'),
@@ -87,25 +90,6 @@ class PasswordResetPage extends StatelessWidget {
         },
       );
     }
-  }
-
-  void showLoader(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          content: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              SizedBox(width: 20),
-              Text('Please wait...'),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -127,30 +111,22 @@ class PasswordResetPage extends StatelessWidget {
                     height: 150,
                   ),
                   const SizedBox(height: 30),
-                  const Text(
-                    "Reset Password",
-                    style: kRedbackTextMain,
+                  InputTextField(
+                    buttonText: 'New Password',
+                    fieldController: passwordController,
+                    enableToggle: true,
                   ),
-                  const SizedBox(height: 30),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Enter your email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  SizedBox(height: 15),
+                  InputTextField(
+                    buttonText: 'Re-Enter New Password',
+                    fieldController: rePasswordController,
+                    enableToggle: true,
                   ),
                   const SizedBox(height: 20),
                   BottomButton(
-                    onTap: () => requestPasswordReset(context),
-                    buttonText: 'Send',
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'You will receive an email within the next couple of minutes.',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
+                    width: 250,
+                    onTap: () => submitPassword(context),
+                    buttonText: 'Submit Password',
                   ),
                   const Spacer(),
                   Row(
@@ -166,7 +142,7 @@ class PasswordResetPage extends StatelessWidget {
                       const SizedBox(width: 10),
                       TextTapButton(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SignUpPage(),
@@ -187,4 +163,24 @@ class PasswordResetPage extends StatelessWidget {
       ),
     );
   }
+
+  void showLoader(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              SizedBox(width: 20),
+              Text('Please wait...'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 }

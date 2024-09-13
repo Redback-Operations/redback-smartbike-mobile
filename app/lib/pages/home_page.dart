@@ -1,27 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:phone_app/pages/login.dart';
-import 'package:phone_app/pages/message_center.dart';
 import 'package:phone_app/pages/my_activity.dart';
 import 'package:phone_app/pages/my_workout.dart';
 import 'package:phone_app/utilities/constants.dart';
-import 'package:provider/provider.dart';
-import 'dart:convert';
+
 import '../components/bottom_navigation_bar.dart';
-import '../components/main_app_background.dart';
-import '../components/stats_container.dart';
-import '../models/user_details.dart';
-import '../provider/user_data_provider.dart';
-import 'Friends.dart';
-import 'my_workout.dart';
-import 'package:phone_app/pages/settings.dart';
-import 'my_account.dart';
-import '../models/user_details.dart';
-import '../services/get_current_user_details.dart';
 import 'my_stats.dart';
 
 void main() {
@@ -84,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               MyActivity(title: 'My Activity'),
               MyWorkout(
@@ -92,8 +74,7 @@ class _HomePageState extends State<HomePage> {
               ),
               MyStats(title: 'My Stats')
             ],
-          ),
-          bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex)),
+          )),
     );
   }
 }

@@ -24,6 +24,8 @@ dependencies:
   social_login_buttons: ^1.0.7
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.2.0
+  flutter_secure_storage: ^9.0.0
+  win32: ^5.5.0
 
 dev_dependencies:
   flutter_test:
