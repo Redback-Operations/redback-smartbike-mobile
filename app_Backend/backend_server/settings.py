@@ -74,7 +74,7 @@ ROOT_URLCONF = 'backend_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'backend_server\\templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -199,3 +199,13 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+#forget password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'c1b94fb9443342'
+EMAIL_HOST_PASSWORD = '73d6f00407f892'
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'webmaster@example.com'
