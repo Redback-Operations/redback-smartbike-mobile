@@ -11,8 +11,18 @@ import '../components/workout_metric_box.dart';
 import '../services/workout_values_generator.dart';
 import 'package:http/http.dart' as http;
 import '../provider/wrk_type_provider.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 // TODO: in Django models change the user, workout_type to not be null
+
+List<String> topics = [
+  'bike/000001/cadence',
+  'bike/000001/speed',
+  'bike/000001/incline/report',
+  'bike/000001/heartrate',
+  'bike/000001/resistance/report',
+];
 
 class Workout extends StatefulWidget {
   const Workout({Key? key, required this.title}) : super(key: key);
@@ -23,20 +33,21 @@ class Workout extends StatefulWidget {
 }
 
 class _WorkoutState extends State<Workout> {
+  late MqttServerClient _client;
+  bool isConnected = false;
+  bool _isDisposed = false;
   late Timer _timer = Timer(Duration.zero, () {});
   int _elapsedSeconds = 0;
   bool _isRunning = false;
-  bool _continueSendingData =
-      true; // need to control for when we finish workout, so no data is sent beyond that point
   late String? _sessionId;
 
   // random values declared
-  late double speedVal;
-  late int rpmVal;
-  late double distanceVal;
-  late int heartRateVal;
-  late double temperatureVal;
-  late int inclineVal;
+  int rpmVal = 0;
+  double speedVal = 0;
+  double distanceVal = 0;
+  int inclineVal = 0;
+  int heartRateVal = 0;
+  double resistanceVal = 0;
 
   void _startTimer() {
     _timer.cancel(); // Cancel the existing timer if it's active
@@ -74,11 +85,54 @@ class _WorkoutState extends State<Workout> {
   void initState() {
     super.initState();
     _startTimer();
+    connectToMqtt();
+  }
+
+  Future<void> connectToMqtt() async {
+    _client = MqttServerClient.withPort(
+        'broker.mqtt.cool', 'q2904387q29038742432r3', 1883);
+
+    _client.onConnected = () {
+      setState(() {
+        isConnected = true;
+      });
+    };
+
+    _client.onDisconnected = () {
+      if (!_isDisposed) {
+        // Ensure the widget is still mounted
+        setState(() {
+          isConnected = true;
+        });
+      }
+    };
+
+    try {
+      await _client.connect();
+    } catch (e) {
+      print('Exception: $e');
+      _client.disconnect();
+    }
+  }
+
+  void subscribeToTopics() {
+    for (var topic in topics) {
+      _client.subscribe(topic, MqttQos.atMostOnce);
+    }
+  }
+
+  void unsubscribeFromAll() {
+    for (var topic in topics) {
+      _client.unsubscribe(topic);
+    }
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    unsubscribeFromAll();
+    _isDisposed = true;
+    _client.disconnect();
     super.dispose();
   }
 
@@ -95,17 +149,12 @@ class _WorkoutState extends State<Workout> {
   @override
   Widget build(BuildContext context) {
     // called every second
-    speedVal = WorkoutValues.generateSpeed(1);
-    rpmVal = WorkoutValues.generateRPM(speedVal);
-    distanceVal = WorkoutValues.generateDistance(speedVal, 1);
-    heartRateVal = WorkoutValues.generateHeartRate(speedVal);
-    temperatureVal = WorkoutValues.generateTemperature(speedVal, 1);
-    inclineVal = WorkoutValues.generateIncline(1);
-
-    // send the data to backend every second
-    if (_continueSendingData) {
-      sendWorkoutData();
-    }
+    // speedVal = WorkoutValues.generateSpeed(1);
+    // rpmVal = WorkoutValues.generateRPM(speedVal);
+    // distanceVal = WorkoutValues.generateDistance(speedVal, 1);
+    // heartRateVal = WorkoutValues.generateHeartRate(speedVal);
+    // temperatureVal = WorkoutValues.generateTemperature(speedVal, 1);
+    // inclineVal = WorkoutValues.generateIncline(1);
 
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +170,28 @@ class _WorkoutState extends State<Workout> {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(
+                right: 16.0), // Aligns the content to the right
+            child: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensures Row takes up only the space it needs
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: isConnected ? Colors.green : Colors.red,
+                  size: 16,
+                ),
+                SizedBox(width: 4), // Small spacing between icon and text
+                Text(
+                  isConnected ? 'Connected' : 'Disconnected',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: CustomGradientContainerSoft(
         child: SingleChildScrollView(
@@ -243,7 +314,7 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Temperature",
-                                value: temperatureVal.toStringAsFixed(2) + "°C",
+                                value: resistanceVal.toStringAsFixed(2) + "°C",
                               ),
                             ),
                           ],
@@ -326,7 +397,7 @@ class _WorkoutState extends State<Workout> {
             'rpm': rpmVal,
             'distance': double.parse(distanceVal.toStringAsFixed(2)),
             'heart_rate': heartRateVal,
-            'temperature': double.parse(temperatureVal.toStringAsFixed(2)),
+            'resistance': double.parse(resistanceVal.toStringAsFixed(2)),
             'incline': inclineVal,
             'timestamp': DateTime.now().toIso8601String(),
             'session_id': _sessionId,
@@ -370,10 +441,6 @@ class _WorkoutState extends State<Workout> {
     );
 
     if (response.statusCode == 200) {
-      setState(() {
-        _continueSendingData =
-            false; // stop sending workout data; need this as there might still be some left in backlog
-      });
       // If the server returns a successful response
       print('Successfully recorded the end of this workout');
     } else {
