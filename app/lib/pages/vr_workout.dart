@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/components/bottom_button.dart';
 import 'package:phone_app/pages/workout_summary.dart' as WrkSummary;
+import 'package:phone_app/utilities/alert.dart';
 import 'package:phone_app/utilities/constants.dart';
 import 'package:provider/provider.dart';
 import '../components/main_app_background.dart';
@@ -33,6 +34,7 @@ class Workout extends StatefulWidget {
 }
 
 class _WorkoutState extends State<Workout> {
+  OverlayEntry? _overlayEntry;
   late MqttServerClient _client;
   bool isConnected = false;
   bool _isDisposed = false;
@@ -388,20 +390,7 @@ class _WorkoutState extends State<Workout> {
                                   onTap: () async {
                                     _pauseTimer();
                                     // Mark as wrkout finished in backend
-                                    await updateWrkFinished();
-
-                                    // reset values
-                                    setState(() {
-                                      WorkoutValues.resetValues();
-                                    });
-
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            WrkSummary.WorkoutSummary(),
-                                      ),
-                                    );
+                                    updateWrkFinished();
                                   },
                                   buttonText: 'Finish'),
                             ),
@@ -474,6 +463,18 @@ class _WorkoutState extends State<Workout> {
     }
   }
 
+  // Function to show the loader
+  void _showLoader() {
+    _overlayEntry = AlertUtils().createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!); // Insert the loader overlay
+  }
+
+  // Function to hide the loader
+  void _hideLoader() {
+    _overlayEntry?.remove(); // Remove the overlay
+    _overlayEntry = null;
+  }
+
   // update the 'processed' value in WorkoutType in backend, which will trigger the start of data clean & analysis work
   Future<void> updateWrkFinished() async {
     await dotenv.load(fileName: ".env");
@@ -481,7 +482,7 @@ class _WorkoutState extends State<Workout> {
     _sessionId = await getSessionId();
 
     String apiUrl = '$baseURL/finish_workout/';
-
+    _showLoader();
     final response = await http.patch(
       Uri.parse(apiUrl),
       headers: <String, String>{
@@ -500,10 +501,26 @@ class _WorkoutState extends State<Workout> {
             false; // stop sending workout data; need this as there might still be some left in backlog
       });
       // If the server returns a successful response
-      print('Successfully recorded the end of this workout');
+      // reset values
+      setState(() {
+        WorkoutValues.resetValues();
+      });
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WrkSummary.WorkoutSummary(),
+        ),
+      );
     } else {
       // If the server did not return a successful response
-      throw Exception('Failed to update');
+      AlertUtils.showAlert(
+        context: context,
+        title: 'Error',
+        message: 'Failed to record the end of this workout.',
+      );
     }
+
+    _hideLoader();
   }
 }
