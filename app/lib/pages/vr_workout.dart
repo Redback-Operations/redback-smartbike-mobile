@@ -38,6 +38,7 @@ class _WorkoutState extends State<Workout> {
   bool _isDisposed = false;
   late Timer _timer = Timer(Duration.zero, () {});
   int _elapsedSeconds = 0;
+  int _prevSpeedCalcElapsedSeconds = 0;
   bool _isRunning = false;
   late String? _sessionId;
 
@@ -45,9 +46,11 @@ class _WorkoutState extends State<Workout> {
   int rpmVal = 0;
   double speedVal = 0;
   double distanceVal = 0;
-  int inclineVal = 0;
   int heartRateVal = 0;
-  double resistanceVal = 0;
+  int inclineEvents = 0;
+  double avgInclineVal = 0;
+  int resistanceEvents = 0;
+  double avgResistanceVal = 0;
 
   void _startTimer() {
     _timer.cancel(); // Cancel the existing timer if it's active
@@ -96,6 +99,7 @@ class _WorkoutState extends State<Workout> {
       setState(() {
         isConnected = true;
       });
+      _subscribeToTopics();
     };
 
     _client.onDisconnected = () {
@@ -115,13 +119,60 @@ class _WorkoutState extends State<Workout> {
     }
   }
 
-  void subscribeToTopics() {
+  void _subscribeToTopics() {
     for (var topic in topics) {
       _client.subscribe(topic, MqttQos.atMostOnce);
     }
+
+    // Set up a listener to handle the incoming messages
+    _client.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? messages) {
+      final MqttPublishMessage recMess = messages![0].payload as MqttPublishMessage;
+      final payload = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      _handleResponse(messages[0].topic, payload);
+    });
   }
 
-  void unsubscribeFromAll() {
+  void _handleResponse(String topic, String payload) {
+    if (!_isRunning) {
+      return;
+    }
+    // Decode the incoming payload as JSON
+    var data = jsonDecode(payload);
+
+    if (!_isDisposed) {
+      setState(() {
+        switch (topic) {
+          case 'bike/000001/cadence':
+            rpmVal = data['value'];
+            break;
+          case 'bike/000001/speed':
+            speedVal = data['value'];
+            int diffSecs = _elapsedSeconds - _prevSpeedCalcElapsedSeconds;
+            _prevSpeedCalcElapsedSeconds = _elapsedSeconds;
+            distanceVal = WorkoutValues.generateDistance(speedVal, diffSecs);
+            break;
+          case 'bike/000001/incline/report':
+            double val = data['value'];
+            double totalCurrent = (avgInclineVal * inclineEvents) + val;
+            inclineEvents++;
+            avgInclineVal = totalCurrent/inclineEvents;
+            break;
+          case 'bike/000001/heartrate':
+            heartRateVal = data['value'];
+            break;
+          case 'bike/000001/resistance/report':
+            double val = data['value'];
+            double totalCurrent = (avgResistanceVal * resistanceEvents) + val;
+            resistanceEvents++;
+            avgResistanceVal = totalCurrent/resistanceEvents;
+            break;
+        }
+      });
+    }
+  }
+
+  void _unsubscribeFromAll() {
     for (var topic in topics) {
       _client.unsubscribe(topic);
     }
@@ -130,7 +181,7 @@ class _WorkoutState extends State<Workout> {
   @override
   void dispose() {
     _timer.cancel();
-    unsubscribeFromAll();
+    _unsubscribeFromAll();
     _isDisposed = true;
     _client.disconnect();
     super.dispose();
@@ -148,14 +199,6 @@ class _WorkoutState extends State<Workout> {
 
   @override
   Widget build(BuildContext context) {
-    // called every second
-    // speedVal = WorkoutValues.generateSpeed(1);
-    // rpmVal = WorkoutValues.generateRPM(speedVal);
-    // distanceVal = WorkoutValues.generateDistance(speedVal, 1);
-    // heartRateVal = WorkoutValues.generateHeartRate(speedVal);
-    // temperatureVal = WorkoutValues.generateTemperature(speedVal, 1);
-    // inclineVal = WorkoutValues.generateIncline(1);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
@@ -183,7 +226,7 @@ class _WorkoutState extends State<Workout> {
                   color: isConnected ? Colors.green : Colors.red,
                   size: 16,
                 ),
-                SizedBox(width: 4), // Small spacing between icon and text
+                const SizedBox(width: 4), // Small spacing between icon and text
                 Text(
                   isConnected ? 'Connected' : 'Disconnected',
                   style: TextStyle(color: Colors.white),
@@ -266,7 +309,7 @@ class _WorkoutState extends State<Workout> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Column(
                       children: [
                         Row(
@@ -274,13 +317,13 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Speed",
-                                value: speedVal.toStringAsFixed(2) + " km/h",
+                                value: "${speedVal.toStringAsFixed(2)} km/h",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "RPM",
-                                value: rpmVal.toString() + " RPM",
+                                value: "$rpmVal RPM",
                               ),
                             ),
                           ],
@@ -291,13 +334,13 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Distance",
-                                value: distanceVal.toStringAsFixed(2) + " km",
+                                value: "${distanceVal.toStringAsFixed(2)} km",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Incline",
-                                value: "$inclineVal%",
+                                value: "${avgInclineVal.toStringAsFixed(2)} %",
                               ),
                             ),
                           ],
@@ -308,20 +351,20 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Heart Rate",
-                                value: heartRateVal.toString() + " BPM",
+                                value: "$heartRateVal BPM",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
-                                label: "Temperature",
-                                value: resistanceVal.toStringAsFixed(2) + "°C",
+                                label: "Resistance",
+                                value: "${avgResistanceVal.toStringAsFixed(2)} Ω",
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -397,8 +440,8 @@ class _WorkoutState extends State<Workout> {
             'rpm': rpmVal,
             'distance': double.parse(distanceVal.toStringAsFixed(2)),
             'heart_rate': heartRateVal,
-            'resistance': double.parse(resistanceVal.toStringAsFixed(2)),
-            'incline': inclineVal,
+            'resistance': double.parse(avgResistanceVal.toStringAsFixed(2)),
+            'incline': avgInclineVal,
             'timestamp': DateTime.now().toIso8601String(),
             'session_id': _sessionId,
           }),
