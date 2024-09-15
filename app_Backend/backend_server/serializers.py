@@ -41,7 +41,7 @@ class WorkoutTypeSerializer(serializers.ModelSerializer):
 class WorkoutEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutEntry
-        fields = ['session_id', 'speed', 'rpm', 'distance', 'heart_rate', 'temperature', 'incline', 'timestamp',] 
+        fields = ['session_id', 'speed', 'rpm', 'distance', 'heart_rate', 'resistance', 'incline', 'timestamp',] 
 # or :  fields = '__all__'   if we want to choose all fields
 
 class WorkoutAnalysisSerializer(serializers.ModelSerializer):

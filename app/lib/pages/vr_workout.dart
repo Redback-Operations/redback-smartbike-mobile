@@ -490,8 +490,9 @@ class _WorkoutState extends State<Workout> {
       },
       body: jsonEncode(<String, dynamic>{
         'session_id': _sessionId,
+        // Finished does not work if redis not setup properly
         'finished':
-            true, // change value to true from the previous, default value false; it will trigger data clean & analysis in backend (see django views: wrk_finished)
+            false, // change value to true from the previous, default value false; it will trigger data clean & analysis in backend (see django views: wrk_finished)
       }),
     );
 
