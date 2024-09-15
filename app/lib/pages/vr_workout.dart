@@ -40,6 +40,8 @@ class _WorkoutState extends State<Workout> {
   int _elapsedSeconds = 0;
   int _prevSpeedCalcElapsedSeconds = 0;
   bool _isRunning = false;
+  bool _continueSendingData =
+      true; // need to control for when we finish workout, so no data is sent beyond that point
   late String? _sessionId;
 
   // random values declared
@@ -125,9 +127,12 @@ class _WorkoutState extends State<Workout> {
     }
 
     // Set up a listener to handle the incoming messages
-    _client.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? messages) {
-      final MqttPublishMessage recMess = messages![0].payload as MqttPublishMessage;
-      final payload = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+    _client.updates
+        ?.listen((List<MqttReceivedMessage<MqttMessage?>>? messages) {
+      final MqttPublishMessage recMess =
+          messages![0].payload as MqttPublishMessage;
+      final payload =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
       _handleResponse(messages[0].topic, payload);
     });
@@ -156,7 +161,7 @@ class _WorkoutState extends State<Workout> {
             double val = data['value'];
             double totalCurrent = (avgInclineVal * inclineEvents) + val;
             inclineEvents++;
-            avgInclineVal = totalCurrent/inclineEvents;
+            avgInclineVal = totalCurrent / inclineEvents;
             break;
           case 'bike/000001/heartrate':
             heartRateVal = data['value'];
@@ -165,7 +170,7 @@ class _WorkoutState extends State<Workout> {
             double val = data['value'];
             double totalCurrent = (avgResistanceVal * resistanceEvents) + val;
             resistanceEvents++;
-            avgResistanceVal = totalCurrent/resistanceEvents;
+            avgResistanceVal = totalCurrent / resistanceEvents;
             break;
         }
       });
@@ -199,6 +204,11 @@ class _WorkoutState extends State<Workout> {
 
   @override
   Widget build(BuildContext context) {
+    // send the data to backend every second
+    if (_continueSendingData) {
+      sendWorkoutData();
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
@@ -357,7 +367,8 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Resistance",
-                                value: "${avgResistanceVal.toStringAsFixed(2)} Ω",
+                                value:
+                                    "${avgResistanceVal.toStringAsFixed(2)} Ω",
                               ),
                             ),
                           ],
@@ -376,8 +387,7 @@ class _WorkoutState extends State<Workout> {
                               child: BottomButton(
                                   onTap: () async {
                                     _pauseTimer();
-                                    // TODO: make sure values were being saved to backend, we need them for summary
-                                    // mmark as wrkout finished in backend
+                                    // Mark as wrkout finished in backend
                                     await updateWrkFinished();
 
                                     // reset values
@@ -471,6 +481,7 @@ class _WorkoutState extends State<Workout> {
     _sessionId = await getSessionId();
 
     String apiUrl = '$baseURL/finish_workout/';
+
     final response = await http.patch(
       Uri.parse(apiUrl),
       headers: <String, String>{
@@ -484,6 +495,10 @@ class _WorkoutState extends State<Workout> {
     );
 
     if (response.statusCode == 200) {
+      setState(() {
+        _continueSendingData =
+            false; // stop sending workout data; need this as there might still be some left in backlog
+      });
       // If the server returns a successful response
       print('Successfully recorded the end of this workout');
     } else {
