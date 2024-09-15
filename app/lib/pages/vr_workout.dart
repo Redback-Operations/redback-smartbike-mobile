@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/components/bottom_button.dart';
+import 'package:phone_app/pages/SmartBikeSummary.dart';
 import 'package:phone_app/pages/workout_summary.dart' as WrkSummary;
 import 'package:phone_app/utilities/alert.dart';
 import 'package:phone_app/utilities/constants.dart';
@@ -510,7 +511,14 @@ class _WorkoutState extends State<Workout> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => WrkSummary.WorkoutSummary(),
+          builder: (context) => SmartBikeSummary(
+        speed: speedVal.toStringAsFixed(2),
+        rpm: rpmVal.toString(),
+        distance: distanceVal.toStringAsFixed(2),
+        heartRate: heartRateVal.toStringAsFixed(2),
+        resistance: avgResistanceVal.toStringAsFixed(2),
+        incline: avgInclineVal.toStringAsFixed(2),
+      ),
         ),
       );
     } else {
