@@ -207,7 +207,7 @@ packages:
     source: hosted
     version: "2.0.19"
   flutter_secure_storage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_secure_storage
       sha256: "8496a89eea74e23f92581885f876455d9d460e71201405dffe5f55dfe1155864"
@@ -862,7 +862,7 @@ packages:
     source: hosted
     version: "0.5.1"
   win32:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: win32
       sha256: "0eaf06e3446824099858367950a813472af675116bf63f008a4c2a75ae13e9cb"
