@@ -3,11 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
-import '../models/user_details.dart';
 import '../provider/user_data_provider.dart';
 
 class UserDetailsFetcher {
@@ -71,6 +70,7 @@ class UserDetailsFetcher {
           // set values in provider
           Provider.of<UserDataProvider>(context, listen: false)
               .updateUserDetails(
+            context,
             id: responseData['id'] ?? '',
             name: responseData['name'] ?? '',
             surname: responseData['surname'] ?? '',

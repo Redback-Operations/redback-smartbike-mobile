@@ -16,10 +16,10 @@ class MyActivity extends StatefulWidget {
   const MyActivity({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  _MyActivityState createState() => _MyActivityState();
+  MyActivityState createState() => MyActivityState();
 }
 
-class _MyActivityState extends State<MyActivity> {
+class MyActivityState extends State<MyActivity> {
   int _currentIndex = 3;
 
   @override
