@@ -13,10 +13,9 @@ import 'provider/user_data_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-
+  
   // Initialize the notification service
   await NotificationService.initialize();
-
   runApp(const MyApp());
 }
 
@@ -34,9 +33,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: customThemeData(),
-          home: AuthWrapper()
-      ),
+          theme: ThemeData(
+            useMaterial3: true,
+          ),
+          // home: MqttTest(), // comment out to test MQTT
+          home: const AuthWrapper()),
     );
   }
 }

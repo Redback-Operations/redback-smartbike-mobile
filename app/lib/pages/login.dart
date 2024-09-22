@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'package:phone_app/components/input_text_field.dart';
 import 'package:phone_app/pages/password_reset_page.dart';
+import 'package:phone_app/pages/tab_layout.dart';
 import 'package:phone_app/services/social_media_authentication.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_data_provider.dart';
@@ -21,10 +22,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 void main() {
-  runApp(LoginApp());
+  runApp(const LoginApp());
 }
 
 class LoginApp extends StatelessWidget {
+  const LoginApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -47,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController idController = TextEditingController();
   String errorMessage = '';
   late GoogleSignIn _googleSignIn;
+  bool _isLoading = false; // Added to handle loading state
 
   static const List<String> scopes = <String>[
     'email',
@@ -71,6 +75,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login(BuildContext context) async {
+    setState(() {
+      _isLoading = true; // Start loading
+    });
+
     await dotenv.load(fileName: ".env");
     String? baseURL = dotenv.env['API_URL_BASE'];
     final apiUrl = '$baseURL/login/';
@@ -85,6 +93,9 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     await handleLoginResponse(response);
+    setState(() {
+      _isLoading = false; // Stop loading after response is handled
+    });
   }
 
   Future<void> handleLoginResponse(Response response) async {
@@ -99,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
       var accountDetails = responseData['account_details'][0];
       // save all to the Provider, so that we have all details for current user. Also Provider distributes data across the widgets
       Provider.of<UserDataProvider>(context, listen: false).updateUserDetails(
+        context,
         email: accountDetails['email'],
         username: accountDetails['username'],
         name: accountDetails['name'],
@@ -114,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(title: 'Home Page')),
+        MaterialPageRoute(builder: (context) => const TabLayout()),
       );
     } else {
       String message;
@@ -127,18 +139,18 @@ class _LoginPageState extends State<LoginPage> {
         message = 'This username does not exist in the warehouse records.';
       } else {
         message =
-            'An error occurred. Please try again later. Details: ${response.body} ${response.statusCode} ';
+        'An error occurred. Please try again later. Details: ${response.body} ${response.statusCode} ';
         print('${response.body} ${response.statusCode} ');
       }
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Login Error'),
+            title: const Text('Login Error'),
             content: Text(message),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -195,9 +207,11 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child:
-                      Text('Forgotten Password?', style: kSubTitleLoginStatic),
+                  Text('Forgotten Password?', style: kSubTitleLoginStatic),
                 ),
-                BottomButton(
+                _isLoading
+                    ? CircularProgressIndicator() // Show loading indicator while processing
+                    : BottomButton(
                   onTap: () {
                     login(context);
                   },
@@ -281,8 +295,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     await dotenv.load(fileName: ".env");
-    String? baseURL = dotenv.env[
-        'API_URL_BASE']; // only the partial, network specific to each team member
+    String? baseURL = dotenv.env['API_URL_BASE']; // only the partial, network specific to each team member
     final apiUrl = '$baseURL/login-sm/';
 
     final interceptor = MyHttpInterceptor(http.Client());

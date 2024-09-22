@@ -91,7 +91,6 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex));
+        ));
   }
 }

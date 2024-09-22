@@ -92,8 +92,7 @@ class TerminateState extends State<Terminate> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex),
+      )
     );
   }
 

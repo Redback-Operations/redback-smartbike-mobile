@@ -21,7 +21,6 @@ class MyFriendScreen extends StatefulWidget {
 }
 
 class _MyFriendScreenState extends State<MyFriendScreen> {
-  int _currentIndex = 2;
   List<FriendModel> allFriends = [];
   List<FriendModel> filteredFriends = [];
   TextEditingController _searchController = TextEditingController();
@@ -89,18 +88,6 @@ class _MyFriendScreenState extends State<MyFriendScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.white,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(title: 'Home Page'),
-              ),
-            );
-          },
-        ),
         title: Text(
           'My Friends',
           style: kSubSubTitleOfPage,
@@ -155,7 +142,6 @@ class _MyFriendScreenState extends State<MyFriendScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex),
     );
   }
 }
