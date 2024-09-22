@@ -131,6 +131,7 @@ class _EditProfileActivityState extends State<EditProfile> {
           if (mounted) {
             Provider.of<UserDataProvider>(context, listen: false)
                 .updateUserDetails(
+              context,
               id: _idController.text,
               name: _firstNameController.text,
               surname: _lastNameController.text,

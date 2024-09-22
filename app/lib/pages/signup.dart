@@ -5,11 +5,10 @@ import 'package:phone_app/pages/login.dart';
 import 'package:phone_app/components/text_tap_button.dart';
 import '../components/bottom_button.dart';
 import '../components/input_text_field.dart';
-import '../components/login_signup_background.dart'; // Import the http package
+import '../components/login_signup_background.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
-  // access the env variables
   runApp(SignUpApp());
 }
 
@@ -35,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false; // Manage loading state
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -110,14 +110,14 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  // Function to make a POST request to your API
-
   Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Start loading
+      });
+
       await dotenv.load(fileName: ".env");
-// Retrieve the API URL from the environment variables
-      String? baseURL = dotenv.env[
-          'API_URL_BASE']; // only the partial, network specific to each team member
+      String? baseURL = dotenv.env['API_URL_BASE'];
       final apiUrl = '$baseURL/signup/';
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -125,19 +125,27 @@ class _SignUpPageState extends State<SignUpPage> {
           'email': emailController.text,
           'username': usernameController.text,
           'password': passwordController.text,
-          'user_created': DateTime.now().toIso8601String(), // record exact d&t
+          'user_created': DateTime.now().toIso8601String(),
         },
       );
 
       if (response.statusCode == 201) {
         print('User created successfully');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
       } else if (response.statusCode == 400) {
-        print('Failed to create user: ${response.body}');
+        _showErrorSnackbar('Failed to create user: ${response.body}');
       } else if (response.statusCode == 409) {
-        print('Conflict: ${response.body}');
+        _showErrorSnackbar('Conflict: ${response.body}');
       } else {
-        print('Unexpected status code: ${response.statusCode}');
+        _showErrorSnackbar('Unexpected status code: ${response.statusCode}');
       }
+
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
     }
   }
 
@@ -207,14 +215,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   SizedBox(height: 5),
-                  BottomButton(
+                  _isLoading
+                      ? CircularProgressIndicator() // Show loading indicator
+                      : BottomButton(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         await signUp();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
                       } else {
                         _showErrorSnackbar('Please correct the errors');
                       }

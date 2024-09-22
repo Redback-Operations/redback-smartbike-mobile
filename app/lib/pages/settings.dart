@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phone_app/pages/login.dart';
 import 'package:phone_app/pages/message_center.dart';
 import 'package:phone_app/pages/schedule_workout_screen.dart';
+import 'package:phone_app/provider/user_session_provider.dart';
 import 'package:phone_app/utilities/constants.dart';
 import '../components/account_containers.dart';
 import '../components/bottom_navigation_bar.dart';
@@ -26,17 +27,17 @@ class Setting extends StatefulWidget {
 }
 
 class _Setting extends State<Setting> {
-  int _currentIndex = 3; // Set the current index to 2 for Settings page
-
   // functions for signing out, depending on how he signed in. Clear the data
   Future<void> _handleLogout(BuildContext context) async {
     if (_googleSignIn.currentUser != null) {
       // if Google user is signed in
       await _handleGoogleSignOut();
+      await Provider.of<UserDataProvider>(context, listen: false)
+          .clearSession(Provider.of<UserSessionProvider>(context, listen: false));
     } else {
       // clear manual sign in data
       await Provider.of<UserDataProvider>(context, listen: false)
-          .clearSession();
+          .clearSession(Provider.of<UserSessionProvider>(context, listen: false));
     }
 
     // go back to the login screen
@@ -65,18 +66,6 @@ class _Setting extends State<Setting> {
         appBar: AppBar(
           backgroundColor: kLoginRegisterBtnColour
               .withOpacity(0.9), // Set the background color
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(title: 'Home Page'),
-                ),
-              );
-            },
-          ),
           title: Text(
             'Settings',
             style: kSubSubTitleOfPage,
@@ -148,9 +137,10 @@ class _Setting extends State<Setting> {
                 AccountContainer(
                   fieldName: 'Logout',
                   typeIcon: Icons.exit_to_app,
-                  onPressed: () {
+                  onPressed: () async {
                     // Perform logout actions here, such as clearing authentication tokens.
                     // Navigate to the login screen or any other desired screen.
+                    await _handleLogout(context);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -191,7 +181,6 @@ class _Setting extends State<Setting> {
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavBar(initialIndex: _currentIndex));
+        ));
   }
 }
