@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/provider/user_session_provider.dart';
 import 'package:phone_app/provider/wrk_type_provider.dart';
-import 'package:phone_app/utilities/custom_theme_data.dart';
 import 'package:phone_app/utilities/notification.dart'; // Import the NotificationService
 
 // for passing user data throughout the app:
