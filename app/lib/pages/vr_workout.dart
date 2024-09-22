@@ -48,10 +48,10 @@ class _WorkoutState extends State<Workout> {
   late String? _sessionId;
 
   // random values declared
-  int rpmVal = 0;
+  double rpmVal = 0;
   double speedVal = 0;
   double distanceVal = 0;
-  int heartRateVal = 0;
+  double heartRateVal = 0;
   int inclineEvents = 0;
   double avgInclineVal = 0;
   int resistanceEvents = 0;
@@ -99,6 +99,8 @@ class _WorkoutState extends State<Workout> {
   Future<void> connectToMqtt() async {
     _client = MqttServerClient.withPort(
         'broker.mqtt.cool', 'q2904387q29038742432r3', 1883);
+    // _client.keepAlivePeriod = 5;
+    // _client.logging(on: true);
 
     _client.onConnected = () {
       setState(() {
@@ -150,31 +152,35 @@ class _WorkoutState extends State<Workout> {
 
     if (!_isDisposed) {
       setState(() {
-        switch (topic) {
-          case 'bike/000001/cadence':
-            rpmVal = data['value'];
-            break;
-          case 'bike/000001/speed':
-            speedVal = data['value'];
-            int diffSecs = _elapsedSeconds - _prevSpeedCalcElapsedSeconds;
-            _prevSpeedCalcElapsedSeconds = _elapsedSeconds;
-            distanceVal = WorkoutValues.generateDistance(speedVal, diffSecs);
-            break;
-          case 'bike/000001/incline/report':
-            double val = data['value'];
-            double totalCurrent = (avgInclineVal * inclineEvents) + val;
-            inclineEvents++;
-            avgInclineVal = totalCurrent / inclineEvents;
-            break;
-          case 'bike/000001/heartrate':
-            heartRateVal = data['value'];
-            break;
-          case 'bike/000001/resistance/report':
-            double val = data['value'];
-            double totalCurrent = (avgResistanceVal * resistanceEvents) + val;
-            resistanceEvents++;
-            avgResistanceVal = totalCurrent / resistanceEvents;
-            break;
+        try {
+          switch (topic) {
+            case 'bike/000001/cadence':
+              rpmVal = data['value'];
+              break;
+            case 'bike/000001/speed':
+              speedVal = data['value'];
+              int diffSecs = _elapsedSeconds - _prevSpeedCalcElapsedSeconds;
+              _prevSpeedCalcElapsedSeconds = _elapsedSeconds;
+              distanceVal = WorkoutValues.generateDistance(speedVal, diffSecs);
+              break;
+            case 'bike/000001/incline/report':
+              double val = data['value'];
+              double totalCurrent = (avgInclineVal * inclineEvents) + val;
+              inclineEvents++;
+              avgInclineVal = totalCurrent / inclineEvents;
+              break;
+            case 'bike/000001/heartrate':
+              heartRateVal = data['value'];
+              break;
+            case 'bike/000001/resistance/report':
+              double val = data['value'];
+              double totalCurrent = (avgResistanceVal * resistanceEvents) + val;
+              resistanceEvents++;
+              avgResistanceVal = totalCurrent / resistanceEvents;
+              break;
+          }
+        } catch (e) {
+          print('Error: $e');
         }
       });
     }
@@ -371,7 +377,7 @@ class _WorkoutState extends State<Workout> {
                               child: WorkoutMetricBox(
                                 label: "Resistance",
                                 value:
-                                    "${avgResistanceVal.toStringAsFixed(2)} Ω",
+                                    "${avgResistanceVal.toStringAsFixed(2)}",
                               ),
                             ),
                           ],

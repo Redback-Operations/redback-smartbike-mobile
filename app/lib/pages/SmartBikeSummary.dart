@@ -47,7 +47,7 @@ class SmartBikeSummary extends StatelessWidget {
             _buildSummaryRow('Cadence (RPM):', rpm),
             _buildSummaryRow('Distance:', '$distance km'),
             _buildSummaryRow('Heart Rate:', '$heartRate BPM'),
-            _buildSummaryRow('Resistance:', '$resistance Ω'),
+            _buildSummaryRow('Resistance:', resistance),
             _buildSummaryRow('Incline:', '$incline %'),
           ],
         ),
