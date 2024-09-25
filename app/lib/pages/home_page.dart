@@ -69,9 +69,7 @@ class _HomePageState extends State<HomePage> {
           body: const TabBarView(
             children: [
               MyActivity(title: 'My Activity'),
-              MyWorkout(
-                title: '',
-              ),
+              MyWorkout(title: ''),
               MyStats(title: 'My Stats')
             ],
           )),

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/components/bottom_button.dart';
+import 'package:phone_app/pages/SmartBikeSummary.dart';
 import 'package:phone_app/pages/workout_summary.dart' as WrkSummary;
+import 'package:phone_app/utilities/alert.dart';
 import 'package:phone_app/utilities/constants.dart';
 import 'package:provider/provider.dart';
 import '../components/main_app_background.dart';
@@ -11,8 +13,18 @@ import '../components/workout_metric_box.dart';
 import '../services/workout_values_generator.dart';
 import 'package:http/http.dart' as http;
 import '../provider/wrk_type_provider.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 // TODO: in Django models change the user, workout_type to not be null
+
+List<String> topics = [
+  'bike/000001/cadence',
+  'bike/000001/speed',
+  'bike/000001/incline/report',
+  'bike/000001/heartrate',
+  'bike/000001/resistance/report',
+];
 
 class Workout extends StatefulWidget {
   const Workout({Key? key, required this.title}) : super(key: key);
@@ -23,20 +35,27 @@ class Workout extends StatefulWidget {
 }
 
 class _WorkoutState extends State<Workout> {
+  OverlayEntry? _overlayEntry;
+  late MqttServerClient _client;
+  bool isConnected = false;
+  bool _isDisposed = false;
   late Timer _timer = Timer(Duration.zero, () {});
   int _elapsedSeconds = 0;
+  int _prevSpeedCalcElapsedSeconds = 0;
   bool _isRunning = false;
   bool _continueSendingData =
       true; // need to control for when we finish workout, so no data is sent beyond that point
   late String? _sessionId;
 
   // random values declared
-  late double speedVal;
-  late int rpmVal;
-  late double distanceVal;
-  late int heartRateVal;
-  late double temperatureVal;
-  late int inclineVal;
+  double rpmVal = 0;
+  double speedVal = 0;
+  double distanceVal = 0;
+  double heartRateVal = 0;
+  int inclineEvents = 0;
+  double avgInclineVal = 0;
+  int resistanceEvents = 0;
+  double avgResistanceVal = 0;
 
   void _startTimer() {
     _timer.cancel(); // Cancel the existing timer if it's active
@@ -74,11 +93,111 @@ class _WorkoutState extends State<Workout> {
   void initState() {
     super.initState();
     _startTimer();
+    connectToMqtt();
+  }
+
+  Future<void> connectToMqtt() async {
+    _client = MqttServerClient.withPort(
+        'broker.mqtt.cool', 'q2904387q29038742432r3', 1883);
+    // _client.keepAlivePeriod = 5;
+    // _client.logging(on: true);
+
+    _client.onConnected = () {
+      setState(() {
+        isConnected = true;
+      });
+      _subscribeToTopics();
+    };
+
+    _client.onDisconnected = () {
+      if (!_isDisposed) {
+        // Ensure the widget is still mounted
+        setState(() {
+          isConnected = true;
+        });
+      }
+    };
+
+    try {
+      await _client.connect();
+    } catch (e) {
+      print('Exception: $e');
+      _client.disconnect();
+    }
+  }
+
+  void _subscribeToTopics() {
+    for (var topic in topics) {
+      _client.subscribe(topic, MqttQos.atMostOnce);
+    }
+
+    // Set up a listener to handle the incoming messages
+    _client.updates
+        ?.listen((List<MqttReceivedMessage<MqttMessage?>>? messages) {
+      final MqttPublishMessage recMess =
+          messages![0].payload as MqttPublishMessage;
+      final payload =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      _handleResponse(messages[0].topic, payload);
+    });
+  }
+
+  void _handleResponse(String topic, String payload) {
+    if (!_isRunning) {
+      return;
+    }
+    // Decode the incoming payload as JSON
+    var data = jsonDecode(payload);
+
+    if (!_isDisposed) {
+      setState(() {
+        try {
+          switch (topic) {
+            case 'bike/000001/cadence':
+              rpmVal = data['value'];
+              break;
+            case 'bike/000001/speed':
+              speedVal = data['value'];
+              int diffSecs = _elapsedSeconds - _prevSpeedCalcElapsedSeconds;
+              _prevSpeedCalcElapsedSeconds = _elapsedSeconds;
+              distanceVal = WorkoutValues.generateDistance(speedVal, diffSecs);
+              break;
+            case 'bike/000001/incline/report':
+              double val = data['value'];
+              double totalCurrent = (avgInclineVal * inclineEvents) + val;
+              inclineEvents++;
+              avgInclineVal = totalCurrent / inclineEvents;
+              break;
+            case 'bike/000001/heartrate':
+              heartRateVal = data['value'];
+              break;
+            case 'bike/000001/resistance/report':
+              double val = data['value'];
+              double totalCurrent = (avgResistanceVal * resistanceEvents) + val;
+              resistanceEvents++;
+              avgResistanceVal = totalCurrent / resistanceEvents;
+              break;
+          }
+        } catch (e) {
+          print('Error: $e');
+        }
+      });
+    }
+  }
+
+  void _unsubscribeFromAll() {
+    for (var topic in topics) {
+      _client.unsubscribe(topic);
+    }
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    _unsubscribeFromAll();
+    _isDisposed = true;
+    _client.disconnect();
     super.dispose();
   }
 
@@ -94,14 +213,6 @@ class _WorkoutState extends State<Workout> {
 
   @override
   Widget build(BuildContext context) {
-    // called every second
-    speedVal = WorkoutValues.generateSpeed(1);
-    rpmVal = WorkoutValues.generateRPM(speedVal);
-    distanceVal = WorkoutValues.generateDistance(speedVal, 1);
-    heartRateVal = WorkoutValues.generateHeartRate(speedVal);
-    temperatureVal = WorkoutValues.generateTemperature(speedVal, 1);
-    inclineVal = WorkoutValues.generateIncline(1);
-
     // send the data to backend every second
     if (_continueSendingData) {
       sendWorkoutData();
@@ -121,6 +232,28 @@ class _WorkoutState extends State<Workout> {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(
+                right: 16.0), // Aligns the content to the right
+            child: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensures Row takes up only the space it needs
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: isConnected ? Colors.green : Colors.red,
+                  size: 16,
+                ),
+                const SizedBox(width: 4), // Small spacing between icon and text
+                Text(
+                  isConnected ? 'Connected' : 'Disconnected',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: CustomGradientContainerSoft(
         child: SingleChildScrollView(
@@ -195,7 +328,7 @@ class _WorkoutState extends State<Workout> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Column(
                       children: [
                         Row(
@@ -203,13 +336,13 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Speed",
-                                value: speedVal.toStringAsFixed(2) + " km/h",
+                                value: "${speedVal.toStringAsFixed(2)} km/h",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "RPM",
-                                value: rpmVal.toString() + " RPM",
+                                value: "$rpmVal RPM",
                               ),
                             ),
                           ],
@@ -220,13 +353,13 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Distance",
-                                value: distanceVal.toStringAsFixed(2) + " km",
+                                value: "${distanceVal.toStringAsFixed(2)} km",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Incline",
-                                value: "$inclineVal%",
+                                value: "${avgInclineVal.toStringAsFixed(2)} %",
                               ),
                             ),
                           ],
@@ -237,20 +370,21 @@ class _WorkoutState extends State<Workout> {
                             Expanded(
                               child: WorkoutMetricBox(
                                 label: "Heart Rate",
-                                value: heartRateVal.toString() + " BPM",
+                                value: "$heartRateVal BPM",
                               ),
                             ),
                             Expanded(
                               child: WorkoutMetricBox(
-                                label: "Temperature",
-                                value: temperatureVal.toStringAsFixed(2) + "°C",
+                                label: "Resistance",
+                                value:
+                                    "${avgResistanceVal.toStringAsFixed(2)}",
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -262,22 +396,8 @@ class _WorkoutState extends State<Workout> {
                               child: BottomButton(
                                   onTap: () async {
                                     _pauseTimer();
-                                    // TODO: make sure values were being saved to backend, we need them for summary
-                                    // mmark as wrkout finished in backend
-                                    await updateWrkFinished();
-
-                                    // reset values
-                                    setState(() {
-                                      WorkoutValues.resetValues();
-                                    });
-
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            WrkSummary.WorkoutSummary(),
-                                      ),
-                                    );
+                                    // Mark as wrkout finished in backend
+                                    updateWrkFinished();
                                   },
                                   buttonText: 'Finish'),
                             ),
@@ -326,8 +446,8 @@ class _WorkoutState extends State<Workout> {
             'rpm': rpmVal,
             'distance': double.parse(distanceVal.toStringAsFixed(2)),
             'heart_rate': heartRateVal,
-            'temperature': double.parse(temperatureVal.toStringAsFixed(2)),
-            'incline': inclineVal,
+            'resistance': double.parse(avgResistanceVal.toStringAsFixed(2)),
+            'incline': avgInclineVal,
             'timestamp': DateTime.now().toIso8601String(),
             'session_id': _sessionId,
           }),
@@ -350,6 +470,18 @@ class _WorkoutState extends State<Workout> {
     }
   }
 
+  // Function to show the loader
+  void _showLoader() {
+    _overlayEntry = AlertUtils().createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!); // Insert the loader overlay
+  }
+
+  // Function to hide the loader
+  void _hideLoader() {
+    _overlayEntry?.remove(); // Remove the overlay
+    _overlayEntry = null;
+  }
+
   // update the 'processed' value in WorkoutType in backend, which will trigger the start of data clean & analysis work
   Future<void> updateWrkFinished() async {
     await dotenv.load(fileName: ".env");
@@ -357,6 +489,7 @@ class _WorkoutState extends State<Workout> {
     _sessionId = await getSessionId();
 
     String apiUrl = '$baseURL/finish_workout/';
+    _showLoader();
     final response = await http.patch(
       Uri.parse(apiUrl),
       headers: <String, String>{
@@ -364,6 +497,7 @@ class _WorkoutState extends State<Workout> {
       },
       body: jsonEncode(<String, dynamic>{
         'session_id': _sessionId,
+        // Finished does not work if redis not setup properly
         'finished':
             false, // change value to true from the previous, default value false; it will trigger data clean & analysis in backend (see django views: wrk_finished)
       }),
@@ -375,10 +509,33 @@ class _WorkoutState extends State<Workout> {
             false; // stop sending workout data; need this as there might still be some left in backlog
       });
       // If the server returns a successful response
-      print('Successfully recorded the end of this workout');
+      // reset values
+      setState(() {
+        WorkoutValues.resetValues();
+      });
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SmartBikeSummary(
+        speed: speedVal.toStringAsFixed(2),
+        rpm: rpmVal.toString(),
+        distance: distanceVal.toStringAsFixed(2),
+        heartRate: heartRateVal.toStringAsFixed(2),
+        resistance: avgResistanceVal.toStringAsFixed(2),
+        incline: avgInclineVal.toStringAsFixed(2),
+      ),
+        ),
+      );
     } else {
       // If the server did not return a successful response
-      throw Exception('Failed to update');
+      AlertUtils.showAlert(
+        context: context,
+        title: 'Error',
+        message: 'Failed to record the end of this workout.',
+      );
     }
+
+    _hideLoader();
   }
 }

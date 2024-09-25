@@ -1,13 +1,16 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:phone_app/components/bottom_button.dart';
 import 'package:phone_app/utilities/constants.dart';
-import '../components/main_app_background.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../components/main_app_background.dart';
 import '../models/user_details.dart';
 import '../provider/user_data_provider.dart';
 
@@ -25,12 +28,30 @@ class _EditProfileActivityState extends State<EditProfile> {
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _dobController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
+  String? _dateOfBirthString;
 
   // for uploading the picture
   PickedFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
+
+  Future<void> _selectDateOfBirth(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      String dob = DateFormat('yyyy-MM-dd').format(picked);
+
+      if (dob != _dateOfBirthString) {
+        setState(() {
+          _dateOfBirthString = dob;
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -50,7 +71,7 @@ class _EditProfileActivityState extends State<EditProfile> {
         _firstNameController.text = userDetails.name ?? '';
         _lastNameController.text = userDetails.surname ?? '';
         _usernameController.text = userDetails.username ?? '';
-        _dobController.text = userDetails.dob?.toString() ?? '';
+        _dateOfBirthString = userDetails.dob.toString();
         _phoneNoController.text = userDetails.phoneNumber ?? '';
         _emailController.text = userDetails.email ?? '';
       });
@@ -97,7 +118,7 @@ class _EditProfileActivityState extends State<EditProfile> {
       request.fields['username'] = _usernameController.text;
       request.fields['name'] = _firstNameController.text;
       request.fields['surname'] = _lastNameController.text;
-      request.fields['dob'] = _dobController.text;
+      request.fields['dob'] = _dateOfBirthString ?? '';
       request.fields['phone_number'] = _phoneNoController.text;
 
       // store the image file
@@ -137,7 +158,7 @@ class _EditProfileActivityState extends State<EditProfile> {
               surname: _lastNameController.text,
               username: _usernameController.text,
               email: _emailController.text,
-              dob: _dobController.text,
+              dob: _dateOfBirthString,
               phoneNumber: _phoneNoController.text,
               imagePath: imagePath,
             );
@@ -167,7 +188,6 @@ class _EditProfileActivityState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -255,10 +275,7 @@ class _EditProfileActivityState extends State<EditProfile> {
                                       _emailController,
                                       enableEditing: false,
                                     ),
-                                    _buildFormField(
-                                      'Date of Birth (yyyy-mm-dd)',
-                                      _dobController,
-                                    ),
+                                    _buildDateOfBirthSelector(),
                                     _buildFormField(
                                       'Phone Number',
                                       _phoneNoController,
@@ -316,34 +333,82 @@ class _EditProfileActivityState extends State<EditProfile> {
       children: [
         Text(
           fieldName,
-          style: kSubSubTitlePurple,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         TextFormField(
           controller: controller,
           style: enableEditing
-              ? TextStyle(
+              ? const TextStyle(
                   color: Colors.white,
                   letterSpacing: 2,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)
-              : TextStyle(
+              : const TextStyle(
                   color: Colors.white54,
                   letterSpacing: 2,
                   fontSize: 20,
                 ),
-
           onTap: enableEditing ? () {} : null,
           enabled: enableEditing,
           // Enable editing when tapped if enableEditing is true
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: InputBorder.none,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Divider(
           height: 10,
           thickness: 1,
-          color: kLoginRegisterBtnColour,
+          color: Theme.of(context).primaryColor,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDateOfBirthSelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Date of Birth",
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        const SizedBox(height: 15),
+        InkWell(
+          child: Row(children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (_dateOfBirthString != null && _dateOfBirthString!.isNotEmpty)
+                Text(_dateOfBirthString!,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 2,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold))
+              else
+                const Text(
+                  "Select date of birth",
+                  style: TextStyle(
+                      color: Colors.white54,
+                      letterSpacing: 2,
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal),
+                )
+            ]),
+            const Spacer(),
+            const Icon(
+              Icons.edit_calendar_rounded,
+              color: Colors.white,
+            )
+          ]),
+          onTap: () {
+            _selectDateOfBirth(context);
+          },
+        ),
+        const SizedBox(height: 15),
+        Divider(
+          height: 10,
+          thickness: 1,
+          color: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -359,7 +424,7 @@ class _EditProfileActivityState extends State<EditProfile> {
           Expanded(
             child: Text(
               'Chose profile photo',
-              style: kSubTitleOfPage,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           SizedBox(
