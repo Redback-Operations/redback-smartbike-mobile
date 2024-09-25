@@ -1,4 +1,4 @@
-Redback SmartBike Mobile App Backend Setup
+# Redback SmartBike Mobile App Backend Setup
 Prerequisites
 •	Git
 •	Python 3
