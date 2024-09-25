@@ -1,4 +1,4 @@
-Redback SmartBike Mobile App Frontend Setup
+# Redback SmartBike Mobile App Frontend Setup
 
 Prerequisites
 •	Android Studio or Visual Studio Code
