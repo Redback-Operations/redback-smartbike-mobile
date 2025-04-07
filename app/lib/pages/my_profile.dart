@@ -158,7 +158,13 @@ class EditProfileActivity extends StatelessWidget {
                                     icon: "lib/assets/img/settings.png",
                                     title: "More Settings",
                                     onPressed: () {
-                                      // TODO: create a page with some more settings?
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditProfile(title: ''),
+                                        ),
+                                      );
                                     },
                                   ),
                                   _buildDivider(),

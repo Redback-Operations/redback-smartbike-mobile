@@ -27,7 +27,7 @@ urlpatterns = [
                   # Other URL patterns
                   path('admin/', admin.site.urls),  # URL for the Django admin interface
                   path('users/', views.user_list),  # URL for handling user list operations (GET and POST)
-                  path('update/<str:email>/', views.user_detail),
+                  path('update/<str:userId>/', views.user_detail),
                   # URL for handling individual user operations (GET, PUT, DELETE)
                   path('signup/', views.signup, name='signup'),
                   path('home/', views.home, name='home'),
