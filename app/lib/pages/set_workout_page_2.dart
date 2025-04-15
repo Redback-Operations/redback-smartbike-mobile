@@ -77,7 +77,6 @@ class _SetWorkoutState extends State<SetWorkout2> {
     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -85,10 +84,7 @@ class _SetWorkoutState extends State<SetWorkout2> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          wrkName,
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text(wrkName),
         centerTitle: true,
       ),
       body: Stack(
@@ -104,7 +100,7 @@ class _SetWorkoutState extends State<SetWorkout2> {
                 children: [
                   Container(
                     height: 200, // Adjust this height as needed
-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                     padding: EdgeInsets.all(10),
                     child: Image.asset(
                       'lib/assets/img/Cycling.jpg', // Replace 'your_image_asset.png' with your actual asset path
@@ -184,26 +180,26 @@ class _SetWorkoutState extends State<SetWorkout2> {
       DropdownMenuItem(
         child: Text(
           '15 minutes',
-          style: kSimpleTextPurple,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         value: 15,
       ),
       DropdownMenuItem(
           child: Text(
             '30 minutes',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 30),
       DropdownMenuItem(
           child: Text(
             '45 minutes',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 45),
       DropdownMenuItem(
           child: Text(
             '60 minutes',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 60),
     ];
@@ -216,20 +212,20 @@ class _SetWorkoutState extends State<SetWorkout2> {
       DropdownMenuItem(
         child: Text(
           'Beginner',
-          style: kSimpleTextPurple,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         value: 'Beginner',
       ),
       DropdownMenuItem(
           child: Text(
             'Intermediate',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Intermediate'),
       DropdownMenuItem(
           child: Text(
             'Advanced',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Advanced'),
     ];
@@ -242,14 +238,14 @@ class _SetWorkoutState extends State<SetWorkout2> {
       DropdownMenuItem(
         child: Text(
           'Interval',
-          style: kSimpleTextPurple,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         value: 'Interval',
       ),
       DropdownMenuItem(
           child: Text(
             'Continuous',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Continuous'),
     ];

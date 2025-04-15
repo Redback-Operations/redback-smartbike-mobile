@@ -64,12 +64,9 @@ class _Setting extends State<Setting> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kLoginRegisterBtnColour
+          backgroundColor: Theme.of(context).primaryColor
               .withOpacity(0.9), // Set the background color
-          title: Text(
-            'Settings',
-            style: kSubSubTitleOfPage,
-          ),
+          title: Text('Settings'),
           centerTitle: true,
         ),
         body: CustomGradientContainerSoft(
@@ -156,7 +153,7 @@ class _Setting extends State<Setting> {
                   typeIcon: Icons.exit_to_app,
                   onPressed: () {
                     // this function check if we signed in by using google or by providing details manually
-                    _handleLogout(context);
+                    // _handleLogout(context); // (Disabled the auto logout when pressed)
                   },
                   arrowOptional: Icons.gradient,
                 ),

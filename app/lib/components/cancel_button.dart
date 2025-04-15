@@ -17,7 +17,7 @@ class CancelButton extends StatelessWidget {
       child: Container(
         child: Text(
           buttonText,
-          style: kBottomButtonText,
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 10.0, bottom: 40),
@@ -26,8 +26,8 @@ class CancelButton extends StatelessWidget {
         height: kBottomContainerHeight,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          border: Border.all(color: kLoginRegisterBtnColour, width: 3.0),
-          color: kLoginRegisterBtnColour.withOpacity(0.4),
+          border: Border.all(color: Theme.of(context).primaryColor, width: 3.0),
+          color: Theme.of(context).primaryColor.withOpacity(0.4),
         ),
       ),
     );

@@ -30,7 +30,7 @@ class _MyStatsState extends State<MyStats> {
                     const EdgeInsets.symmetric(vertical: 60, horizontal: 16),
                 child: Row(
                   children: [
-                    Text("My Stats", style: kSubSubTitleOfPage),
+                    Text("My Stats", style: Theme.of(context).textTheme.headlineMedium),
                   ],
                 ),
               ),

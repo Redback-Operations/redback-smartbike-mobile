@@ -41,7 +41,7 @@ class UserImage extends StatelessWidget {
                           width: 4,
                           color: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                        color: kLoginRegisterBtnColour,
+                        color: Theme.of(context).primaryColor,
                       ),
                       child: Icon(
                         Icons.camera_alt,

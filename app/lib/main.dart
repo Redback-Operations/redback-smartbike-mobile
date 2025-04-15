@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:phone_app/pages/login.dart';
+import 'package:phone_app/pages/schedule_workout_screen.dart';
+import 'package:phone_app/pages/set_workout_page.dart';
+import 'package:phone_app/pages/signup.dart';
 import 'package:phone_app/provider/user_session_provider.dart';
 import 'package:phone_app/provider/wrk_type_provider.dart';
+import 'package:phone_app/utilities/custom_theme_data.dart';
 import 'package:phone_app/utilities/notification.dart'; // Import the NotificationService
 
 // for passing user data throughout the app:
@@ -12,9 +17,10 @@ import 'provider/user_data_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  
+
   // Initialize the notification service
   await NotificationService.initialize();
+
   runApp(const MyApp());
 }
 
@@ -32,11 +38,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData(
-            useMaterial3: true,
-          ),
-          // home: MqttTest(), // comment out to test MQTT
-          home: const AuthWrapper()),
+          theme: customThemeData(),
+          home: SignUpPage()
+      ),
     );
   }
 }

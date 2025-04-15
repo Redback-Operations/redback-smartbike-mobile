@@ -37,7 +37,6 @@ class _EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -45,10 +44,7 @@ class _EmailScreenState extends State<EmailScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'Registered emails',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('Registered emails'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(

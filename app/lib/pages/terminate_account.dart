@@ -41,7 +41,6 @@ class TerminateState extends State<Terminate> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -49,10 +48,7 @@ class TerminateState extends State<Terminate> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
-          'Terminate Account',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('Terminate Account'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(
@@ -71,7 +67,7 @@ class TerminateState extends State<Terminate> {
                 items: _reasons
                     .map((reason) => DropdownMenuItem<String>(
                           value: reason,
-                          child: Text(reason, style: kSimpleTextPurple),
+                          child: Text(reason, style: Theme.of(context).textTheme.bodyMedium),
                         ))
                     .toList(),
                 selectedValue: _selectedReason,
@@ -137,29 +133,24 @@ class TerminateState extends State<Terminate> {
     await dotenv.load(fileName: ".env");
     String? baseURL = dotenv.env['API_URL_BASE'];
 
-    // Fetch user ID from UserDataProvider - UPDATED to find ID instead of email
-    final userId = Provider.of<UserDataProvider>(context, listen: false)
+    // Fetch user ID from UserDataProvider
+    final userEmail = Provider.of<UserDataProvider>(context, listen: false)
             .userDetails
-            ?.id ??
+            ?.email ??
         "Cannot fetch the user details";
-    print(userId);
-    if (userId == "Cannot fetch the user details") {
+    print(userEmail);
+    if (userEmail == "Cannot fetch the user details") {
       print("User detail is not provided. Cannot terminate account.");
       return; // Exit the function if no user ID is provided
     }
     final enteredPassword = _passwordController.text;
     print('pass: $password');
-
-    final apiUrl = '$baseURL/user/authenticate/'; // Correct endpoint to terminate - UPDATED TO USE BODY INSTEAD OF URL
+    final authPasswordUrl =
+        '$baseURL/user/authenticate/$userEmail/?password=$enteredPassword'; // Correct endpoint to terminate
 
     // 1. check the password against database
-    final authResponse = await http.post(
-      Uri.parse(apiUrl),
-      body: {
-        'userId': userId,
-        'password': _passwordController.text,
-        'user_created': DateTime.now().toIso8601String(),
-      },
+    final authResponse = await http.get(
+      Uri.parse(authPasswordUrl),
     );
 
     // 2. if password matches save the contents of the terminate page fields
@@ -179,9 +170,9 @@ class TerminateState extends State<Terminate> {
         }),
       );
 
-      // 3. after the msg is saved (received status 201), delete the account: - UPDATED to target ID instead of email
+      // 3. after the msg is saved (received status 201), delete the account:
       if (messageResponse.statusCode == 201) {
-        final deleteUrl = '$baseURL/user/delete/$userId/';
+        final deleteUrl = '$baseURL/user/delete/$userEmail/';
         final deleteResponse = await http.delete(
           Uri.parse(deleteUrl),
           headers: {

@@ -107,7 +107,6 @@ class _WorkoutState extends State<Workout5> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -132,11 +131,11 @@ class _WorkoutState extends State<Workout5> {
                     SizedBox(height: 40),
                     Container(
                       height: 200, // Adjust this height as needed
-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
+                      color: Theme.of(context).primaryColor.withOpacity(0.2),
                       padding: EdgeInsets.all(10),
                       child: Text(
                         'workout VIDEO here',
-                        style: kSubTitleOfPage,
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
                     SizedBox(height: 20),
@@ -145,7 +144,7 @@ class _WorkoutState extends State<Workout5> {
                       children: [
                         Text(
                           _formatTime(_elapsedSeconds),
-                          style: kSubSubTitleOfPage,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

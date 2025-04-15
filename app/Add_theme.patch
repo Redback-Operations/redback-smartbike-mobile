@@ -1,0 +1,2530 @@
+Index: lib/pages/message_center.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/message_center.dart b/lib/pages/message_center.dart
+--- a/lib/pages/message_center.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/message_center.dart	(date 1726004597648)
+@@ -26,11 +26,7 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+         appBar: AppBar(
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+-          title: Text(
+-            'My Messages',
+-            style: kSubSubTitleOfPage,
+-          ),
++          title: Text('My Messages'),
+           centerTitle: true,
+         ),
+         body: CustomGradientContainerSoft(
+Index: lib/components/bottom_button.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/bottom_button.dart b/lib/components/bottom_button.dart
+--- a/lib/components/bottom_button.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/bottom_button.dart	(date 1726007096905)
+@@ -22,7 +22,7 @@
+       child: Container(
+         child: Text(
+           buttonText,
+-          style: kBottomButtonText,
++          style: Theme.of(context).textTheme.labelMedium,
+         ),
+         alignment: Alignment.center,
+         margin: EdgeInsets.only(top: 10.0, bottom: 40),
+@@ -34,12 +34,12 @@
+           border: solidColor
+               ? null
+               : Border.all(
+-                  color: kLoginRegisterBtnColour, // Set the border color
++                  color: Theme.of(context).primaryColor, // Set the border color
+                   width: 3.0, // Set the border thickness
+                 ),
+           color: solidColor
+-              ? kLoginRegisterBtnColour
+-              : kLoginRegisterBtnColourOPAC,
++              ? Theme.of(context).primaryColor
++              : Theme.of(context).primaryColor.withOpacity(0.3),
+         ),
+       ),
+     );
+Index: lib/components/bottom_navigation_bar.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/bottom_navigation_bar.dart b/lib/components/bottom_navigation_bar.dart
+--- a/lib/components/bottom_navigation_bar.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/bottom_navigation_bar.dart	(date 1726004597622)
+@@ -75,22 +75,22 @@
+         BottomNavigationBarItem(
+           icon: Icon(Icons.home),
+           label: 'Home',
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+         ),
+         BottomNavigationBarItem(
+           icon: Icon(Icons.message_rounded),
+           label: 'Messages',
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+         ),
+         BottomNavigationBarItem(
+           icon: Icon(Icons.group),
+           label: 'Friends',
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+         ),
+         BottomNavigationBarItem(
+           icon: Icon(Icons.settings),
+           label: 'Settings',
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+         ),
+       ],
+     );
+Index: lib/pages/home_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/home_page.dart b/lib/pages/home_page.dart
+--- a/lib/pages/home_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/home_page.dart	(date 1726004597646)
+@@ -43,7 +43,6 @@
+       //initialIndex: 10,
+       child: Scaffold(
+           appBar: AppBar(
+-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+             automaticallyImplyLeading: false,
+             flexibleSpace: const Column(
+               mainAxisAlignment: MainAxisAlignment.end,
+Index: lib/pages/settings.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/settings.dart b/lib/pages/settings.dart
+--- a/lib/pages/settings.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/settings.dart	(date 1726004597666)
+@@ -64,12 +64,9 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+         appBar: AppBar(
+-          backgroundColor: kLoginRegisterBtnColour
++          backgroundColor: Theme.of(context).primaryColor
+               .withOpacity(0.9), // Set the background color
+-          title: Text(
+-            'Settings',
+-            style: kSubSubTitleOfPage,
+-          ),
++          title: Text('Settings'),
+           centerTitle: true,
+         ),
+         body: CustomGradientContainerSoft(
+Index: lib/pages/my_account.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/my_account.dart b/lib/pages/my_account.dart
+--- a/lib/pages/my_account.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/my_account.dart	(date 1726004597650)
+@@ -29,7 +29,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+         appBar: AppBar(
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+           leading: IconButton(
+             icon: Icon(Icons.arrow_back),
+             color: Colors.white,
+Index: lib/pages/terminate_account.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/terminate_account.dart b/lib/pages/terminate_account.dart
+--- a/lib/pages/terminate_account.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/terminate_account.dart	(date 1726007097033)
+@@ -41,7 +41,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(
+             Icons.arrow_back,
+@@ -49,10 +48,7 @@
+           ),
+           onPressed: () => Navigator.of(context).pop(),
+         ),
+-        title: Text(
+-          'Terminate Account',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('Terminate Account'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+@@ -71,7 +67,7 @@
+                 items: _reasons
+                     .map((reason) => DropdownMenuItem<String>(
+                           value: reason,
+-                          child: Text(reason, style: kSimpleTextPurple),
++                          child: Text(reason, style: Theme.of(context).textTheme.bodyMedium),
+                         ))
+                     .toList(),
+                 selectedValue: _selectedReason,
+Index: lib/pages/friends.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/friends.dart b/lib/pages/friends.dart
+--- a/lib/pages/friends.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/friends.dart	(date 1726004597643)
+@@ -87,11 +87,7 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+-        title: Text(
+-          'My Friends',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('My Friends'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+@@ -108,7 +104,7 @@
+                   border: OutlineInputBorder(
+                     borderRadius: BorderRadius.circular(10),
+                     borderSide: BorderSide(
+-                        color: kLoginRegisterBtnColour.withOpacity(0.9)),
++                        color: Theme.of(context).primaryColor.withOpacity(0.9)),
+                   ),
+                 ),
+               ),
+Index: lib/pages/tab_layout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/tab_layout.dart b/lib/pages/tab_layout.dart
+--- a/lib/pages/tab_layout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/tab_layout.dart	(date 1726004597667)
+@@ -57,22 +57,22 @@
+           BottomNavigationBarItem(
+             icon: Icon(Icons.home),
+             label: 'Home',
+-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+           ),
+           BottomNavigationBarItem(
+             icon: Icon(Icons.message_rounded),
+             label: 'Messages',
+-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+           ),
+           BottomNavigationBarItem(
+             icon: Icon(Icons.group),
+             label: 'Friends',
+-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+           ),
+           BottomNavigationBarItem(
+             icon: Icon(Icons.settings),
+             label: 'Settings',
+-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
++            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+           ),
+         ],
+       ),
+Index: lib/main.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/main.dart b/lib/main.dart
+--- a/lib/main.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/main.dart	(date 1726004597634)
+@@ -2,6 +2,7 @@
+ import 'package:flutter_dotenv/flutter_dotenv.dart';
+ import 'package:phone_app/provider/user_session_provider.dart';
+ import 'package:phone_app/provider/wrk_type_provider.dart';
++import 'package:phone_app/utilities/custom_theme_data.dart';
+ 
+ // for passing user data throughout the app:
+ import 'package:provider/provider.dart';
+@@ -32,9 +33,7 @@
+       child: MaterialApp(
+           debugShowCheckedModeBanner: false,
+           title: 'Flutter Demo',
+-          theme: ThemeData(
+-            useMaterial3: true,
+-          ),
++          theme: customThemeData(),
+           home: const AuthWrapper()),
+     );
+   }
+Index: lib/pages/login.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/login.dart b/lib/pages/login.dart
+--- a/lib/pages/login.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/login.dart	(date 1726007096911)
+@@ -179,9 +179,9 @@
+                   image: AssetImage('lib/assets/redbacklogo.png'),
+                   height: 150,
+                 ),
+-                const Text(
++                Text(
+                   "Redback Smart Bike",
+-                  style: kRedbackTextMain,
++                  style: Theme.of(context).textTheme.displayLarge,
+                 ),
+                 SizedBox(height: 70),
+                 InputTextField(
+@@ -207,7 +207,7 @@
+                     );
+                   },
+                   child:
+-                  Text('Forgotten Password?', style: kSubTitleLoginStatic),
++                   Text('Forgotten Password?', style: Theme.of(context).textTheme.titleLarge),
+                 ),
+                 _isLoading
+                     ? CircularProgressIndicator() // Show loading indicator while processing
+Index: lib/pages/vr_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/vr_workout.dart b/lib/pages/vr_workout.dart
+--- a/lib/pages/vr_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/vr_workout.dart	(date 1726007096916)
+@@ -109,7 +109,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -134,11 +133,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -147,7 +146,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/my_profile.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/my_profile.dart b/lib/pages/my_profile.dart
+--- a/lib/pages/my_profile.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/my_profile.dart	(date 1726007096921)
+@@ -21,7 +21,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -42,7 +41,7 @@
+             },
+             child: Text(
+               "Edit",
+-              style: kSubSubTitleOfPage,
++              //style: Theme.of(context).textTheme.headlineMedium, //todo cm
+             ),
+           )
+         ],
+@@ -77,7 +76,7 @@
+                             Text(
+                               userDetails?.username ??
+                                   '', // Use null-aware operator to prevent null exception
+-                              style: kSubSubTitleOfPage,
++                              style: Theme.of(context).textTheme.headlineMedium,
+                             ),
+                             const SizedBox(height: 20),
+                             Container(
+@@ -153,7 +152,7 @@
+                                       );
+                                     },
+                                   ),
+-                                  _buildDivider(),
++                                  _buildDivider(context),
+                                   MenuRow(
+                                     icon: "lib/assets/img/settings.png",
+                                     title: "More Settings",
+@@ -161,7 +160,7 @@
+                                       // TODO: create a page with some more settings?
+                                     },
+                                   ),
+-                                  _buildDivider(),
++                                  _buildDivider(context),
+                                   MenuRow(
+                                     icon: "lib/assets/img/sign_out.png",
+                                     title: "Sign Out",
+@@ -176,7 +175,7 @@
+                                       );
+                                     },
+                                   ),
+-                                  _buildDivider(),
++                                  _buildDivider(context),
+                                 ],
+                               ),
+                             ),
+@@ -195,11 +194,11 @@
+     );
+   }
+ 
+-  Widget _buildDivider() {
++  Widget _buildDivider(context) {
+     return Divider(
+       height: 15,
+       thickness: 1,
+-      color: kLoginRegisterBtnColour,
++      color: Theme.of(context).primaryColor,
+     );
+   }
+ }
+Index: lib/pages/friend_detail_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/friend_detail_page.dart b/lib/pages/friend_detail_page.dart
+--- a/lib/pages/friend_detail_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/friend_detail_page.dart	(date 1726004597642)
+@@ -23,8 +23,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour
+-            .withOpacity(0.9), // Set the background color
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -32,10 +30,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          'User Details',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('User Details'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+Index: lib/utilities/custom_theme_data.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/utilities/custom_theme_data.dart b/lib/utilities/custom_theme_data.dart
+new file mode 100644
+--- /dev/null	(date 1726007451230)
++++ b/lib/utilities/custom_theme_data.dart	(date 1726007451230)
+@@ -0,0 +1,93 @@
++import 'package:flutter/material.dart';
++
++ThemeData customThemeData() {
++  return ThemeData(
++    primaryColor: const Color(0xFF370E4A),
++    primaryColorLight: const Color(0xffFDBCB4),
++    appBarTheme: AppBarTheme(
++      backgroundColor: const Color(0xFF370E4A).withOpacity(0.9),
++      titleTextStyle: const TextStyle(fontSize: 18,
++        fontWeight: FontWeight.bold,
++        color: Colors.white)
++    ),
++    elevatedButtonTheme: ElevatedButtonThemeData(
++      style: ButtonStyle(
++        backgroundColor: WidgetStateProperty.all(const Color(0xFF370E4A)),
++        textStyle: WidgetStateProperty.all(
++          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
++        ),
++      ),
++    ),
++    textTheme: const TextTheme(
++      displayLarge: displayLarge,
++      headlineLarge: headlineLarge,
++      headlineMedium: headlineMedium,
++      titleMedium: titleMedium,
++      titleLarge: titleLarge,
++      bodyLarge: bodyLarge,
++      bodyMedium: bodyMedium,
++      labelLarge: labelLarge,
++      labelMedium: labelMedium
++    ),
++    buttonTheme: const ButtonThemeData(
++      buttonColor: Color(0xFF370E4A),
++      textTheme: ButtonTextTheme.primary,
++    ),
++  );
++}
++
++const headlineLarge = TextStyle(
++  fontSize: 30,
++  fontWeight: FontWeight.bold,
++  color: Colors.white,
++);
++
++const displayLarge = TextStyle(
++  color: Color(0xFFE3E3E3),
++  fontSize: 28,
++  fontWeight: FontWeight.bold,
++);
++
++const labelMedium = TextStyle(
++  color: Color(0xFFE3E3E3),
++  fontWeight: FontWeight.bold,
++  fontSize: 20,
++);
++
++const titleMedium = TextStyle(
++  fontSize: 12,
++  fontWeight: FontWeight.normal,
++  color: Colors.white,
++);
++
++const titleLarge = TextStyle(
++  color: Colors.white,
++  fontSize: 14.0,
++  fontWeight: FontWeight.normal,
++);
++
++const bodyLarge = TextStyle(
++  color: Colors.white,
++  fontSize: 17.0,
++  fontWeight: FontWeight.bold,
++  decoration: TextDecoration.underline,
++);
++
++const headlineMedium = TextStyle(
++  fontSize: 18,
++  fontWeight: FontWeight.bold,
++  color: Colors.white,
++);
++
++const bodyMedium = TextStyle(
++  fontSize: 16,
++  fontWeight: FontWeight.w600,
++  color: Color(0xFF370E4A),
++);
++
++const labelLarge = TextStyle(
++    fontSize: 16,
++    fontWeight: FontWeight.bold,
++    color: Color(0xFF370E4A),
++    letterSpacing: 2,
++    fontStyle: FontStyle.italic);
+Index: lib/pages/aerobic_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/aerobic_workout.dart b/lib/pages/aerobic_workout.dart
+--- a/lib/pages/aerobic_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/aerobic_workout.dart	(date 1726007096881)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/cycling_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/cycling_workout.dart b/lib/pages/cycling_workout.dart
+--- a/lib/pages/cycling_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/cycling_workout.dart	(date 1726007096986)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/yoga_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/yoga_workout.dart b/lib/pages/yoga_workout.dart
+--- a/lib/pages/yoga_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/yoga_workout.dart	(date 1726007096844)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/pilates_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/pilates_workout.dart b/lib/pages/pilates_workout.dart
+--- a/lib/pages/pilates_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/pilates_workout.dart	(date 1726007097048)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/edit_profile.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/edit_profile.dart b/lib/pages/edit_profile.dart
+--- a/lib/pages/edit_profile.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/edit_profile.dart	(date 1726007119208)
+@@ -188,7 +188,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -334,7 +333,7 @@
+       children: [
+         Text(
+           fieldName,
+-          style: kSubSubTitlePurple,
++          style: Theme.of(context).textTheme.labelLarge,
+         ),
+         TextFormField(
+           controller: controller,
+@@ -357,10 +356,10 @@
+           ),
+         ),
+         const SizedBox(height: 10),
+-        const Divider(
++        Divider(
+           height: 10,
+           thickness: 1,
+-          color: kLoginRegisterBtnColour,
++          color: Theme.of(context).primaryColor,
+         ),
+       ],
+     );
+@@ -370,9 +369,9 @@
+     return Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
+       children: [
+-        const Text(
++        Text(
+           "Date of Birth",
+-          style: kSubSubTitlePurple,
++          style: Theme.of(context).textTheme.labelLarge,
+         ),
+         const SizedBox(height: 15),
+         InkWell(
+@@ -406,10 +405,10 @@
+           },
+         ),
+         const SizedBox(height: 15),
+-        const Divider(
++        Divider(
+           height: 10,
+           thickness: 1,
+-          color: kLoginRegisterBtnColour,
++          color: Theme.of(context).primaryColor,
+         ),
+       ],
+     );
+@@ -425,7 +424,7 @@
+           Expanded(
+             child: Text(
+               'Chose profile photo',
+-              style: kSubTitleOfPage,
++              style: Theme.of(context).textTheme.headlineLarge,
+             ),
+           ),
+           SizedBox(
+Index: lib/pages/running_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/running_workout.dart b/lib/pages/running_workout.dart
+--- a/lib/pages/running_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/running_workout.dart	(date 1726007097136)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/signup.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/signup.dart b/lib/pages/signup.dart
+--- a/lib/pages/signup.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/signup.dart	(date 1726007096851)
+@@ -173,7 +173,7 @@
+                   SizedBox(height: 5),
+                   Text(
+                     'Sign Up',
+-                    style: kRedbackTextMain,
++                    style: Theme.of(context).textTheme.displayLarge,
+                   ),
+                   SizedBox(height: 32),
+                   InputTextField(
+@@ -211,7 +211,7 @@
+                     onPressed: _showPasswordRequirementsDialog,
+                     child: Text(
+                       'Password Requirements',
+-                      style: kSubTitleLoginStatic,
++                      style: Theme.of(context).textTheme.titleLarge,
+                     ),
+                   ),
+                   SizedBox(height: 5),
+Index: lib/pages/schedule_workout_screen.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/schedule_workout_screen.dart b/lib/pages/schedule_workout_screen.dart
+--- a/lib/pages/schedule_workout_screen.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/schedule_workout_screen.dart	(date 1726004597657)
+@@ -45,7 +45,7 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour
++        backgroundColor: Theme.of(context).primaryColor
+             .withOpacity(0.9), // Set the background color
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+@@ -59,10 +59,7 @@
+             );
+           },
+         ),
+-        title: Text(
+-          'Schedule Workout',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('Schedule Workout'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+Index: lib/pages/set_workout_page_3.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_3.dart b/lib/pages/set_workout_page_3.dart
+--- a/lib/pages/set_workout_page_3.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_3.dart	(date 1726007096875)
+@@ -78,7 +78,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -86,10 +85,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -105,7 +101,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/running.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -185,26 +181,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -217,20 +213,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -243,14 +239,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/set_workout_page_6.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_6.dart b/lib/pages/set_workout_page_6.dart
+--- a/lib/pages/set_workout_page_6.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_6.dart	(date 1726007096926)
+@@ -80,7 +80,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -88,10 +87,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -107,7 +103,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/aerobic.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -187,26 +183,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -219,20 +215,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -245,14 +241,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/email.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/email.dart b/lib/pages/email.dart
+--- a/lib/pages/email.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/email.dart	(date 1726004597641)
+@@ -37,7 +37,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -45,10 +44,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          'Registered emails',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('Registered emails'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+Index: lib/pages/about_us.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/about_us.dart b/lib/pages/about_us.dart
+--- a/lib/pages/about_us.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/about_us.dart	(date 1726007096866)
+@@ -10,7 +10,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -18,10 +17,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          'About Us',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: const Text('About Us'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+@@ -33,13 +29,13 @@
+               SizedBox(height: 16),
+               Text(
+                 "Redback Operation Mission",
+-                style: kSubSubTitleOfPage,
++                style: Theme.of(context).textTheme.headlineMedium,
+                 textAlign: TextAlign.center,
+               ),
+               SizedBox(height: 16),
+               Text(
+                 "Redback Operations aims to turn small steps of virtuality into bigger steps of reality, making you Smarter, Fitter, and Better. Bad weather? Too much traffic? Worry not, our Smart Bike Project not only transforms your indoor cycling experience but also features an interactive VR Game and accessible Mobile App to bring the world to you.",
+-                style: kSimpleTextWhite,
++                style: Theme.of(context).textTheme.titleMedium,
+                 textAlign: TextAlign.center,
+               ),
+               SizedBox(height: 40),
+@@ -53,7 +49,7 @@
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+-                    Text("Latest News", style: kSimpleTextPurple),
++                    Text("Latest News", style: Theme.of(context).textTheme.bodyMedium),
+                     SizedBox(height: 8),
+                     Text(
+                       "Here are all the news from the team",
+Index: lib/pages/contact.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/contact.dart b/lib/pages/contact.dart
+--- a/lib/pages/contact.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/contact.dart	(date 1726007097140)
+@@ -33,26 +33,26 @@
+       DropdownMenuItem(
+         child: Text(
+           'General Inquiry',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'General Inquiry',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Technical Support',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Technical Support'),
+       DropdownMenuItem(
+           child: Text(
+             'Billing Issue',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Billing Issue'),
+       DropdownMenuItem(
+           child: Text(
+             'Other',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Other'),
+     ];
+@@ -109,7 +109,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -117,10 +116,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          'Contact Us',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('Contact Us'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+@@ -133,7 +129,7 @@
+                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
+                   child: Center(
+                     child: Text("Fill out the form to get in contact",
+-                        style: kSimpleTextWhite),
++                        style: Theme.of(context).textTheme.titleMedium),
+                   ),
+                 ),
+                 SizedBox(height: 20),
+Index: lib/pages/workout_summary.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/workout_summary.dart b/lib/pages/workout_summary.dart
+--- a/lib/pages/workout_summary.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/workout_summary.dart	(date 1726007097074)
+@@ -26,9 +26,7 @@
+   @override
+   Widget build(BuildContext context) {
+     return Scaffold(
+-      appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+-      ),
++      appBar: AppBar(),
+       body: Stack(
+         children: [
+           CustomGradientContainerSoft(
+@@ -42,11 +40,11 @@
+                 children: [
+                   Container(
+                     height: 100, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Text(
+                       'some summary here',
+-                      style: kSubTitleOfPage,
++                      style: Theme.of(context).textTheme.headlineLarge,
+                     ),
+                   ),
+                   SizedBox(
+@@ -54,11 +52,11 @@
+                   ),
+                   Container(
+                     height: 150, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Text(
+                       'some more stats',
+-                      style: kSubTitleOfPage,
++                      style: Theme.of(context).textTheme.headlineLarge,
+                     ),
+                   ),
+                   SizedBox(
+@@ -71,11 +69,11 @@
+                         child: Container(
+                           height: 70,
+                           // Adjust this height as needed
+-                          color: kLoginRegisterBtnColour.withOpacity(0.2),
++                          color: Theme.of(context).primaryColor.withOpacity(0.2),
+                           padding: EdgeInsets.all(10),
+                           child: Text(
+                             'other',
+-                            style: kSubTitleOfPage,
++                            style: Theme.of(context).textTheme.headlineLarge,
+                           ),
+                         ),
+                       ),
+@@ -86,11 +84,11 @@
+                         child: Container(
+                           height: 70,
+                           // Adjust this height as needed
+-                          color: kLoginRegisterBtnColour.withOpacity(0.2),
++                          color: Theme.of(context).primaryColor.withOpacity(0.2),
+                           padding: EdgeInsets.all(10),
+                           child: Text(
+                             'other',
+-                            style: kSubTitleOfPage,
++                            style: Theme.of(context).textTheme.headlineLarge,
+                           ),
+                         ),
+                       ),
+Index: lib/pages/set_workout_page_2.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_2.dart b/lib/pages/set_workout_page_2.dart
+--- a/lib/pages/set_workout_page_2.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_2.dart	(date 1726007096839)
+@@ -77,7 +77,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -85,10 +84,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -104,7 +100,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/Cycling.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -184,26 +180,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -216,20 +212,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -242,14 +238,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/my_stats.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/my_stats.dart b/lib/pages/my_stats.dart
+--- a/lib/pages/my_stats.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/my_stats.dart	(date 1726007097106)
+@@ -30,7 +30,7 @@
+                     const EdgeInsets.symmetric(vertical: 60, horizontal: 16),
+                 child: Row(
+                   children: [
+-                    Text("My Stats", style: kSubSubTitleOfPage),
++                    Text("My Stats", style: Theme.of(context).textTheme.headlineMedium),
+                   ],
+                 ),
+               ),
+Index: lib/pages/set_workout_page_5.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_5.dart b/lib/pages/set_workout_page_5.dart
+--- a/lib/pages/set_workout_page_5.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_5.dart	(date 1726007096822)
+@@ -80,7 +80,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -88,10 +87,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -107,7 +103,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/pilates.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -187,26 +183,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -219,20 +215,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -245,14 +241,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/highintensity_workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/highintensity_workout.dart b/lib/pages/highintensity_workout.dart
+--- a/lib/pages/highintensity_workout.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/highintensity_workout.dart	(date 1726007097111)
+@@ -107,7 +107,6 @@
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -132,11 +131,11 @@
+                     SizedBox(height: 40),
+                     Container(
+                       height: 200, // Adjust this height as needed
+-                      color: kLoginRegisterBtnColour.withOpacity(0.2),
++                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                       padding: EdgeInsets.all(10),
+                       child: Text(
+                         'workout VIDEO here',
+-                        style: kSubTitleOfPage,
++                        style: Theme.of(context).textTheme.headlineLarge,
+                       ),
+                     ),
+                     SizedBox(height: 20),
+@@ -145,7 +144,7 @@
+                       children: [
+                         Text(
+                           _formatTime(_elapsedSeconds),
+-                          style: kSubSubTitleOfPage,
++                          style: Theme.of(context).textTheme.headlineMedium,
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Index: lib/pages/set_workout_page_4.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_4.dart b/lib/pages/set_workout_page_4.dart
+--- a/lib/pages/set_workout_page_4.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_4.dart	(date 1726007096885)
+@@ -79,7 +79,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -87,10 +86,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -106,7 +102,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/yoga.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -186,26 +182,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -218,20 +214,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -244,14 +240,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/set_workout_page_7.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page_7.dart b/lib/pages/set_workout_page_7.dart
+--- a/lib/pages/set_workout_page_7.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page_7.dart	(date 1726007096895)
+@@ -80,18 +80,14 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+-          icon: Icon(Icons.arrow_back),
++          icon: const Icon(Icons.arrow_back),
+           color: Colors.white,
+           onPressed: () {
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -107,7 +103,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/img/highintensity.jpg', // Replace 'your_image_asset.png' with your actual asset path
+@@ -187,26 +183,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -219,20 +215,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -245,14 +241,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/set_workout_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/set_workout_page.dart b/lib/pages/set_workout_page.dart
+--- a/lib/pages/set_workout_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/set_workout_page.dart	(date 1726007096951)
+@@ -75,7 +75,6 @@
+     wrkName = Provider.of<WorkoutTypeProvider>(context).workoutType?.name ?? '';
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -83,10 +82,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          wrkName,
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text(wrkName),
+         centerTitle: true,
+       ),
+       body: Stack(
+@@ -102,7 +98,7 @@
+                 children: [
+                   Container(
+                     height: 200, // Adjust this height as needed
+-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
++                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                     padding: EdgeInsets.all(10),
+                     child: Image.asset(
+                       'lib/assets/VRgame.png', // Replace 'your_image_asset.png' with your actual asset path
+@@ -182,26 +178,26 @@
+       DropdownMenuItem(
+         child: Text(
+           '15 minutes',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 15,
+       ),
+       DropdownMenuItem(
+           child: Text(
+             '30 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 30),
+       DropdownMenuItem(
+           child: Text(
+             '45 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 45),
+       DropdownMenuItem(
+           child: Text(
+             '60 minutes',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 60),
+     ];
+@@ -214,20 +210,20 @@
+       DropdownMenuItem(
+         child: Text(
+           'Beginner',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Beginner',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Intermediate',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Intermediate'),
+       DropdownMenuItem(
+           child: Text(
+             'Advanced',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Advanced'),
+     ];
+@@ -240,14 +236,14 @@
+       DropdownMenuItem(
+         child: Text(
+           'Interval',
+-          style: kSimpleTextPurple,
++          style: Theme.of(context).textTheme.bodyMedium,
+         ),
+         value: 'Interval',
+       ),
+       DropdownMenuItem(
+           child: Text(
+             'Continuous',
+-            style: kSimpleTextPurple,
++            style: Theme.of(context).textTheme.bodyMedium,
+           ),
+           value: 'Continuous'),
+     ];
+Index: lib/pages/password_reset_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/password_reset_page.dart b/lib/pages/password_reset_page.dart
+--- a/lib/pages/password_reset_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/password_reset_page.dart	(date 1726007096831)
+@@ -127,9 +127,9 @@
+                     height: 150,
+                   ),
+                   const SizedBox(height: 30),
+-                  const Text(
++                  Text(
+                     "Reset Password",
+-                    style: kRedbackTextMain,
++                    style: Theme.of(context).textTheme.displayLarge,
+                   ),
+                   const SizedBox(height: 30),
+                   TextField(
+Index: lib/pages/my_activity.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/my_activity.dart b/lib/pages/my_activity.dart
+--- a/lib/pages/my_activity.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/my_activity.dart	(date 1726007096871)
+@@ -52,10 +52,10 @@
+                         height: 300,
+                         children: [
+                           Text("Hi,$currentUsername",
+-                              style: kSubSubTitleOfPage),
++                              style: Theme.of(context).textTheme.headlineMedium),
+                           Text(
+                             'Let\'s check your activity',
+-                            style: kSimpleTextWhite,
++                            style: Theme.of(context).textTheme.titleMedium,
+                           ),
+ 
+                           //Image.asset('assets/image.png', width: 100, height: 100),
+@@ -82,7 +82,7 @@
+                                 children: [
+                                   Text(
+                                     'two',
+-                                    style: kSimpleTextWhite,
++                                    style: Theme.of(context).textTheme.titleMedium,
+                                   )
+                                 ]),
+                             SizedBox(
+@@ -95,7 +95,7 @@
+                                 children: [
+                                   Text(
+                                     formattedDate,
+-                                    style: kSimpleTextWhite,
++                                    style: Theme.of(context).textTheme.titleMedium,
+                                   ),
+                                   SizedBox(
+                                     height: 10.0,
+@@ -107,7 +107,7 @@
+                                       decoration: BoxDecoration(
+                                           border: Border.all(
+                                               width: 2.0, color: Colors.black),
+-                                          color: kLoginRegisterBtnColour,
++                                          color: Theme.of(context).primaryColor,
+                                           shape: BoxShape.circle), // decoration
+                                       width: 40.0,
+                                       isLive: true,
+Index: lib/pages/privacy.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/privacy.dart b/lib/pages/privacy.dart
+--- a/lib/pages/privacy.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/privacy.dart	(date 1726007096900)
+@@ -21,7 +21,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           color: Colors.white,
+@@ -29,10 +28,7 @@
+             Navigator.of(context).pop();
+           },
+         ),
+-        title: Text(
+-          'Privacy',
+-          style: kSubSubTitleOfPage,
+-        ),
++        title: Text('Privacy'),
+         centerTitle: true,
+       ),
+       body: CustomGradientContainerSoft(
+@@ -49,7 +45,7 @@
+                     children: [
+                       Text(
+                         'Select Visibility:',
+-                        style: kSubSubTitleOfPage, // Set text color
++                        style: Theme.of(context).textTheme.headlineMedium, // Set text color
+                       ),
+                       SizedBox(
+                           width:
+@@ -72,8 +68,8 @@
+                           elevation: 10,
+                           iconSize: 50.0,
+                           iconDisabledColor:
+-                              kLoginRegisterBtnColour.withOpacity(0.5),
+-                          iconEnabledColor: kLoginRegisterBtnColour,
++                              Theme.of(context).primaryColor.withOpacity(0.5),
++                          iconEnabledColor: Theme.of(context).primaryColor,
+                           value: _selectedVisibility,
+                           onChanged: (newValue) {
+                             setState(() {
+@@ -88,7 +84,7 @@
+                                 value: value,
+                                 child: Text(
+                                   value,
+-                                  style: kSimpleTextWhite, // Set text color
++                                  style: Theme.of(context).textTheme.titleMedium, // Set text color
+                                 ),
+                               );
+                             },
+@@ -102,7 +98,7 @@
+                     alignment: Alignment.centerLeft,
+                     child: Text(
+                       'Notification Settings:',
+-                      style: kSubSubTitleOfPage, // Set text color
++                      style: Theme.of(context).textTheme.headlineMedium, // Set text color
+                     ),
+                   ),
+                   RadioBtnChoice(
+Index: lib/pages/password_reset_otp_validate_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/password_reset_otp_validate_page.dart b/lib/pages/password_reset_otp_validate_page.dart
+--- a/lib/pages/password_reset_otp_validate_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/password_reset_otp_validate_page.dart	(date 1726007096970)
+@@ -155,9 +155,9 @@
+                     height: 150,
+                   ),
+                   const SizedBox(height: 30),
+-                  const Text(
++                  Text(
+                     "Validate OTP",
+-                    style: kRedbackTextMain,
++                    style: Theme.of(context).textTheme.displayLarge,
+                   ),
+                   const SizedBox(height: 30),
+                   TextField(
+Index: lib/pages/workout_history_page.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/pages/workout_history_page.dart b/lib/pages/workout_history_page.dart
+--- a/lib/pages/workout_history_page.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/pages/workout_history_page.dart	(date 1726004597670)
+@@ -28,7 +28,6 @@
+   Widget build(BuildContext context) {
+     return Scaffold(
+         appBar: AppBar(
+-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+           leading: IconButton(
+             icon: Icon(Icons.arrow_back),
+             color: Colors.white,
+@@ -43,10 +42,7 @@
+               );
+             },
+           ),
+-          title: Text(
+-            'My past workouts',
+-            style: kSubSubTitleOfPage,
+-          ),
++          title: Text('My past workouts'),
+           centerTitle: true,
+         ),
+         body: CustomGradientContainerSoft(
+Index: lib/utilities/constants.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/utilities/constants.dart b/lib/utilities/constants.dart
+--- a/lib/utilities/constants.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/utilities/constants.dart	(date 1726007451246)
+@@ -1,76 +1,4 @@
+ import 'package:flutter/material.dart';
+ 
+ const kBottomContainerHeight = 60.0;
+-const kLoginRegisterBtnColour = Color(0xFF370E4A);
+-const kLoginRegisterBtnColourOPAC = Color.fromRGBO(55, 14, 74, 0.3);
+-const kAppBackgroundColor = Color(0xffB4C292);
+-const kAppNavigBarColour = Color(0xff736F4E);
+-const kSimpleBtnColour = Color(0xffFDBCB4);
+-const kFillInText = Colors.white70;
+-const kHomeBtnColours = Color(0xFF370E4A);
+-const kHomeBtnColoursOpaQue = Color.fromRGBO(55, 14, 74, 0.4);
+-const kBottomButtonWhiteTextColour = Color(0xFFE3E3E3);
+-
+-const kBottomButtonText = TextStyle(
+-  color: kBottomButtonWhiteTextColour,
+-  fontWeight: FontWeight.bold,
+-  fontSize: 20,
+-);
+-
+-const kTitleLogin = TextStyle(
+-  fontSize: 40.0,
+-  fontWeight: FontWeight.bold,
+-);
+-const kCardsTitle = TextStyle(
+-  fontSize: 30.0,
+-  fontWeight: FontWeight.bold,
+-);
+-
+-const kSubTitleLoginStatic = TextStyle(
+-  color: Colors.white,
+-  fontSize: 14.0,
+-  fontWeight: FontWeight.normal,
+-);
+-const kSubTitleLoginActive = TextStyle(
+-  color: Colors.white,
+-  fontSize: 17.0,
+-  fontWeight: FontWeight.bold,
+-  decoration: TextDecoration.underline,
+-);
+-
+-const kRedbackTextMain = TextStyle(
+-  color: Color(0xFFE3E3E3),
+-  fontSize: 28,
+-  fontWeight: FontWeight.bold,
+-);
+-
+-const kSubTitleOfPage = TextStyle(
+-  fontSize: 30,
+-  fontWeight: FontWeight.bold,
+-  color: Colors.white,
+-);
+-
+-const kSubSubTitleOfPage = TextStyle(
+-  fontSize: 18,
+-  fontWeight: FontWeight.bold,
+-  color: Colors.white,
+-);
+-
+-const kSimpleTextWhite = TextStyle(
+-  fontSize: 12,
+-  fontWeight: FontWeight.normal,
+-  color: Colors.white,
+-);
+-
+-const kSimpleTextPurple = TextStyle(
+-  fontSize: 16,
+-  fontWeight: FontWeight.w600,
+-  color: kLoginRegisterBtnColour,
+-);
+-
+-const kSubSubTitlePurple = TextStyle(
+-    fontSize: 16,
+-    fontWeight: FontWeight.bold,
+-    color: kLoginRegisterBtnColour,
+-    letterSpacing: 2,
+-    fontStyle: FontStyle.italic);
++const kFillInText = Colors.white70;
+\ No newline at end of file
+Index: lib/components/input_text_field.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/input_text_field.dart b/lib/components/input_text_field.dart
+--- a/lib/components/input_text_field.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/input_text_field.dart	(date 1726007097080)
+@@ -38,7 +38,7 @@
+       height: widget.height ?? 60,
+       decoration: BoxDecoration(
+         border: Border.all(
+-          color: kLoginRegisterBtnColour,
++          color: Theme.of(context).primaryColor,
+           width: 2.0,
+         ),
+         color: kFillInText.withOpacity(0.1),
+@@ -50,10 +50,10 @@
+         controller: widget.fieldController,
+         obscureText: widget.obscureText,
+         validator: widget.validate,
+-        style: kSimpleTextPurple,
++        style: Theme.of(context).textTheme.bodyMedium,
+         decoration: InputDecoration(
+           hintText: widget.buttonText,
+-          hintStyle: kSubSubTitlePurple,
++          hintStyle: Theme.of(context).textTheme.labelLarge,
+           border: UnderlineInputBorder(
+             borderSide: BorderSide.none,
+           ),
+@@ -74,7 +74,7 @@
+             ? Icons.visibility_rounded
+             : Icons.visibility_off_rounded,
+         size: 24,
+-        color: kLoginRegisterBtnColour,
++        color: Theme.of(context).primaryColor,
+       ),
+     );
+   }
+@@ -119,7 +119,7 @@
+       height: widget.height ?? 60,
+       decoration: BoxDecoration(
+         border: Border.all(
+-          color: kLoginRegisterBtnColour,
++          color: Theme.of(context).primaryColor,
+           width: 2.0,
+         ),
+         color: kFillInText.withOpacity(0.1),
+@@ -152,7 +152,7 @@
+             ? Icons.visibility_rounded
+             : Icons.visibility_off_rounded,
+         size: 24,
+-        color: kLoginRegisterBtnColour,
++        color: Theme.of(context).primaryColor,
+       ),
+     );
+   }
+Index: lib/components/cancel_button.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/cancel_button.dart b/lib/components/cancel_button.dart
+--- a/lib/components/cancel_button.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/cancel_button.dart	(date 1726007097041)
+@@ -17,7 +17,7 @@
+       child: Container(
+         child: Text(
+           buttonText,
+-          style: kBottomButtonText,
++          style: Theme.of(context).textTheme.labelMedium,
+         ),
+         alignment: Alignment.center,
+         margin: EdgeInsets.only(top: 10.0, bottom: 40),
+@@ -26,8 +26,8 @@
+         height: kBottomContainerHeight,
+         decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(15.0),
+-          border: Border.all(color: kLoginRegisterBtnColour, width: 3.0),
+-          color: kLoginRegisterBtnColour.withOpacity(0.4),
++          border: Border.all(color: Theme.of(context).primaryColor, width: 3.0),
++          color: Theme.of(context).primaryColor.withOpacity(0.4),
+         ),
+       ),
+     );
+Index: lib/components/workout_metric_box.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/workout_metric_box.dart b/lib/components/workout_metric_box.dart
+--- a/lib/components/workout_metric_box.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/workout_metric_box.dart	(date 1726004597633)
+@@ -21,7 +21,7 @@
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               Container(
+-                color: kHomeBtnColours.withOpacity(0.4),
++                color: Theme.of(context).primaryColor.withOpacity(0.4),
+                 padding: EdgeInsets.all(8),
+                 child: Center(
+                   child: Text(
+Index: lib/components/account_containers.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/account_containers.dart b/lib/components/account_containers.dart
+--- a/lib/components/account_containers.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/account_containers.dart	(date 1726004597617)
+@@ -24,7 +24,7 @@
+       child: ElevatedButton(
+         onPressed: onPressed,
+         style: ElevatedButton.styleFrom(
+-          backgroundColor: kHomeBtnColoursOpaQue,
++          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(10),
+           ),
+Index: lib/components/stats_container.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/stats_container.dart b/lib/components/stats_container.dart
+--- a/lib/components/stats_container.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/stats_container.dart	(date 1726004597630)
+@@ -15,7 +15,7 @@
+     return Container(
+       width: 150,
+       height: 110,
+-      color: kHomeBtnColoursOpaQue,
++      color: Theme.of(context).primaryColor.withOpacity(0.4),
+       padding: EdgeInsets.all(10),
+       child: Column(
+         children: [
+Index: lib/components/user_image.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/user_image.dart b/lib/components/user_image.dart
+--- a/lib/components/user_image.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/user_image.dart	(date 1726004597632)
+@@ -41,7 +41,7 @@
+                           width: 4,
+                           color: Theme.of(context).scaffoldBackgroundColor,
+                         ),
+-                        color: kLoginRegisterBtnColour,
++                        color: Theme.of(context).primaryColor,
+                       ),
+                       child: Icon(
+                         Icons.camera_alt,
+Index: lib/components/icon_text_button.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/icon_text_button.dart b/lib/components/icon_text_button.dart
+--- a/lib/components/icon_text_button.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/icon_text_button.dart	(date 1726004597625)
+@@ -25,7 +25,7 @@
+             icon,
+             width: 25,
+             height: 25,
+-            color: kLoginRegisterBtnColour,
++            color: Theme.of(context).primaryColor,
+           ),
+           const SizedBox(
+             height: 4,
+Index: lib/components/text_tap_button.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/text_tap_button.dart b/lib/components/text_tap_button.dart
+--- a/lib/components/text_tap_button.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/text_tap_button.dart	(date 1726007096891)
+@@ -21,9 +21,9 @@
+         child: RichText(
+           text: TextSpan(
+               text: buttonTextStatic,
+-              style: kSubTitleLoginStatic,
++              style: Theme.of(context).textTheme.titleLarge,
+               children: <TextSpan>[
+-                TextSpan(text: buttonTextActive, style: kSubTitleLoginActive)
++                TextSpan(text: buttonTextActive, style: Theme.of(context).textTheme.bodyLarge)
+               ]),
+         ),
+       ),
+Index: lib/components/dropdown_choice.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/dropdown_choice.dart b/lib/components/dropdown_choice.dart
+--- a/lib/components/dropdown_choice.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/dropdown_choice.dart	(date 1726007096861)
+@@ -31,7 +31,7 @@
+         height: widget.height ?? 60,
+         decoration: BoxDecoration(
+           border: Border.all(
+-            color: kLoginRegisterBtnColour,
++            color: Theme.of(context).primaryColor,
+             width: 2.0,
+           ),
+           color: kFillInText.withOpacity(0.1),
+@@ -41,18 +41,18 @@
+           padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0),
+           child: DropdownButtonFormField<T>(
+             iconSize: 30.0,
+-            iconEnabledColor: kLoginRegisterBtnColour,
+-            style: kSubSubTitlePurple,
++            iconEnabledColor: Theme.of(context).primaryColor,
++            style: Theme.of(context).textTheme.labelLarge,
+             borderRadius: BorderRadius.circular(10.0),
+             decoration: InputDecoration(
+               hintText: widget.helperText,
+-              hintStyle: kSubSubTitlePurple,
++              hintStyle: Theme.of(context).textTheme.labelLarge,
+               border: UnderlineInputBorder(
+                 borderSide: BorderSide.none,
+               ),
+               contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+             ),
+-            dropdownColor: kSimpleBtnColour,
++            dropdownColor: Theme.of(context).primaryColorLight,
+             value: widget.selectedValue,
+             onChanged: (T? newValue) {
+               setState(() {
+Index: lib/components/profile_menu.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/profile_menu.dart b/lib/components/profile_menu.dart
+--- a/lib/components/profile_menu.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/profile_menu.dart	(date 1726004597628)
+@@ -25,7 +25,7 @@
+               width: 25,
+               height: 25,
+               fit: BoxFit.fitWidth,
+-              color: kLoginRegisterBtnColour,
++              color: Theme.of(context).primaryColor,
+             ),
+             const SizedBox(
+               width: 15,
+Index: lib/components/see_password_toggle_icon.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/see_password_toggle_icon.dart b/lib/components/see_password_toggle_icon.dart
+--- a/lib/components/see_password_toggle_icon.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/see_password_toggle_icon.dart	(date 1726004597630)
+@@ -25,7 +25,7 @@
+       },
+       child: Icon(
+         _obscureText ? Icons.visibility : Icons.visibility_off,
+-        color: kLoginRegisterBtnColour,
++        color: Theme.of(context).primaryColor,
+       ),
+     );
+   }
+Index: lib/components/login_signup_background.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/login_signup_background.dart b/lib/components/login_signup_background.dart
+--- a/lib/components/login_signup_background.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/login_signup_background.dart	(date 1726004597627)
+@@ -9,12 +9,12 @@
+   @override
+   Widget build(BuildContext context) {
+     return Container(
+-      decoration: const BoxDecoration(
++      decoration: BoxDecoration(
+         gradient: LinearGradient(
+           colors: [
+-            Color(0xFF6E2D51),
+-            Color(0xFFE97462),
+-            Color.fromRGBO(55, 14, 74, 0.94), // Color(0xFF370E4A)
++            const Color(0xFF6E2D51),
++            const Color(0xFFE97462),
++            Theme.of(context).primaryColor.withOpacity(0.94),
+           ],
+           begin: Alignment.topCenter,
+           end: Alignment.bottomCenter,
+Index: lib/components/radio_btn_privacy.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/radio_btn_privacy.dart b/lib/components/radio_btn_privacy.dart
+--- a/lib/components/radio_btn_privacy.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/radio_btn_privacy.dart	(date 1726007097100)
+@@ -21,14 +21,14 @@
+     return ListTile(
+       title: Text(
+         buttonText,
+-        style: kSimpleTextWhite, // Set text color
++        style: Theme.of(context).textTheme.titleMedium, // Set text color
+       ),
+       leading: Radio(
+         value: radioValue,
+         groupValue: notificationValue,
+         onChanged: changeState,
+-        activeColor: kLoginRegisterBtnColour,
+-        focusColor: kLoginRegisterBtnColour,
++        activeColor: Theme.of(context).primaryColor,
++        focusColor: Theme.of(context).primaryColor,
+       ),
+     );
+   }
+Index: lib/components/activity_buttons.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/components/activity_buttons.dart b/lib/components/activity_buttons.dart
+--- a/lib/components/activity_buttons.dart	(revision e85fcaa9b94ff6ddd4714789b8407b6c42e1ad8c)
++++ b/lib/components/activity_buttons.dart	(date 1726007096856)
+@@ -16,10 +16,6 @@
+       child: GestureDetector(
+         onTap: onTap,
+         child: Container(
+-          child: Text(
+-            buttonText,
+-            style: kBottomButtonText,
+-          ),
+           alignment: Alignment.center,
+           margin: EdgeInsets.only(top: 10.0),
+           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+@@ -27,7 +23,11 @@
+           height: kBottomContainerHeight,
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.circular(40.0),
+-            color: kHomeBtnColoursOpaQue, // Adjust border radius as needed
++            color: Theme.of(context).primaryColor.withOpacity(0.4), // Adjust border radius as needed
++          ),
++          child: Text(
++            buttonText,
++            style: Theme.of(context).textTheme.labelMedium,
+           ),
+         ),
+       ),

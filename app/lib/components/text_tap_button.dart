@@ -21,9 +21,9 @@ class TextTapButton extends StatelessWidget {
         child: RichText(
           text: TextSpan(
               text: buttonTextStatic,
-              style: kSubTitleLoginStatic,
+              style: Theme.of(context).textTheme.titleLarge,
               children: <TextSpan>[
-                TextSpan(text: buttonTextActive, style: kSubTitleLoginActive)
+                TextSpan(text: buttonTextActive, style: Theme.of(context).textTheme.bodyLarge)
               ]),
         ),
       ),

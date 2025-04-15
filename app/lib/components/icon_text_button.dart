@@ -25,7 +25,7 @@ class IconTextButton extends StatelessWidget {
             icon,
             width: 25,
             height: 25,
-            color: kLoginRegisterBtnColour,
+            color: Theme.of(context).primaryColor,
           ),
           const SizedBox(
             height: 4,

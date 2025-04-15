@@ -87,11 +87,7 @@ class _MyFriendScreenState extends State<MyFriendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-        title: Text(
-          'My Friends',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('My Friends'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(
@@ -108,7 +104,7 @@ class _MyFriendScreenState extends State<MyFriendScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
-                        color: kLoginRegisterBtnColour.withOpacity(0.9)),
+                        color: Theme.of(context).primaryColor.withOpacity(0.9)),
                   ),
                 ),
               ),

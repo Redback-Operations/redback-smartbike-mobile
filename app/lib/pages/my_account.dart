@@ -29,7 +29,6 @@ class _MyAccount extends State<MyAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             color: Colors.white,

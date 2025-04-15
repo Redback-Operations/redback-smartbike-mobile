@@ -9,13 +9,12 @@ class CustomGradientContainerFull extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF6E2D51),
-            Color(0xFFE97462),
-            Color.fromRGBO(55, 14, 74, 0.94), // Color(0xFF370E4A)
+            const Color(0xFF6E2D51),
+            const Color(0xFFE97462),
+            Theme.of(context).primaryColor.withOpacity(0.94),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

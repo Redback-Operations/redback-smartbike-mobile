@@ -21,7 +21,6 @@ class PrivacyState extends State<Privacy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -29,10 +28,7 @@ class PrivacyState extends State<Privacy> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'Privacy',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('Privacy'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(
@@ -49,7 +45,7 @@ class PrivacyState extends State<Privacy> {
                     children: [
                       Text(
                         'Select Visibility:',
-                        style: kSubSubTitleOfPage, // Set text color
+                        style: Theme.of(context).textTheme.headlineMedium, // Set text color
                       ),
                       SizedBox(
                           width:
@@ -72,8 +68,8 @@ class PrivacyState extends State<Privacy> {
                           elevation: 10,
                           iconSize: 50.0,
                           iconDisabledColor:
-                              kLoginRegisterBtnColour.withOpacity(0.5),
-                          iconEnabledColor: kLoginRegisterBtnColour,
+                              Theme.of(context).primaryColor.withOpacity(0.5),
+                          iconEnabledColor: Theme.of(context).primaryColor,
                           value: _selectedVisibility,
                           onChanged: (newValue) {
                             setState(() {
@@ -88,7 +84,7 @@ class PrivacyState extends State<Privacy> {
                                 value: value,
                                 child: Text(
                                   value,
-                                  style: kSimpleTextWhite, // Set text color
+                                  style: Theme.of(context).textTheme.titleMedium, // Set text color
                                 ),
                               );
                             },
@@ -102,7 +98,7 @@ class PrivacyState extends State<Privacy> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Notification Settings:',
-                      style: kSubSubTitleOfPage, // Set text color
+                      style: Theme.of(context).textTheme.headlineMedium, // Set text color
                     ),
                   ),
                   RadioBtnChoice(

@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
       //initialIndex: 10,
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
             automaticallyImplyLeading: false,
             flexibleSpace: const Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -69,7 +68,9 @@ class _HomePageState extends State<HomePage> {
           body: const TabBarView(
             children: [
               MyActivity(title: 'My Activity'),
-              MyWorkout(title: ''),
+              MyWorkout(
+                title: '',
+              ),
               MyStats(title: 'My Stats')
             ],
           )),

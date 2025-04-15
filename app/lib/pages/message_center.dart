@@ -26,11 +26,7 @@ class _MessageCenterState extends State<MessageCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-          title: Text(
-            'My Messages',
-            style: kSubSubTitleOfPage,
-          ),
+          title: Text('My Messages'),
           centerTitle: true,
         ),
         body: CustomGradientContainerSoft(

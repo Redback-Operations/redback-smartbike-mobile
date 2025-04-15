@@ -110,11 +110,11 @@ class _EditProfileActivityState extends State<EditProfile> {
     // Check if the base URL is defined
     if (baseURL != null) {
       // Construct the complete URL by concatenating with the endpoint
-      String apiUrl = '$baseURL/update/${_idController.text}/';
+      String apiUrl = '$baseURL/update/${_emailController.text}/';
 
       // Prepare the data you want to send in the PUT request
       var request = http.MultipartRequest('PUT', Uri.parse(apiUrl));
-      request.fields['email'] = _emailController.text;
+      request.fields['id'] = _idController.text;
       request.fields['username'] = _usernameController.text;
       request.fields['name'] = _firstNameController.text;
       request.fields['surname'] = _lastNameController.text;
@@ -188,16 +188,18 @@ class _EditProfileActivityState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-        title: Text(
-          'More Settings',
-          style: kSubSubTitleOfPage,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        centerTitle: true,
       ),
-        body: CustomGradientContainerSoft(
-          child: SingleChildScrollView(
-            child: Column(
+      body: Scaffold(
+        body: SingleChildScrollView(
+          child: CustomGradientContainerSoft(
+            child: Stack(
               children: [
                 Container(
                   child: Center(
@@ -255,11 +257,6 @@ class _EditProfileActivityState extends State<EditProfile> {
                                 child: Column(
                                   children: [
                                     // Form Fields
-                                    _buildFormField(
-                                      'User ID',
-                                      _idController,
-                                      enableEditing: false,
-                                    ),
                                     _buildFormField(
                                       'First Name',
                                       _firstNameController,
@@ -322,6 +319,7 @@ class _EditProfileActivityState extends State<EditProfile> {
             ),
           ),
         ),
+      ),
     );
   }
 

@@ -33,26 +33,26 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       DropdownMenuItem(
         child: Text(
           'General Inquiry',
-          style: kSimpleTextPurple,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         value: 'General Inquiry',
       ),
       DropdownMenuItem(
           child: Text(
             'Technical Support',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Technical Support'),
       DropdownMenuItem(
           child: Text(
             'Billing Issue',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Billing Issue'),
       DropdownMenuItem(
           child: Text(
             'Other',
-            style: kSimpleTextPurple,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           value: 'Other'),
     ];
@@ -109,7 +109,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -117,10 +116,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'Contact Us',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('Contact Us'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(
@@ -133,7 +129,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
                   child: Center(
                     child: Text("Fill out the form to get in contact",
-                        style: kSimpleTextWhite),
+                        style: Theme.of(context).textTheme.titleMedium),
                   ),
                 ),
                 SizedBox(height: 20),

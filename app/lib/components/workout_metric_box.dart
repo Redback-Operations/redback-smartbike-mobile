@@ -21,7 +21,7 @@ class WorkoutMetricBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                color: kHomeBtnColours.withOpacity(0.4),
+                color: Theme.of(context).primaryColor.withOpacity(0.4),
                 padding: EdgeInsets.all(8),
                 child: Center(
                   child: Text(
