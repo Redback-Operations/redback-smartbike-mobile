@@ -21,14 +21,14 @@ class RadioBtnChoice extends StatelessWidget {
     return ListTile(
       title: Text(
         buttonText,
-        style: kSimpleTextWhite, // Set text color
+        style: Theme.of(context).textTheme.titleMedium, // Set text color
       ),
       leading: Radio(
         value: radioValue,
         groupValue: notificationValue,
         onChanged: changeState,
-        activeColor: kLoginRegisterBtnColour,
-        focusColor: kLoginRegisterBtnColour,
+        activeColor: Theme.of(context).primaryColor,
+        focusColor: Theme.of(context).primaryColor,
       ),
     );
   }

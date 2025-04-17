@@ -26,9 +26,7 @@ class _WorkoutSummaryState extends State<WorkoutSummary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-      ),
+      appBar: AppBar(),
       body: Stack(
         children: [
           CustomGradientContainerSoft(
@@ -42,11 +40,11 @@ class _WorkoutSummaryState extends State<WorkoutSummary> {
                 children: [
                   Container(
                     height: 100, // Adjust this height as needed
-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                     padding: EdgeInsets.all(10),
                     child: Text(
                       'some summary here',
-                      style: kSubTitleOfPage,
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
                   SizedBox(
@@ -54,11 +52,11 @@ class _WorkoutSummaryState extends State<WorkoutSummary> {
                   ),
                   Container(
                     height: 150, // Adjust this height as needed
-                    color: kLoginRegisterBtnColour.withOpacity(0.2),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                     padding: EdgeInsets.all(10),
                     child: Text(
                       'some more stats',
-                      style: kSubTitleOfPage,
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
                   SizedBox(
@@ -71,11 +69,11 @@ class _WorkoutSummaryState extends State<WorkoutSummary> {
                         child: Container(
                           height: 70,
                           // Adjust this height as needed
-                          color: kLoginRegisterBtnColour.withOpacity(0.2),
+                          color: Theme.of(context).primaryColor.withOpacity(0.2),
                           padding: EdgeInsets.all(10),
                           child: Text(
                             'other',
-                            style: kSubTitleOfPage,
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                         ),
                       ),
@@ -86,11 +84,11 @@ class _WorkoutSummaryState extends State<WorkoutSummary> {
                         child: Container(
                           height: 70,
                           // Adjust this height as needed
-                          color: kLoginRegisterBtnColour.withOpacity(0.2),
+                          color: Theme.of(context).primaryColor.withOpacity(0.2),
                           padding: EdgeInsets.all(10),
                           child: Text(
                             'other',
-                            style: kSubTitleOfPage,
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                         ),
                       ),

@@ -12,7 +12,7 @@ import 'provider/user_data_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  
+
   // Initialize the notification service
   await NotificationService.initialize();
   runApp(const MyApp());

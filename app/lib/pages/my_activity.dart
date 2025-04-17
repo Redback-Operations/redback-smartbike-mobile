@@ -52,10 +52,10 @@ class MyActivityState extends State<MyActivity> {
                         height: 300,
                         children: [
                           Text("Hi,$currentUsername",
-                              style: kSubSubTitleOfPage),
+                              style: Theme.of(context).textTheme.headlineMedium),
                           Text(
                             'Let\'s check your activity',
-                            style: kSimpleTextWhite,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
 
                           //Image.asset('assets/image.png', width: 100, height: 100),
@@ -82,7 +82,7 @@ class MyActivityState extends State<MyActivity> {
                                 children: [
                                   Text(
                                     'two',
-                                    style: kSimpleTextWhite,
+                                    style: Theme.of(context).textTheme.titleMedium,
                                   )
                                 ]),
                             SizedBox(
@@ -95,7 +95,7 @@ class MyActivityState extends State<MyActivity> {
                                 children: [
                                   Text(
                                     formattedDate,
-                                    style: kSimpleTextWhite,
+                                    style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                   SizedBox(
                                     height: 10.0,
@@ -107,7 +107,7 @@ class MyActivityState extends State<MyActivity> {
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               width: 2.0, color: Colors.black),
-                                          color: kLoginRegisterBtnColour,
+                                          color: Theme.of(context).primaryColor,
                                           shape: BoxShape.circle), // decoration
                                       width: 40.0,
                                       isLive: true,

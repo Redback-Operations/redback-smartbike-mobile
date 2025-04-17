@@ -25,7 +25,7 @@ class MenuRow extends StatelessWidget {
               width: 25,
               height: 25,
               fit: BoxFit.fitWidth,
-              color: kLoginRegisterBtnColour,
+              color: Theme.of(context).primaryColor,
             ),
             const SizedBox(
               width: 15,

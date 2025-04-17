@@ -155,9 +155,9 @@ class PasswordResetOtpValidatePagePage extends StatelessWidget {
                     height: 150,
                   ),
                   const SizedBox(height: 30),
-                  const Text(
+                  Text(
                     "Validate OTP",
-                    style: kRedbackTextMain,
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   const SizedBox(height: 30),
                   TextField(

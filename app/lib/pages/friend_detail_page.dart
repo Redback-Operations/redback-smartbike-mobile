@@ -23,8 +23,6 @@ class FriendDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour
-            .withOpacity(0.9), // Set the background color
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -32,10 +30,7 @@ class FriendDetailPage extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'User Details',
-          style: kSubSubTitleOfPage,
-        ),
+        title: Text('User Details'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(

@@ -15,7 +15,7 @@ class StatContainerBox extends StatelessWidget {
     return Container(
       width: 150,
       height: 110,
-      color: kHomeBtnColoursOpaQue,
+      color: Theme.of(context).primaryColor.withOpacity(0.4),
       padding: EdgeInsets.all(10),
       child: Column(
         children: [

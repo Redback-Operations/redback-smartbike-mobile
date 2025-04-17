@@ -21,7 +21,6 @@ class EditProfileActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -42,7 +41,7 @@ class EditProfileActivity extends StatelessWidget {
             },
             child: Text(
               "Edit",
-              style: kSubSubTitleOfPage,
+              //style: Theme.of(context).textTheme.headlineMedium, //todo cm
             ),
           )
         ],
@@ -77,7 +76,7 @@ class EditProfileActivity extends StatelessWidget {
                             Text(
                               userDetails?.username ??
                                   '', // Use null-aware operator to prevent null exception
-                              style: kSubSubTitleOfPage,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             const SizedBox(height: 20),
                             Container(
@@ -153,21 +152,15 @@ class EditProfileActivity extends StatelessWidget {
                                       );
                                     },
                                   ),
-                                  _buildDivider(),
+                                  _buildDivider(context),
                                   MenuRow(
                                     icon: "lib/assets/img/settings.png",
                                     title: "More Settings",
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditProfile(title: ''),
-                                        ),
-                                      );
+                                      // TODO: create a page with some more settings?
                                     },
                                   ),
-                                  _buildDivider(),
+                                  _buildDivider(context),
                                   MenuRow(
                                     icon: "lib/assets/img/sign_out.png",
                                     title: "Sign Out",
@@ -182,7 +175,7 @@ class EditProfileActivity extends StatelessWidget {
                                       );
                                     },
                                   ),
-                                  _buildDivider(),
+                                  _buildDivider(context),
                                 ],
                               ),
                             ),
@@ -201,11 +194,11 @@ class EditProfileActivity extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() {
+  Widget _buildDivider(context) {
     return Divider(
       height: 15,
       thickness: 1,
-      color: kLoginRegisterBtnColour,
+      color: Theme.of(context).primaryColor,
     );
   }
 }

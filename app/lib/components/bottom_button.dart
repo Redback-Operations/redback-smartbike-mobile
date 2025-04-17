@@ -22,7 +22,7 @@ class BottomButton extends StatelessWidget {
       child: Container(
         child: Text(
           buttonText,
-          style: kBottomButtonText,
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 10.0, bottom: 40),
@@ -34,12 +34,12 @@ class BottomButton extends StatelessWidget {
           border: solidColor
               ? null
               : Border.all(
-                  color: kLoginRegisterBtnColour, // Set the border color
+                  color: Theme.of(context).primaryColor, // Set the border color
                   width: 3.0, // Set the border thickness
                 ),
           color: solidColor
-              ? kLoginRegisterBtnColour
-              : kLoginRegisterBtnColourOPAC,
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColor.withOpacity(0.3),
         ),
       ),
     );

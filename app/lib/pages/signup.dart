@@ -173,7 +173,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(height: 5),
                   Text(
                     'Sign Up',
-                    style: kRedbackTextMain,
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   SizedBox(height: 32),
                   InputTextField(
@@ -211,7 +211,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: _showPasswordRequirementsDialog,
                     child: Text(
                       'Password Requirements',
-                      style: kSubTitleLoginStatic,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   SizedBox(height: 5),

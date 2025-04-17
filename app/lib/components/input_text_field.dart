@@ -38,7 +38,7 @@ class _InputTextFieldState extends State<InputTextField> {
       height: widget.height ?? 60,
       decoration: BoxDecoration(
         border: Border.all(
-          color: kLoginRegisterBtnColour,
+          color: Theme.of(context).primaryColor,
           width: 2.0,
         ),
         color: kFillInText.withOpacity(0.1),
@@ -50,10 +50,10 @@ class _InputTextFieldState extends State<InputTextField> {
         controller: widget.fieldController,
         obscureText: widget.obscureText,
         validator: widget.validate,
-        style: kSimpleTextPurple,
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
           hintText: widget.buttonText,
-          hintStyle: kSubSubTitlePurple,
+          hintStyle: Theme.of(context).textTheme.labelLarge,
           border: UnderlineInputBorder(
             borderSide: BorderSide.none,
           ),
@@ -74,7 +74,7 @@ class _InputTextFieldState extends State<InputTextField> {
             ? Icons.visibility_rounded
             : Icons.visibility_off_rounded,
         size: 24,
-        color: kLoginRegisterBtnColour,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
@@ -119,7 +119,7 @@ class _InputTextFieldState extends State<InputTextField> {
       height: widget.height ?? 60,
       decoration: BoxDecoration(
         border: Border.all(
-          color: kLoginRegisterBtnColour,
+          color: Theme.of(context).primaryColor,
           width: 2.0,
         ),
         color: kFillInText.withOpacity(0.1),
@@ -152,7 +152,7 @@ class _InputTextFieldState extends State<InputTextField> {
             ? Icons.visibility_rounded
             : Icons.visibility_off_rounded,
         size: 24,
-        color: kLoginRegisterBtnColour,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

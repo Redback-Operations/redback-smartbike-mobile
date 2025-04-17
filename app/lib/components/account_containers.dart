@@ -24,7 +24,7 @@ class AccountContainer extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: kHomeBtnColoursOpaQue,
+          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

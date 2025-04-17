@@ -25,7 +25,7 @@ class _PasswordToggleState extends State<PasswordToggle> {
       },
       child: Icon(
         _obscureText ? Icons.visibility : Icons.visibility_off,
-        color: kLoginRegisterBtnColour,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

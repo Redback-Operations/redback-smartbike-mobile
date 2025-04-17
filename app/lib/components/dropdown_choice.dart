@@ -31,7 +31,7 @@ class _DropdownState<T> extends State<DropdownChoice<T>> {
         height: widget.height ?? 60,
         decoration: BoxDecoration(
           border: Border.all(
-            color: kLoginRegisterBtnColour,
+            color: Theme.of(context).primaryColor,
             width: 2.0,
           ),
           color: kFillInText.withOpacity(0.1),
@@ -41,18 +41,18 @@ class _DropdownState<T> extends State<DropdownChoice<T>> {
           padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0),
           child: DropdownButtonFormField<T>(
             iconSize: 30.0,
-            iconEnabledColor: kLoginRegisterBtnColour,
-            style: kSubSubTitlePurple,
+            iconEnabledColor: Theme.of(context).primaryColor,
+            style: Theme.of(context).textTheme.labelLarge,
             borderRadius: BorderRadius.circular(10.0),
             decoration: InputDecoration(
               hintText: widget.helperText,
-              hintStyle: kSubSubTitlePurple,
+              hintStyle: Theme.of(context).textTheme.labelLarge,
               border: UnderlineInputBorder(
                 borderSide: BorderSide.none,
               ),
               contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 0),
             ),
-            dropdownColor: kSimpleBtnColour,
+            dropdownColor: Theme.of(context).primaryColorLight,
             value: widget.selectedValue,
             onChanged: (T? newValue) {
               setState(() {

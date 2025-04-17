@@ -179,9 +179,9 @@ class _LoginPageState extends State<LoginPage> {
                   image: AssetImage('lib/assets/redbacklogo.png'),
                   height: 150,
                 ),
-                const Text(
+                Text(
                   "Redback Smart Bike",
-                  style: kRedbackTextMain,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 70),
                 InputTextField(
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child:
-                  Text('Forgotten Password?', style: kSubTitleLoginStatic),
+                   Text('Forgotten Password?', style: Theme.of(context).textTheme.titleLarge),
                 ),
                 _isLoading
                     ? CircularProgressIndicator() // Show loading indicator while processing

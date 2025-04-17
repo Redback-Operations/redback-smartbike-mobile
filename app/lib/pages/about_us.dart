@@ -10,7 +10,6 @@ class InformationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -18,10 +17,7 @@ class InformationScreen extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'About Us',
-          style: kSubSubTitleOfPage,
-        ),
+        title: const Text('About Us'),
         centerTitle: true,
       ),
       body: CustomGradientContainerSoft(
@@ -33,13 +29,13 @@ class InformationScreen extends StatelessWidget {
               SizedBox(height: 16),
               Text(
                 "Redback Operation Mission",
-                style: kSubSubTitleOfPage,
+                style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 16),
               Text(
                 "Redback Operations aims to turn small steps of virtuality into bigger steps of reality, making you Smarter, Fitter, and Better. Bad weather? Too much traffic? Worry not, our Smart Bike Project not only transforms your indoor cycling experience but also features an interactive VR Game and accessible Mobile App to bring the world to you.",
-                style: kSimpleTextWhite,
+                style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
@@ -53,7 +49,7 @@ class InformationScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Latest News", style: kSimpleTextPurple),
+                    Text("Latest News", style: Theme.of(context).textTheme.bodyMedium),
                     SizedBox(height: 8),
                     Text(
                       "Here are all the news from the team",

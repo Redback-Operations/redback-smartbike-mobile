@@ -57,22 +57,22 @@ class TabLayoutState extends State<TabLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message_rounded),
             label: 'Messages',
-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
             label: 'Friends',
-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
-            backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
           ),
         ],
       ),
