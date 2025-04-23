@@ -20,6 +20,8 @@ class MyUser(models.Model):
 
     # generate the id, starting at 1000, and add 1 to each new user
     def save(self, *args, **kwargs):
+        self.email = self.email.strip().lower() ##lowercase email
+
         if not self.id:  # If id is not already set
             last_user = MyUser.objects.order_by('-id').first()
             if last_user:

@@ -1,5 +1,7 @@
-<<<<<<< HEAD
-# redback-smartbike-mobile
-=======
-# bike_mobile
->>>>>>> d7da27e46ab6c3ce306cf020eb0094dc0b7a4cdb
+# Redback SmartBike Mobile App Setup
+
+## Frontend Setup:
+[Frontend README](app/README.md)
+
+## Backend Setup:
+[Backend README](app_Backend/README.md)
