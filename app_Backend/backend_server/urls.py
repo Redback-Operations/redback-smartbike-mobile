@@ -27,7 +27,7 @@ urlpatterns = [
                   # Other URL patterns
                   path('admin/', admin.site.urls),  # URL for the Django admin interface
                   path('users/', views.user_list),  # URL for handling user list operations (GET and POST)
-                  path('update/<str:email>/', views.user_detail),
+                  path('update/<str:userId>/', views.user_detail),
                   # URL for handling individual user operations (GET, PUT, DELETE)
                   path('signup/', views.signup, name='signup'),
                   path('home/', views.home, name='home'),
@@ -55,14 +55,15 @@ urlpatterns = [
                   path('save_ta_message/', views.terminate_account_message_create, name='ta_message_create'),
                   # saver terminate acc message
                   path('login/', views.login_view, name='login'),
-                  path('user/authenticate/<str:email>/', views.auth_password, name='auth_password'),
-                  path('user/delete/<str:email>/', views.delete_user, name='delete_user'),
+                  path('user/authenticate/', views.auth_password, name='auth_password'),
+                  path('user/delete/<str:userId>/', views.delete_user, name='delete_user'),
                   path('setworkout/', views.set_workout, name='setworkout'),
                   path('workoutdata/', views.wrk_data, name='workoutdata'),
                   path('login-sm/', views.social_media_login, name='login-sm'),
                   path('finish_workout/', views.wrk_finished, name='finish_workout'),
                   path('workout_analysis/<int:session_id>/', views.get_analysis, name='workout_analysis_detail'),
-
+                  path('api/create_schedule/', views.create_schedule, name='create_schedule'),
+                  path('api/get_schedules/<str:email>/', views.get_schedules, name='get_schedules'), #updated code
                   # Password reset paths
                   path('user/password_reset/', views.password_reset_request, name='password_reset_request'),
                   path('user/password_reset/otp_validate', views.password_reset_otp_validation, name='password_reset_otp_validation'),

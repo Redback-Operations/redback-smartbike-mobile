@@ -42,8 +42,9 @@ ALLOWED_HOSTS = [
     "0.0.0.0",
     "192.168.1.102",
     "192.168.1.6",
+    "192.168.0.79",
     "10.0.2.2",
-    '*'   # means all
+    '*'   # means all #updated code
 ]
 
 # Application definition
