@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutEntry, WorkoutAnalysis
-
+from django.contrib.auth.hashers import make_password
+import os
 
 # Serializer for the Users model to convert Python objects to JSON
 class UserSerializer(serializers.ModelSerializer):
@@ -10,13 +11,48 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser  
         fields = ['id','email', 'username', 'password', 'user_created', 'login_id', 'login_type','otp']
+        #extra_kwargs = {'password': {'write_only': True}} #don't return passwords whith user object
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Check debug from environment and set password field visibility
+        debug_mode = os.getenv("DEBUG", "").upper() == "TRUE"
+        if debug_mode:
+            # Allow password to be visible for debugging (not recommended in production!)
+            self.fields['password'].write_only = False
+        else:
+            self.fields['password'].write_only = True
+            
+
+    #no plaintext passwords in DB - hash them!
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
 
 class SocialMediaUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
     otp = serializers.CharField(required=False) 
     class Meta:
         model = MyUser  
-        fields = ['id', 'email', 'username', 'password', 'user_created', 'login_id', 'login_type', 'otp']
+        fields = ['id', 'email', 'username', 'password', 'user_created', 'login_id', 'login_type', 'otp']        
+        #extra_kwargs = {'password': {'write_only': True}} #don't return passwords whith sm user object
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Check debug from environment and set password field visibility
+        debug_mode = os.getenv("DEBUG", "").upper() == "TRUE"
+        if debug_mode:
+            # Allow password to be visible for debugging (not recommended in production!)
+            self.fields['password'].write_only = False
+        else:
+            self.fields['password'].write_only = True   
+
+    #no plaintext passwords in DB - hash them!
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
 
 class AccountDetailsSerializer(serializers.ModelSerializer):
     class Meta:

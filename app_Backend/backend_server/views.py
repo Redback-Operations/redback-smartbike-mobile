@@ -33,10 +33,10 @@ import json
 from .models import MyUser
 import random
 from django.utils import timezone
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from mongoengine import Document, StringField, DateTimeField
 from datetime import datetime
-from django.http import HttpResponse
+from django.contrib.auth.hashers import check_password, make_password
 
 import os
 
@@ -54,7 +54,7 @@ def redirect_home(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, userId):
     print('userId received:' + userId)
-    
+
     #find account via MyUser id
     user = MyUser.objects.filter(id=userId).first()
     if (user == None):
@@ -232,7 +232,8 @@ def login_view(request):
 
         try:
             user = MyUser.objects.get(email__iexact=email)
-            if user.password == password:
+            print(check_password(password, user.password))
+            if check_password(password, user.password): #compares received password to stored hashed
                 request.session['email'] = user.email
                 request.session['id'] = user.id  
 
@@ -251,7 +252,7 @@ def login_view(request):
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 # view to authenticate account password (only used for termination)
-##user/authenticate/ requires: ?<password>
+##user/authenticate/<str:userID>
 @api_view(['POST']) #changed to post for more secure authorization
 @csrf_exempt
 def auth_password(request, format=None):
@@ -262,7 +263,7 @@ def auth_password(request, format=None):
         print(f'userId: {userId}, password: {password}') #debug
         try:
             user = MyUser.objects.get(id=userId) 
-            if user.password == password: 
+            if check_password(password, user.password):  #compares received password to stored hashed
                 return Response(status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_403_FORBIDDEN)
@@ -272,7 +273,7 @@ def auth_password(request, format=None):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 #view to delete user account
-##user/delete/<int:id>/
+##user/delete/<str:userId>/
 @api_view(['DELETE']) #replaced email with userID for more security
 @csrf_exempt
 def delete_user(request, userId):
@@ -509,7 +510,7 @@ def password_reset_new_password(request):
                 try:
                     if password is not None and password != "" and password == re_password:
                         user.otp = None
-                        user.password = password
+                        user.password = make_password(password) #hash new password
                         user.save()
                         return Response({"message": "Password reset successful."}, status=status.HTTP_200_OK)
                     else:
