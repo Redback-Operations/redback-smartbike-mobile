@@ -256,9 +256,9 @@ class _SetWorkoutState extends State<SetWorkout> {
 
   // Send a POST request to Django
   void sendWorkoutSettings() async {
-    // generate session_id
-    var uuid = Uuid();
-    String new_session_id = await uuid.v4();
+    // generate session_id (disabled - should be handled by backend)
+    //var uuid = Uuid();
+    //String new_session_id = await uuid.v4();
     // get current user's email
     UserDetails? userDetails =
         Provider.of<UserDataProvider>(context, listen: false).userDetails;
@@ -282,6 +282,9 @@ class _SetWorkoutState extends State<SetWorkout> {
         }),
         headers: {'Content-Type': 'application/json'},
       );
+      var responseData = json.decode(response.body);
+      String new_session_id = responseData['session_id'].toString();
+
       if (mounted) {
         // make sure we send the msg first, then dispose of widget
         if (response.statusCode == 201) {

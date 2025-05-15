@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import uuid
 
 
 # When creating a user you need to provide all 3 fields, out of which:
@@ -96,7 +97,7 @@ class HelpCentreMessage(models.Model):
     ]
 
     thread_number = models.UUIDField(max_length=100, unique=True,
-                                     default='')  # UUID format, generate in flutter and pass
+                                     default=uuid.uuid4)  # UUID format, generate in flutter and pass
     email = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50)
     topic = models.CharField(max_length=30, choices=TOPIC_CHOICES)
@@ -180,7 +181,7 @@ class WorkoutType(models.Model):
         (CONTINUOUS, 'Continuous'),
     ]
 
-    session_id = models.CharField(max_length=100, primary_key=True)
+    session_id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
     email = models.ForeignKey(MyUser, on_delete=models.CASCADE, default='',
                               to_field='email')  # when user deleted, delete records too
     name = models.CharField(max_length=20, choices=NAME_CHOICES)
