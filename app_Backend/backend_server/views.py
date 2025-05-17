@@ -1,7 +1,7 @@
 from django.conf import settings
-from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutAnalysis, Schedule # Added Schedule
+from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
 from .serializers import UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, \
-    WorkoutEntrySerializer, WorkoutTypeSerializer, SocialMediaUserSerializer, WorkoutAnalysisSerializer, ScheduleSerializer # Added ScheduleSerializer
+    WorkoutEntrySerializer, WorkoutTypeSerializer, SocialMediaUserSerializer, WorkoutAnalysisSerializer
 from .forms import UserCreationForm, SignUpForm, LoginForm
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -20,22 +20,24 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 from django.db.models import Q
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta 
 import hashlib
 from .tasks import clean_workout_data_task, analyse_workout_data_task
 from rest_framework import viewsets
-# from rest_framework.response import Response # Already imported
+from rest_framework.response import Response
 import logging
 from celery import chain
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 import json
-# from .models import MyUser # Already imported
+from .models import MyUser
 import random
 from django.utils import timezone
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 import os
+from .serializers import ScheduleSerializer
+from .models import Schedule
 
 
 logger = logging.getLogger(__name__)
@@ -56,11 +58,11 @@ def user_detail(request, userId):
     #find account via MyUser id
     user = MyUser.objects.filter(id=userId).first()
     if (user == None):
-         return Response("User not found!", status=status.HTTP_404_NOT_FOUND)
+         return Response("User not found!", status=status.HTTP_404_NOT_FOUND) 
 
     account = AccountDetails.objects.filter(email=user).first()
     if (account == None):
-         return Response("Account details not found!", status=status.HTTP_404_NOT_FOUND)
+         return Response("Account details not found!", status=status.HTTP_404_NOT_FOUND) 
 
     if request.method == 'GET':
         serializer = AccountDetailsSerializer(account)
@@ -73,7 +75,7 @@ def user_detail(request, userId):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     ## dangerous - deletes account but not associated MyUser object
-    elif request.method == "DELETE":
+    elif request.method == "DELETE":     
         account.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -109,7 +111,6 @@ def user_list(request, format=None):
 @api_view(['POST'])
 def signup(request, format=None):
     if request.method == 'POST':
-        print(request.data)
         fetched_email = request.data.get("email")
         fetched_username = request.data.get("username")
 
@@ -141,7 +142,7 @@ def social_media_login(request, format=None):
         if fetched_id is None and fetched_type is None:
             return Response({"message": "Failed to Authenticate User", "errors": "login_id and type is required!"},
                             status=status.HTTP_403_FORBIDDEN)
-
+        
 
         user_is_enrolled = MyUser.objects.filter(
             Q(login_id=fetched_id) & Q(login_type=fetched_type) & Q(email__iexact=fetched_email)).first()
@@ -164,7 +165,7 @@ def social_media_login(request, format=None):
             serializer = SocialMediaUserSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-
+                
                 user = MyUser.objects.get(email__iexact=fetched_email)
                 account_details = AccountDetails.objects.filter(email=user)
                 account_serializer = AccountDetailsSerializer(account_details, many=True)
@@ -181,15 +182,13 @@ def social_media_login(request, format=None):
                 if serializer.is_valid():
                     serializer.save()
 
-                    # Assuming 'email' should be 'fetched_email' here based on context
-                    user = MyUser.objects.get(email__iexact=fetched_email)
+                    user = MyUser.objects.get(email__iexact=email)
                     account_details = AccountDetails.objects.filter(email=user)
                     account_serializer = AccountDetailsSerializer(account_details, many=True)
 
                     return Response({
                         'message': 'Login successful - new user',
-                        # 'id': serializer.data.id, # serializer.data is a dict, so use ['id']
-                        'id': serializer.data['id'],
+                        'id': serializer.data.id,
                         'account_details': account_serializer.data,
                     }, status=status.HTTP_200_OK)
                 else:
@@ -236,7 +235,7 @@ def login_view(request):
             print(check_password(password, user.password))
             if check_password(password, user.password): #compares received password to stored hashed
                 request.session['email'] = user.email
-                request.session['id'] = user.id
+                request.session['id'] = user.id  
 
                 print(user.email)
                 account_details = AccountDetails.objects.filter(email=user)
@@ -248,11 +247,7 @@ def login_view(request):
                     'account_details': serializer.data,
                 }, status=status.HTTP_200_OK)
             else:
-                # Changed to 401 for incorrect password as per localhost, 404 from git for user not found is better.
-                # Keeping 404 here as the more specific message if user exists but pass is wrong is handled by 'Incorrect password'
-                # Original git comment: "was 401, but we don't want to tell hackers they have the right email"
-                # Let's stick to the Git version's intent for this specific response.
-                return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'message': 'Incorrect password'}, status=status.HTTP_401_UNAUTHORIZED)
         except MyUser.DoesNotExist:
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -261,13 +256,13 @@ def login_view(request):
 @api_view(['POST']) #changed to post for more secure authorization
 @csrf_exempt
 def auth_password(request, format=None):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         userId = request.data.get('userId')
         password = request.data.get('password')
 
         print(f'userId: {userId}, password: {password}') #debug
         try:
-            user = MyUser.objects.get(id=userId)
+            user = MyUser.objects.get(id=userId) 
             if check_password(password, user.password):  #compares received password to stored hashed
                 return Response(status=status.HTTP_200_OK)
             else:
@@ -291,9 +286,9 @@ def delete_user(request, userId):
             return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except MyUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-    else:
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+    else:  
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 ## UNNUSED
 def get_all_details(request):
@@ -304,56 +299,28 @@ def get_all_details(request):
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
-def getDebugMode(): # Helper function from conflict resolution
-    return os.getenv('DEBUG','').strip().upper() == 'TRUE'
-
 #view to create active workout
 ##setworkout/
 @api_view(['POST'])
 def set_workout(request):
     if request.method == 'POST':
-        try:
-            data = request.data.copy()
-
-            if ('email') in data:
-                email_is_exist = MyUser.objects.filter(email__iexact=data['email']).exists()
-                if (not email_is_exist): return Response({"message": "Failed to create workout.", "errors": "User not Found"}, status=status.HTTP_404_NOT_FOUND)
-            else: return Response({"message": "Failed to create workout.", "errors": "User not Found"}, status=status.HTTP_404_NOT_FOUND)
-
-            #block manual setting of session_ID in production mode, but allow setting for testing in debug
-            if ('session_id' in data):
-                if (not getDebugMode()):
-                    data['session_id'] = None
-
-            workout_type_serializer = WorkoutTypeSerializer(data=data)
-            if workout_type_serializer.is_valid():
-                workout_type = workout_type_serializer.save()
-                return Response(workout_type_serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response({"message": "Failed to create workout.", "errors": workout_type_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"message": "Failed to create workout.", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        workout_type_serializer = WorkoutTypeSerializer(data=request.data)
+        if workout_type_serializer.is_valid():
+            workout_type = workout_type_serializer.save()
+            return Response(workout_type_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(workout_type_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #view to create workout entry for a given workout
-##workoutdata/  # Resolved conflict for comment
+##setworkout/
 @api_view(['POST'])
 def wrk_data(request):
     if request.method == 'POST':
-        try:
-            if ('session_id') in request.data:
-                # session_id should exist in WorkoutType not MyUser
-                session_exists = WorkoutType.objects.filter(session_id=request.data['session_id']).exists()
-                if (not session_exists): return Response({"message": "Failed to create workout data.", "errors": "Session ID not Found"}, status=status.HTTP_404_NOT_FOUND)
-            else: return Response({"message": "Failed to create workout data.", "errors": "Session ID not Found"}, status=status.HTTP_404_NOT_FOUND)
-
-            serializer = WorkoutEntrySerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"message": "Failed to gen workout data.", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        serializer = WorkoutEntrySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class WorkoutViewSet(viewsets.ModelViewSet):
     queryset = WorkoutType.objects.all()
@@ -369,7 +336,7 @@ class WorkoutViewSet(viewsets.ModelViewSet):
 # view to finish an active workout
 ##finish_workout/
 @api_view(['PATCH'])
-@csrf_exempt
+@csrf_exempt  
 def wrk_finished(request):
     try:
         session_id = request.data.get('session_id')
@@ -420,11 +387,11 @@ def get_otp(increment):
     otp_min = 100000
     otp_max = 999999
 
-    if getDebugMode(): # Resolved conflict to use helper
+    if os.getenv('DEBUG','').strip().upper() == 'TRUE':
         increment = int(increment)
         otp = str(otp_min+increment)
     else:
-        otp = str(random.randint(otp_min, otp_max))
+        otp = str(random.randint(otp_min, otp_max))    
 
     return otp
 
@@ -434,13 +401,17 @@ def get_otp(increment):
 @csrf_exempt
 def password_reset_request(request):
     if request.method == "POST":
-
+        
+        #previous required specifically JSON body
+        #data = json.loads(request.body)  # Load the request data
+        #email = data.get('email')  # Get the email from the request data
         email = request.data.get("email")
-        user = MyUser.objects.filter(email__iexact=email).first()
 
-        if user:
-            subject = "Password Reset Requested"
-            email_template_name = "registration/password_reset_otp_email.html"
+        user = MyUser.objects.filter(email__iexact=email).first()  # Find the user by email
+
+        if user:  # If user exists
+            subject = "Password Reset Requested"  # Subject of the email
+            email_template_name = "registration/password_reset_otp_email.html"  # Template for the email body
             otp = get_otp(0)
             otp_email = otp + user.email
             print(f'{email}, {user.email}, {otp}')
@@ -454,22 +425,22 @@ def password_reset_request(request):
 
             except Exception as e:
                 logger.error(f"Error Saving the OTP")
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)  # Handle email sending errors
 
             context = {
                 "user": user,
-                "otp": otp,
+                "otp": otp,  # Genera # Protocol to be used in the email link
             }
-            email_content = render_to_string(email_template_name, context)
+            email_content = render_to_string(email_template_name, context)  # Render the email content
             try:
                 send_mail(subject, email_content, settings.DEFAULT_FROM_EMAIL, [user.email],
-                          fail_silently=False)
+                          fail_silently=False)  # Send the email
             except Exception as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({"message": "Password reset e-mail has been sent."}, status=status.HTTP_200_OK)
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)  # Handle email sending errors
+            return Response({"message": "Password reset e-mail has been sent."}, status=status.HTTP_200_OK)  # Success response
         else:
-            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)  # User not found response
+    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
 
 
 # View to handle otp verification
@@ -483,40 +454,42 @@ def password_reset_otp_validation(request):
 
         otp_email = otp + email
         hashed_otp = hashlib.md5(otp_email.encode()).hexdigest()
-        user = MyUser.objects.filter(Q(otp=hashed_otp) & Q(email=email)).first()
+        user = MyUser.objects.filter(Q(otp=hashed_otp) & Q(email=email)).first()  # Find the otp user
         print(f'{email}, {otp}')
         print(hashed_otp)
+        
 
-
-        if user:
+        if user:  # If user exists
             print(user.email)
             now = timezone.now()
 
+            # Check if the datetime object is more than 4 minutes old
             if user.otp_created_at and user.otp_created_at < now - timedelta(minutes=4):
                 logger.warning(f"User with email {email} entered wrong otp")
                 return Response({"error": "Expired OTP"}, status=status.HTTP_401_UNAUTHORIZED)
             else:
                 try:
-                    otp_val_stage = get_otp(1) # Use a different OTP for this validation stage
-                    otp_email_val_stage = otp_val_stage + email
-                    hashed_otp_val_stage = hashlib.md5(otp_email_val_stage.encode()).hexdigest()
+                    otp = get_otp(1)
+                    otp_email = otp + email
+                    hashed_otp = hashlib.md5(otp_email.encode()).hexdigest()
 
-                    user.otp = hashed_otp_val_stage # Store this new token
-                    user.otp_created_at = None # Clear the timestamp, indicating it's a validation token
-                    print(f'out: {hashed_otp_val_stage}')
+                    user.otp = hashed_otp
+                    user.otp_created_at = None
+                    print(f'out: {hashed_otp}')
                     user.save()
 
-                    return Response({"message": "OTP validated successfully", "otp_token": hashed_otp_val_stage}, status=status.HTTP_200_OK)
+                    return Response({"message": "OTP validated successfully", "otp_token": hashed_otp}, status=status.HTTP_200_OK)
 
                 except Exception as e:
-                    logger.error(f"Error Saving validated OTP: {e}") # Log the error
-                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                    logger.error(f"Error Saving validated OTP")
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)  # Handle email sending errors
+
         else:
-            return Response({"error": "Invalid OTP"}, status=status.HTTP_401_UNAUTHORIZED)
-    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Invalid OTP"}, status=status.HTTP_401_UNAUTHORIZED)  # User not found response
+    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
 
 
-# View to handle new password setting
+# View to handle otp verification
 ##user/password_reset/new_password
 @api_view(['POST'])
 @csrf_exempt
@@ -526,29 +499,29 @@ def password_reset_new_password(request):
         email = request.data.get('email','').strip().lower()
         password = request.data.get('password')
         re_password = request.data.get('re_password')
-        user = MyUser.objects.filter(Q(otp=otp_token) & Q(email__iexact=email)).first()
+        user = MyUser.objects.filter(Q(otp=otp_token) & Q(email__iexact=email)).first()  # Find the otp user
 
-        if user:
-            # Check if the otp_created_at is None, meaning it's a validated token from the previous step
+        if user:  # If user exists
+
+            # Check if the datetime object is more than 10 minutes old
             if user.otp_created_at is not None:
-                return Response({"error": "Please request/validate OTP first."}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Please request/validate OTP"}, status=status.HTTP_401_UNAUTHORIZED)
             else:
                 try:
                     if password is not None and password != "" and password == re_password:
-                        user.otp = None # Clear the token
+                        user.otp = None
                         user.password = make_password(password) #hash new password
                         user.save()
                         return Response({"message": "Password reset successful."}, status=status.HTTP_200_OK)
                     else:
                         return Response({"error": "Passwords are not matching!"}, status=status.HTTP_403_FORBIDDEN)
                 except Exception as e:
-                    logger.error(f"Error resetting password: {e}") # Log the error
-                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({"error": "Invalid OTP Token or email."}, status=status.HTTP_401_UNAUTHORIZED)
-    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)  # Handle email sending errors
 
-# --- Schedule Views (from conflict resolution) ---
+        else:
+            return Response({"error": "Invalid OTP Token"}, status=status.HTTP_401_UNAUTHORIZED)  # User not found response
+    return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
+
 @api_view(['POST'])
 def create_schedule(request):
     serializer = ScheduleSerializer(data=request.data)
@@ -565,4 +538,4 @@ def get_schedules(request, email):
         serializer = ScheduleSerializer(schedules, many=True)
         return Response(serializer.data)
     except MyUser.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND) #updated code
