@@ -1,9 +1,16 @@
 from rest_framework import serializers
-from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutEntry, WorkoutAnalysis
+from .models import (
+    MyUser,
+    AccountDetails,
+    HelpCentreMessage,
+    TerminateAccountMessage,
+    WorkoutType,
+    WorkoutEntry,
+    WorkoutAnalysis,
+    Schedule  
+)
 from django.contrib.auth.hashers import make_password
 import os
-from .models import Schedule
-from rest_framework import serializers
 # Serializer for the Users model to convert Python objects to JSON
 class UserSerializer(serializers.ModelSerializer):
     login_id = serializers.CharField(required=False) 
