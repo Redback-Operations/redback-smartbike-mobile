@@ -286,7 +286,7 @@ def delete_user(request, userId):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     else:  
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+      return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 ## UNNUSED
 def get_all_details(request):
