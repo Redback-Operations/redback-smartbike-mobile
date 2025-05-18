@@ -546,6 +546,8 @@ def password_reset_new_password(request):
 
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
+
+
 # --- Schedule Views ---
 @api_view(['POST'])
 def create_schedule(request):
@@ -564,3 +566,4 @@ def get_schedules(request, email):
         return Response(serializer.data)
     except MyUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
