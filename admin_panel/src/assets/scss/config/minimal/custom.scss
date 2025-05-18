@@ -1,0 +1,16 @@
+/*
+Template Name: Velzon - Admin & Dashboard Template
+Author: Themesbrand
+Website: https://themesbrand.com/
+Contact: support@themesbrand.com
+File: Custom Css File
+*/
+.custom-vector-map {
+    svg {
+        width: 100%;
+        max-height: 100%;
+        path {
+            fill: var(--#{$prefix}light) !important;
+        }
+    }
+}
