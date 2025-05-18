@@ -564,4 +564,3 @@ def get_schedules(request, email):
         return Response(serializer.data)
     except MyUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
