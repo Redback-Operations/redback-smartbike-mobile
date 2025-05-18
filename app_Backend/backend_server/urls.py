@@ -1,3 +1,5 @@
+# Updated code
+
 """
 URL configuration for backend_server project.
 
@@ -15,7 +17,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from backend_server import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf import settings
@@ -66,13 +68,14 @@ urlpatterns = [
                   # Password reset paths
                   path('user/password_reset/', views.password_reset_request, name='password_reset_request'),
                   path('user/password_reset/otp_validate', views.password_reset_otp_validation, name='password_reset_otp_validation'),
-                  path('user/password_reset/new_password', views.password_reset_new_password, name='password_reset_new_password')
+                  path('user/password_reset/new_password', views.password_reset_new_password, name='password_reset_new_password'),
                   # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
                   # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
                   # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
                   # TODO: for admin account in flutter: also get all messages with the same thread_number (all messages for that open case)
                   # TODO: for admin account in fluttre: be able to close the case, if resolved
+                  path('api/admin/', include('backend_server.customadmin.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Getting Json format through browzer
