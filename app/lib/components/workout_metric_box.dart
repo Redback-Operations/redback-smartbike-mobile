@@ -6,7 +6,7 @@ class WorkoutMetricBox extends StatelessWidget {
   final String label;
   final String value;
 
-  WorkoutMetricBox({required this.label, required this.value});
+  const WorkoutMetricBox({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {

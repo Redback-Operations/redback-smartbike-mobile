@@ -13,7 +13,7 @@ import 'friend_detail_page.dart';
 import 'home_page.dart';
 
 class MyFriendScreen extends StatefulWidget {
-  const MyFriendScreen({Key? key, required this.title}) : super(key: key);
+  const MyFriendScreen({super.key, required this.title});
   final String title;
 
   @override
@@ -23,7 +23,7 @@ class MyFriendScreen extends StatefulWidget {
 class _MyFriendScreenState extends State<MyFriendScreen> {
   List<FriendModel> allFriends = [];
   List<FriendModel> filteredFriends = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   // fetch all friends first
   Future<void> fetchFriends() async {
@@ -65,7 +65,7 @@ class _MyFriendScreenState extends State<MyFriendScreen> {
     } else {
       setState(() {
         filteredFriends = allFriends
-            .where((friend) => (friend.name + ' ' + friend.surname)
+            .where((friend) => ('${friend.name} ${friend.surname}')
                 .toLowerCase()
                 .contains(query.toLowerCase()))
             .toList();

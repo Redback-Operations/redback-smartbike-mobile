@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:phone_app/components/reset_password_session.dart';
 import 'package:phone_app/pages/password_reset_otp_validate_page.dart';
-import 'login.dart';
 import 'signup.dart';
 import '../components/login_signup_background.dart';
 import '../components/bottom_button.dart';
@@ -51,7 +50,8 @@ class PasswordResetPage extends StatelessWidget {
               children: [
                 Text('Check your email to get the OTP to reset the password'),
                 SizedBox(height: 10),
-                Text('You will receive an email within the next couple of minutes. \n The OTP will be valid for 4 minutes Only.'),
+                Text(
+                    'You will receive an email within the next couple of minutes. \n The OTP will be valid for 4 minutes Only.'),
               ],
             ),
             actions: <Widget>[
@@ -59,9 +59,11 @@ class PasswordResetPage extends StatelessWidget {
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => PasswordResetOtpValidatePagePage())
-                  );
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PasswordResetOtpValidatePagePage()));
                 },
               ),
             ],
@@ -74,7 +76,8 @@ class PasswordResetPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to send reset email. Please try again later.'),
+            content: const Text(
+                'Failed to send reset email. Please try again later.'),
             actions: <Widget>[
               TextButton(
                 child: const Text('OK'),
@@ -92,7 +95,8 @@ class PasswordResetPage extends StatelessWidget {
   void showLoader(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+      barrierDismissible:
+          false, // Prevent dismissing the dialog by tapping outside
       builder: (BuildContext context) {
         return const AlertDialog(
           content: Row(

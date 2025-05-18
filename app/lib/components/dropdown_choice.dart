@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phone_app/utilities/constants.dart';
 
 class DropdownChoice<T> extends StatefulWidget {
-  DropdownChoice({
+  const DropdownChoice({
+    super.key,
     this.height,
     required this.onChange,
     required this.items,

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:phone_app/pages/settings.dart';
 import 'package:phone_app/pages/terminate_account.dart';
 import '../components/account_containers.dart';
-import '../components/bottom_navigation_bar.dart';
 import '../components/main_app_background.dart';
-import 'Friends.dart';
-import 'home_page.dart';
 import 'about_us.dart';
 import 'contact.dart';
 import 'email.dart';
-import 'login.dart';
-import 'my_stats.dart';
 import 'privacy.dart';
 import 'my_profile.dart';
 import '../utilities/constants.dart';
@@ -24,7 +18,6 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccount extends State<MyAccount> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

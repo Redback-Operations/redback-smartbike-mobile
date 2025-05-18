@@ -3,7 +3,8 @@ import 'package:phone_app/utilities/constants.dart';
 
 class StatContainerBox extends StatelessWidget {
   // custom constructor
-  StatContainerBox({required this.valueToText, required this.fieldName});
+  const StatContainerBox(
+      {super.key, required this.valueToText, required this.fieldName});
 
   // use VoidCallback instead of Function
 

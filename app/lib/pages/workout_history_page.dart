@@ -18,12 +18,14 @@ import 'package:uuid/uuid.dart';
 import 'home_page.dart';
 
 class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _currentIndex = 1;
+  final int _currentIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

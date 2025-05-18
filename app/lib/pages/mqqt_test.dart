@@ -5,6 +5,8 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MqttTest extends StatefulWidget {
+  const MqttTest({super.key});
+
   @override
   _MqttTestState createState() => _MqttTestState();
 }
@@ -38,7 +40,8 @@ class _MqttTestState extends State<MqttTest> {
   void _publishMessage() {
     final builder = MqttClientPayloadBuilder();
     final random = Random();
-    int randomNumber = 20 + random.nextInt(16); // Generates a random number between 20 and 35
+    int randomNumber =
+        20 + random.nextInt(16); // Generates a random number between 20 and 35
     builder.addString("$randomNumber degrees");
     _client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
   }

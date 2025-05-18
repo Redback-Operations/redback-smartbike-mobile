@@ -11,6 +11,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,8 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title, this.initialIndex = 0})
-      : super(key: key);
+  const HomePage({super.key, required this.title, this.initialIndex = 0});
   final String title;
   final int initialIndex;
 
@@ -32,11 +33,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
+  @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
   }
 
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,

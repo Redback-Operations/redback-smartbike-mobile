@@ -6,7 +6,7 @@ import '../components/main_app_background.dart';
 import '../components/radio_btn_privacy.dart';
 
 class Privacy extends StatefulWidget {
-  const Privacy({Key? key}) : super(key: key);
+  const Privacy({super.key});
 
   @override
   PrivacyState createState() => PrivacyState();
@@ -39,7 +39,7 @@ class PrivacyState extends State<Privacy> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Container(
+            child: SizedBox(
               width: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

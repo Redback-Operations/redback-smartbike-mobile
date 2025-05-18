@@ -13,28 +13,28 @@ dependencies:
   flutter_dotenv: ^5.1.0
   google_maps_flutter: ^2.5.0
   http: ^1.1.0
-  location: ^5.0.3
+  location: ^8.0.0
   image_picker: ^1.0.7
   path_provider: ^2.0.2
   provider: ^6.1.2
   uuid: ^4.4.0
-  intl: ^0.19.0
+  intl: ^0.20.2
   analog_clock: ^0.1.1
   url_launcher: ^6.1.7
   social_login_buttons: ^1.0.7
   google_sign_in: ^6.2.1
-  flutter_facebook_auth: ^6.2.0
+  flutter_facebook_auth: ^7.1.1
   mqtt_client: ^10.3.0
   flutter_secure_storage: ^9.0.0
   win32: ^5.5.0
-  flutter_local_notifications: ^9.5.3
-  timezone: ^0.8.0
+  flutter_local_notifications: ^19.1.0
+  timezone: ^0.10.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true

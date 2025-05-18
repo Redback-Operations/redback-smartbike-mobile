@@ -13,6 +13,8 @@ void main() {
 }
 
 class SignUpApp extends StatelessWidget {
+  const SignUpApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +25,8 @@ class SignUpApp extends StatelessWidget {
 }
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -218,15 +222,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   _isLoading
                       ? CircularProgressIndicator() // Show loading indicator
                       : BottomButton(
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await signUp();
-                      } else {
-                        _showErrorSnackbar('Please correct the errors');
-                      }
-                    },
-                    buttonText: 'Sign Up',
-                  ),
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await signUp();
+                            } else {
+                              _showErrorSnackbar('Please correct the errors');
+                            }
+                          },
+                          buttonText: 'Sign Up',
+                        ),
                   SizedBox(width: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

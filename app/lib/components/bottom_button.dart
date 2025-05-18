@@ -4,7 +4,8 @@ import 'package:phone_app/utilities/constants.dart';
 class BottomButton extends StatelessWidget {
   // custom constructor
   BottomButton(
-      {required this.onTap,
+      {super.key,
+      required this.onTap,
       required this.buttonText,
       this.width,
       this.solidColor = true});
@@ -20,10 +21,6 @@ class BottomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        child: Text(
-          buttonText,
-          style: kBottomButtonText,
-        ),
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 10.0, bottom: 40),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -40,6 +37,10 @@ class BottomButton extends StatelessWidget {
           color: solidColor
               ? kLoginRegisterBtnColour
               : kLoginRegisterBtnColourOPAC,
+        ),
+        child: Text(
+          buttonText,
+          style: kBottomButtonText,
         ),
       ),
     );

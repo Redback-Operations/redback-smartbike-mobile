@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -10,8 +9,6 @@ import '../components/input_text_field.dart';
 import '../components/login_signup_background.dart';
 import '../components/reset_password_session.dart';
 import '../components/text_tap_button.dart';
-import '../utilities/constants.dart';
-import 'login.dart';
 import 'signup.dart';
 
 class PasswordResetCreateNewPasswordPage extends StatelessWidget {
@@ -55,9 +52,7 @@ class PasswordResetCreateNewPasswordPage extends StatelessWidget {
             title: const Text('Password updated Successfully!'),
             content: const Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Please login with your new password')
-              ],
+              children: [Text('Please login with your new password')],
             ),
             actions: <Widget>[
               TextButton(
@@ -167,7 +162,8 @@ class PasswordResetCreateNewPasswordPage extends StatelessWidget {
   void showLoader(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+      barrierDismissible:
+          false, // Prevent dismissing the dialog by tapping outside
       builder: (BuildContext context) {
         return const AlertDialog(
           content: Row(
@@ -182,5 +178,4 @@ class PasswordResetCreateNewPasswordPage extends StatelessWidget {
       },
     );
   }
-
 }

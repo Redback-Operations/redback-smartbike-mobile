@@ -3,7 +3,8 @@ import 'package:phone_app/utilities/constants.dart';
 
 class AccountContainer extends StatelessWidget {
   // custom constructor
-  AccountContainer({
+  const AccountContainer({
+    super.key,
     required this.fieldName,
     required this.typeIcon,
     required this.onPressed,
@@ -19,7 +20,7 @@ class AccountContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: ElevatedButton(
         onPressed: onPressed,

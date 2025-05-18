@@ -3,7 +3,7 @@ import 'dart:math';
 class WorkoutValues {
   static final Random _random = Random();
 
-  static double _baseTemperature = 36.8;
+  static final double _baseTemperature = 36.8;
   static double _currentSpeed = 5.0;
   static int _timeSinceLastSpeedChange = 0;
   static double _totalDistance = 0.0;

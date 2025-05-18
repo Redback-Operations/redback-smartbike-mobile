@@ -5,7 +5,7 @@ import '../utilities/constants.dart';
 class PasswordToggle extends StatefulWidget {
   final Function(bool) onToggle;
 
-  const PasswordToggle({required this.onToggle});
+  const PasswordToggle({super.key, required this.onToggle});
 
   @override
   _PasswordToggleState createState() => _PasswordToggleState();

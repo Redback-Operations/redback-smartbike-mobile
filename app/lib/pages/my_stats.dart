@@ -8,14 +8,14 @@ import 'Friends.dart';
 import 'home_page.dart';
 
 class MyStats extends StatefulWidget {
-  const MyStats({Key? key, required this.title}) : super(key: key);
+  const MyStats({super.key, required this.title});
   final String title;
   @override
   _MyStatsState createState() => _MyStatsState();
 }
 
 class _MyStatsState extends State<MyStats> {
-  int _currentIndex = 3;
+  final int _currentIndex = 3;
   @override
   Widget build(BuildContext context) {
     return CustomGradientContainerSoft(

@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
 class ContactUsScreen extends StatefulWidget {
+  const ContactUsScreen({super.key});
+
   @override
   _ContactUsScreenState createState() => _ContactUsScreenState();
 }
@@ -20,7 +22,7 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen> {
   String _subject = '';
   String _message = '';
-  String? selectedValue = null;
+  String? selectedValue;
   final _dropdownFormKey = GlobalKey<FormState>();
 
   // each thread of help messages will have the same UUID number, so that they can be easily
@@ -31,30 +33,30 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
+        value: 'General Inquiry',
         child: Text(
           'General Inquiry',
           style: kSimpleTextPurple,
         ),
-        value: 'General Inquiry',
       ),
       DropdownMenuItem(
+          value: 'Technical Support',
           child: Text(
             'Technical Support',
             style: kSimpleTextPurple,
-          ),
-          value: 'Technical Support'),
+          )),
       DropdownMenuItem(
+          value: 'Billing Issue',
           child: Text(
             'Billing Issue',
             style: kSimpleTextPurple,
-          ),
-          value: 'Billing Issue'),
+          )),
       DropdownMenuItem(
+          value: 'Other',
           child: Text(
             'Other',
             style: kSimpleTextPurple,
-          ),
-          value: 'Other'),
+          )),
     ];
     return menuItems;
   }

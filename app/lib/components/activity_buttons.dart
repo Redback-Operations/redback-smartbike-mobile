@@ -7,6 +7,7 @@ class ActivityButton extends StatelessWidget {
   final double? width;
 
   const ActivityButton({
+    super.key,
     required this.onTap,
     required this.buttonText,
     this.width,

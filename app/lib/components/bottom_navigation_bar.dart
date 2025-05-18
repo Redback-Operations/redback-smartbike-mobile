@@ -9,7 +9,7 @@ import '../pages/settings.dart';
 class BottomNavBar extends StatefulWidget {
   final int initialIndex;
 
-  BottomNavBar({required this.initialIndex});
+  const BottomNavBar({super.key, required this.initialIndex});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();

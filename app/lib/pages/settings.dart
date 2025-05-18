@@ -19,7 +19,7 @@ import 'package:flutter/foundation.dart';
 final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class Setting extends StatefulWidget {
-  const Setting({Key? key, required this.title}) : super(key: key);
+  const Setting({super.key, required this.title});
   final String title;
 
   @override
@@ -32,12 +32,12 @@ class _Setting extends State<Setting> {
     if (_googleSignIn.currentUser != null) {
       // if Google user is signed in
       await _handleGoogleSignOut();
-      await Provider.of<UserDataProvider>(context, listen: false)
-          .clearSession(Provider.of<UserSessionProvider>(context, listen: false));
+      await Provider.of<UserDataProvider>(context, listen: false).clearSession(
+          Provider.of<UserSessionProvider>(context, listen: false));
     } else {
       // clear manual sign in data
-      await Provider.of<UserDataProvider>(context, listen: false)
-          .clearSession(Provider.of<UserSessionProvider>(context, listen: false));
+      await Provider.of<UserDataProvider>(context, listen: false).clearSession(
+          Provider.of<UserSessionProvider>(context, listen: false));
     }
 
     // go back to the login screen

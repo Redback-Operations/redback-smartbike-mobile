@@ -6,6 +6,8 @@ import '../utilities/constants.dart';
 import 'home_page.dart';
 
 class ScheduleWorkoutScreen extends StatefulWidget {
+  const ScheduleWorkoutScreen({super.key});
+
   @override
   _ScheduleWorkoutScreenState createState() => _ScheduleWorkoutScreenState();
 }

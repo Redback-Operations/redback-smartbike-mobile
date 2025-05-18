@@ -17,7 +17,7 @@ import 'package:uuid/uuid.dart';
 import 'cycling_workout.dart';
 
 class SetWorkout3 extends StatefulWidget {
-  const SetWorkout3({Key? key, required this.title}) : super(key: key);
+  const SetWorkout3({super.key, required this.title});
   final String title;
 
   @override
@@ -25,11 +25,11 @@ class SetWorkout3 extends StatefulWidget {
 }
 
 class _SetWorkoutState extends State<SetWorkout3> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
   late String wrkName;
-  int? selectedDuration = null; // duration
-  String? selectedIntensity = null; // intensity
-  String? selectedType = null;
+  int? selectedDuration; // duration
+  String? selectedIntensity; // intensity
+  String? selectedType;
 
   // validate fields
   bool validateFields() {
@@ -114,7 +114,7 @@ class _SetWorkoutState extends State<SetWorkout3> {
                   ),
                   SizedBox(
                       height:
-                      80), // Add some spacing between the colored container and the input fields
+                          80), // Add some spacing between the colored container and the input fields
 
                   DropdownChoice(
                     onChange: (int? newValue) {
@@ -183,30 +183,30 @@ class _SetWorkoutState extends State<SetWorkout3> {
   List<DropdownMenuItem<int>> get dropdownItemsDuration {
     List<DropdownMenuItem<int>> menuItems = [
       DropdownMenuItem(
+        value: 15,
         child: Text(
           '15 minutes',
           style: kSimpleTextPurple,
         ),
-        value: 15,
       ),
       DropdownMenuItem(
+          value: 30,
           child: Text(
             '30 minutes',
             style: kSimpleTextPurple,
-          ),
-          value: 30),
+          )),
       DropdownMenuItem(
+          value: 45,
           child: Text(
             '45 minutes',
             style: kSimpleTextPurple,
-          ),
-          value: 45),
+          )),
       DropdownMenuItem(
+          value: 60,
           child: Text(
             '60 minutes',
             style: kSimpleTextPurple,
-          ),
-          value: 60),
+          )),
     ];
     return menuItems;
   }
@@ -215,24 +215,24 @@ class _SetWorkoutState extends State<SetWorkout3> {
   List<DropdownMenuItem<String>> get dropdownItemsIntensity {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
+        value: 'Beginner',
         child: Text(
           'Beginner',
           style: kSimpleTextPurple,
         ),
-        value: 'Beginner',
       ),
       DropdownMenuItem(
+          value: 'Intermediate',
           child: Text(
             'Intermediate',
             style: kSimpleTextPurple,
-          ),
-          value: 'Intermediate'),
+          )),
       DropdownMenuItem(
+          value: 'Advanced',
           child: Text(
             'Advanced',
             style: kSimpleTextPurple,
-          ),
-          value: 'Advanced'),
+          )),
     ];
     return menuItems;
   }
@@ -241,18 +241,18 @@ class _SetWorkoutState extends State<SetWorkout3> {
   List<DropdownMenuItem<String>> get dropdownItemsType {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
+        value: 'Interval',
         child: Text(
           'Interval',
           style: kSimpleTextPurple,
         ),
-        value: 'Interval',
       ),
       DropdownMenuItem(
+          value: 'Continuous',
           child: Text(
             'Continuous',
             style: kSimpleTextPurple,
-          ),
-          value: 'Continuous'),
+          )),
     ];
     return menuItems;
   }
@@ -261,7 +261,7 @@ class _SetWorkoutState extends State<SetWorkout3> {
   void sendWorkoutSettings() async {
     // generate session_id
     var uuid = Uuid();
-    String new_session_id = await uuid.v4();
+    String newSessionId = uuid.v4();
     // get current user's email
     UserDetails? userDetails =
         Provider.of<UserDataProvider>(context, listen: false).userDetails;
@@ -280,7 +280,7 @@ class _SetWorkoutState extends State<SetWorkout3> {
           'session_duration': selectedDuration,
           'level': selectedIntensity,
           'type': selectedType,
-          'session_id': new_session_id,
+          'session_id': newSessionId,
           'email': userDetails!.email,
         }),
         headers: {'Content-Type': 'application/json'},
@@ -296,11 +296,11 @@ class _SetWorkoutState extends State<SetWorkout3> {
           Provider.of<WorkoutTypeProvider>(context, listen: false)
               .updateWorkoutType(type: selectedType);
           Provider.of<WorkoutTypeProvider>(context, listen: false)
-              .updateWorkoutType(sessionId: new_session_id);
+              .updateWorkoutType(sessionId: newSessionId);
           // notify listeners after updating
           Provider.of<WorkoutTypeProvider>(context, listen: false)
               .notifyListeners();
-          print('this sess id: $new_session_id');
+          print('this sess id: $newSessionId');
 
           print('Workout settings sent successfully');
         } else {

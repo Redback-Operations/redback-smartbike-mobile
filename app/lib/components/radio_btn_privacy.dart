@@ -3,8 +3,9 @@ import 'package:phone_app/utilities/constants.dart';
 
 class RadioBtnChoice extends StatelessWidget {
   // custom constructor
-  RadioBtnChoice(
-      {required this.buttonText,
+  const RadioBtnChoice(
+      {super.key,
+      required this.buttonText,
       required this.notificationValue,
       required this.radioValue,
       required this.changeState});

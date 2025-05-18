@@ -14,14 +14,14 @@ import '../components/input_text_field.dart'; // Ensure you have UserDetails cla
 import 'dart:convert';
 
 class Terminate extends StatefulWidget {
-  const Terminate({Key? key}) : super(key: key);
+  const Terminate({super.key});
 
   @override
   TerminateState createState() => TerminateState();
 }
 
 class TerminateState extends State<Terminate> {
-  int _currentIndex = 1;
+  final int _currentIndex = 1;
   final TextEditingController _passwordController = TextEditingController();
   String? _selectedReason;
   final TextEditingController _additionalReasonController =
@@ -40,60 +40,59 @@ class TerminateState extends State<Terminate> {
         "No ID Provided";
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: kLoginRegisterBtnColour.withOpacity(0.9),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          'Terminate Account',
-          style: kSubSubTitleOfPage,
-        ),
-        centerTitle: true,
-      ),
-      body: CustomGradientContainerSoft(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 80),
-              DropdownChoice(
-                onChange: (String? newValue) {
-                  setState(() {
-                    _selectedReason = newValue!;
-                  });
-                },
-                items: _reasons
-                    .map((reason) => DropdownMenuItem<String>(
-                          value: reason,
-                          child: Text(reason, style: kSimpleTextPurple),
-                        ))
-                    .toList(),
-                selectedValue: _selectedReason,
-                helperText: 'Reason for Termination',
-              ),
-              SizedBox(height: 20),
-              InputTextField(
-                buttonText: 'Additional Details',
-                fieldController: _additionalReasonController,
-                height: 200,
-              ),
-              SizedBox(height: 50),
-              BottomButton(
-                onTap: _showConfirmDialog,
-                buttonText: 'Terminate',
-              ),
-              SizedBox(height: 20),
-            ],
+          title: Text(
+            'Terminate Account',
+            style: kSubSubTitleOfPage,
           ),
+          centerTitle: true,
         ),
-      )
-    );
+        body: CustomGradientContainerSoft(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 80),
+                DropdownChoice(
+                  onChange: (String? newValue) {
+                    setState(() {
+                      _selectedReason = newValue!;
+                    });
+                  },
+                  items: _reasons
+                      .map((reason) => DropdownMenuItem<String>(
+                            value: reason,
+                            child: Text(reason, style: kSimpleTextPurple),
+                          ))
+                      .toList(),
+                  selectedValue: _selectedReason,
+                  helperText: 'Reason for Termination',
+                ),
+                SizedBox(height: 20),
+                InputTextField(
+                  buttonText: 'Additional Details',
+                  fieldController: _additionalReasonController,
+                  height: 200,
+                ),
+                SizedBox(height: 50),
+                BottomButton(
+                  onTap: _showConfirmDialog,
+                  buttonText: 'Terminate',
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ));
   }
 
   void _showConfirmDialog() {
@@ -138,10 +137,9 @@ class TerminateState extends State<Terminate> {
     String? baseURL = dotenv.env['API_URL_BASE'];
 
     // Fetch user ID from UserDataProvider - UPDATED to find ID instead of email
-    final userId = Provider.of<UserDataProvider>(context, listen: false)
-            .userDetails
-            ?.id ??
-        "Cannot fetch the user details";
+    final userId =
+        Provider.of<UserDataProvider>(context, listen: false).userDetails?.id ??
+            "Cannot fetch the user details";
     print(userId);
     if (userId == "Cannot fetch the user details") {
       print("User detail is not provided. Cannot terminate account.");
@@ -150,7 +148,8 @@ class TerminateState extends State<Terminate> {
     final enteredPassword = _passwordController.text;
     print('pass: $password');
 
-    final apiUrl = '$baseURL/user/authenticate/'; // Correct endpoint to terminate - UPDATED TO USE BODY INSTEAD OF URL
+    final apiUrl =
+        '$baseURL/user/authenticate/'; // Correct endpoint to terminate - UPDATED TO USE BODY INSTEAD OF URL
 
     // 1. check the password against database
     final authResponse = await http.post(
