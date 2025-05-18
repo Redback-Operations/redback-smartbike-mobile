@@ -1,6 +1,6 @@
 from django.conf import settings
-from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
-from .serializers import UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, \
+from .models import MyUser, AccountDetails, HelpCentreMessage, Schedule, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
+from .serializers import ScheduleSerializer, UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, \
     WorkoutEntrySerializer, WorkoutTypeSerializer, SocialMediaUserSerializer, WorkoutAnalysisSerializer
 from .forms import UserCreationForm, SignUpForm, LoginForm
 from django.http import JsonResponse
@@ -546,3 +546,22 @@ def password_reset_new_password(request):
 
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
+
+# --- Schedule Views ---
+@api_view(['POST'])
+def create_schedule(request):
+    serializer = ScheduleSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_schedules(request, email):
+    try:
+        user = MyUser.objects.get(email=email)
+        schedules = Schedule.objects.filter(user=user).order_by('date', 'time')
+        serializer = ScheduleSerializer(schedules, many=True)
+        return Response(serializer.data)
+    except MyUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
