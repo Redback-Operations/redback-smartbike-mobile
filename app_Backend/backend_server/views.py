@@ -547,7 +547,6 @@ def password_reset_new_password(request):
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
 
-
 # --- Schedule Views ---
 @api_view(['POST'])
 def create_schedule(request):
@@ -556,7 +555,6 @@ def create_schedule(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET'])
 def get_schedules(request, email):
     try:
