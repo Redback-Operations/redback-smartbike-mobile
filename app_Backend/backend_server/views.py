@@ -545,4 +545,4 @@ def password_reset_new_password(request):
     return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
 
 def getDebugMode():
-    return os.getenv('DEBUG','').strip().upper() == 'TRUE'
+    return os.getenv('DEBUG', '').strip().upper() == 'TRUE'
