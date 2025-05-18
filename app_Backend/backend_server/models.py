@@ -17,9 +17,12 @@ class MyUser(models.Model):
     login_id = models.CharField(null=True, max_length=50, unique=True)
     otp = models.CharField(max_length=6, blank=True, null=True)  # OTP field
     otp_created_at = models.DateTimeField(blank=True, null=True)  # Optional: to track OTP creation time
+    is_active = models.BooleanField(default=True)
 
     # generate the id, starting at 1000, and add 1 to each new user
     def save(self, *args, **kwargs):
+        self.email = self.email.strip().lower() ##lowercase email
+
         if not self.id:  # If id is not already set
             last_user = MyUser.objects.order_by('-id').first()
             if last_user:

@@ -1,1 +1,0 @@
-# redback-smartbike-mobile
