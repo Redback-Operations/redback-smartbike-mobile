@@ -543,6 +543,5 @@ def password_reset_new_password(request):
         else:
             return Response({"error": "Invalid OTP Token"}, status=status.HTTP_401_UNAUTHORIZED)  # User not found response
     return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
-
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
