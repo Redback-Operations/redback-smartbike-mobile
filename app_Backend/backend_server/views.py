@@ -546,7 +546,6 @@ def password_reset_new_password(request):
 
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
-
 # --- Schedule Views ---
 @api_view(['POST'])
 def create_schedule(request):
