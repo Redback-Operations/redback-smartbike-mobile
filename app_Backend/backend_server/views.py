@@ -1,6 +1,6 @@
 from django.conf import settings
-from .models import MyUser, AccountDetails, HelpCentreMessage, Schedule, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
-from .serializers import ScheduleSerializer, UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, \
+from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutAnalysis
+from .serializers import UserSerializer, AccountDetailsSerializer, HelpCentreMsgSerializer, TerminateAccMsgSerializer, \
     WorkoutEntrySerializer, WorkoutTypeSerializer, SocialMediaUserSerializer, WorkoutAnalysisSerializer
 from .forms import UserCreationForm, SignUpForm, LoginForm
 from django.http import JsonResponse
@@ -286,7 +286,7 @@ def delete_user(request, userId):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     else:  
-      return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 ## UNNUSED
 def get_all_details(request):
