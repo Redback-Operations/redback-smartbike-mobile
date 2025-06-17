@@ -228,3 +228,21 @@ class WorkoutAnalysis(models.Model):
     avg_heart_rate = models.IntegerField(null=True, blank=True)
     workout_duration = models.IntegerField(null=True, blank=True)
     avg_temperature = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+class Schedule(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, default='Workout')
+    description = models.TextField(blank=True, null=True)
+    date = models.DateField()
+    time = models.TimeField()
+    reminder_minutes = models.IntegerField(default=0)  # e.g. 60 for 1 hour before
+    recurrence = models.CharField(max_length=20, choices=[
+        ('None', 'None'),
+        ('Daily', 'Daily'),
+        ('Weekly', 'Weekly'),
+        ('Monthly', 'Monthly'),
+    ], default='None')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title} on {self.date} at {self.time}" #updated code
