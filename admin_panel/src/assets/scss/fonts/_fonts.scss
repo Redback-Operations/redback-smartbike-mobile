@@ -33,10 +33,9 @@
     src: local('hkgrotesk semibold'), url("../../fonts/hkgrotesk-semibold.woff") format("woff");
     font-weight: 600;
 }
-// @font-face {
-//     font-family: "hkgrotesk";
-//     // src: url("../../fonts/hkgrotesk-bold.eot");
-//     src: url("../../fonts/hkgrotesk-bold.eot");
-//     src: local('hkgrotesk bold'), url("../../fonts/hkgrotesk-bold.woff") format("woff");
-//     font-weight: 700;
-// }
+@font-face {
+    font-family: "hkgrotesk";
+    src: url("../../fonts/hkgrotesk-bold.eot");
+    src: local('hkgrotesk bold'), url("../../fonts/hkgrotesk-bold.woff") format("woff");
+    font-weight: 700;
+}
