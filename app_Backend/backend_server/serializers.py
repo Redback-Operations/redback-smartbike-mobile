@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import MyUser, AccountDetails, HelpCentreMessage, TerminateAccountMessage, WorkoutType, WorkoutEntry, WorkoutAnalysis
 from django.contrib.auth.hashers import make_password
 import os
+from django.conf import settings
 
 # Serializer for the Users model to convert Python objects to JSON
 class UserSerializer(serializers.ModelSerializer):
@@ -17,8 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
 
         # Check debug from environment and set password field visibility
-        debug_mode = os.getenv("DEBUG", "").upper() == "TRUE"
-        if debug_mode:
+        if settings.DEBUG:
             # Allow password to be visible for debugging (not recommended in production!)
             self.fields['password'].write_only = False
         else:
@@ -42,8 +42,7 @@ class SocialMediaUserSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
 
         # Check debug from environment and set password field visibility
-        debug_mode = os.getenv("DEBUG", "").upper() == "TRUE"
-        if debug_mode:
+        if settings.DEBUG:
             # Allow password to be visible for debugging (not recommended in production!)
             self.fields['password'].write_only = False
         else:
