@@ -228,8 +228,12 @@ def terminate_account_message_create(request, format=None):
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
+
         email = request.data.get('email')
         password = request.data.get('password')
+
+        if (email == None or password == None):
+            return Response({'error': 'Invalid Login Fields!'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = MyUser.objects.get(email__iexact=email)
@@ -248,9 +252,11 @@ def login_view(request):
                     'account_details': serializer.data,
                 }, status=status.HTTP_200_OK)
             else:
-                return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND) #was 401, but we don't want to tell hackers they have the right email
+                return Response({'error': 'Email or password details incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
         except MyUser.DoesNotExist:
-            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Email or password details incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({"error": "Failed to login", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # view to authenticate account password (only used for termination)
 ##user/authenticate/<str:userID>
@@ -291,7 +297,6 @@ def delete_user(request, userId):
     else:  
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-## UNNUSED
 def get_all_details(request):
     if request.method == 'POST':
         all_details = AccountDetails.objects.all().values()
@@ -315,7 +320,7 @@ def set_workout(request):
 
             #block manual setting of session_ID in production mode, but allow setting for testing in debug
             if ('session_id' in data):
-                if (not getDebugMode()):
+                if (not settings.DEBUG):
                     data['session_id'] = None
                 
             workout_type_serializer = WorkoutTypeSerializer(data=data)
@@ -413,7 +418,7 @@ def get_otp(increment):
     otp_min = 100000
     otp_max = 999999
 
-    if getDebugMode():
+    if settings.DEBUG:
         increment = int(increment)
         otp = str(otp_min+increment)
     else:
@@ -583,3 +588,22 @@ return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD
 
 def getDebugMode():
     return os.getenv('DEBUG','').strip().upper() == 'TRUE'
+  
+# --- Schedule Views ---
+@api_view(['POST'])
+def create_schedule(request):
+    serializer = ScheduleSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def get_schedules(request, email):
+    try:
+        user = MyUser.objects.get(email=email)
+        schedules = Schedule.objects.filter(user=user).order_by('date', 'time')
+        serializer = ScheduleSerializer(schedules, many=True)
+        return Response(serializer.data)
+    except MyUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
