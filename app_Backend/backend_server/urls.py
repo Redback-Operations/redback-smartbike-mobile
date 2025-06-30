@@ -22,9 +22,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from backend_server.views import test_mongo
+
 
 urlpatterns = [
                   # Other URL patterns
+                  path('', views.index, name='index'),
+                  path('create-test-user/', views.create_test_user),
                   path('admin/', admin.site.urls),  # URL for the Django admin interface
                   path('users/', views.user_list),  # URL for handling user list operations (GET and POST)
                   path('update/<str:userId>/', views.user_detail),
@@ -62,11 +66,13 @@ urlpatterns = [
                   path('login-sm/', views.social_media_login, name='login-sm'),
                   path('finish_workout/', views.wrk_finished, name='finish_workout'),
                   path('workout_analysis/<int:session_id>/', views.get_analysis, name='workout_analysis_detail'),
-
+                  path('api/create_schedule/', views.create_schedule, name='create_schedule'),
+                  path('api/get_schedules/<str:email>/', views.get_schedules, name='get_schedules'), #updated code
                   # Password reset paths
                   path('user/password_reset/', views.password_reset_request, name='password_reset_request'),
                   path('user/password_reset/otp_validate', views.password_reset_otp_validation, name='password_reset_otp_validation'),
-                  path('user/password_reset/new_password', views.password_reset_new_password, name='password_reset_new_password')
+                  path('user/password_reset/new_password', views.password_reset_new_password, name='password_reset_new_password'),
+                  path('test-mongo/', test_mongo, name='test_mongo')
                   # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
                   # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
                   # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),

@@ -33,6 +33,8 @@ import json
 from .models import MyUser
 import random
 from django.utils import timezone
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import make_password
 import os
 
 logger = logging.getLogger(__name__)
@@ -222,8 +224,12 @@ def terminate_account_message_create(request, format=None):
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
+
         email = request.data.get('email')
         password = request.data.get('password')
+
+        if (email == None or password == None):
+            return Response({'error': 'Invalid Login Fields!'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = MyUser.objects.get(email__iexact=email)
@@ -241,9 +247,11 @@ def login_view(request):
                     'account_details': serializer.data,
                 }, status=status.HTTP_200_OK)
             else:
-                return Response({'message': 'Incorrect password'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND) #was 401, but we don't want to tell hackers they have the right email
         except MyUser.DoesNotExist:
-            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Email or password details incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({"error": "Failed to login", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # view to authenticate account password (only used for termination)
 ##user/authenticate/ requires: ?<password>
@@ -284,7 +292,6 @@ def delete_user(request, userId):
     else:  
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-## UNNUSED
 def get_all_details(request):
     if request.method == 'POST':
         all_details = AccountDetails.objects.all().values()
@@ -298,12 +305,27 @@ def get_all_details(request):
 @api_view(['POST'])
 def set_workout(request):
     if request.method == 'POST':
-        workout_type_serializer = WorkoutTypeSerializer(data=request.data)
-        if workout_type_serializer.is_valid():
-            workout_type = workout_type_serializer.save()
-            return Response(workout_type_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(workout_type_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = request.data.copy()
+
+            if ('email') in data:
+                email_is_exist = MyUser.objects.filter(email__iexact=data['email']).exists()
+                if (not email_is_exist): return Response({"message": "Failed to create workout.", "errors": "User not Found"}, status=status.HTTP_404_NOT_FOUND)
+            else: return Response({"message": "Failed to create workout.", "errors": "User not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+            #block manual setting of session_ID in production mode, but allow setting for testing in debug
+            if ('session_id' in data):
+                if (not getDebugMode()):
+                    data['session_id'] = None
+                
+            workout_type_serializer = WorkoutTypeSerializer(data=data)
+            if workout_type_serializer.is_valid():
+                workout_type = workout_type_serializer.save()
+                return Response(workout_type_serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message": "Failed to create workout.", "errors": workout_type_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"message": "Failed to create workout.", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #view to create workout entry for a given workout
 ##setworkout/
@@ -381,7 +403,7 @@ def get_otp(increment):
     otp_min = 100000
     otp_max = 999999
 
-    if os.getenv('DEBUG','').strip().upper() == 'TRUE':
+    if getDebugMode():
         increment = int(increment)
         otp = str(otp_min+increment)
     else:
@@ -511,7 +533,44 @@ def password_reset_new_password(request):
                         return Response({"error": "Passwords are not matching!"}, status=status.HTTP_403_FORBIDDEN)
                 except Exception as e:
                     return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)  # Handle email sending errors
+    else:
+        return JsonResponse({"error": "Invalid OTP Token"}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)
+
+# MongoEngine model
+class RideData(Document):
+    user_id = StringField(required=True)
+    timestamp = DateTimeField(default=datetime.utcnow)
+
+def test_mongo(request):
+    ride = RideData(user_id="test_user").save()
+    return JsonResponse({
+        "message": "MongoDB is working!",
+        "user_id": ride.user_id,
+        "timestamp": str(ride.timestamp)
+    })
+
+def index(request):
+    return HttpResponse("<h1>🚴‍♂️ Redback SmartBike Backend Running!</h1>")
+
+from django.http import JsonResponse
+from backend_server.mongo_models import AppUser
+
+def create_test_user(request):
+    try:
+        user = AppUser(
+            email="test@example.com",
+            username="testuser",
+            password="hashed_password123"
+        )
+        user.save()
+        return JsonResponse({"message": "User created successfully!"})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
         else:
             return Response({"error": "Invalid OTP Token"}, status=status.HTTP_401_UNAUTHORIZED)  # User not found response
     return Response({"error": "Invalid request method."}, status=status.HTTP_400_BAD_REQUEST)  # Invalid method response
+
+def getDebugMode():
+    return os.getenv('DEBUG','').strip().upper() == 'TRUE'

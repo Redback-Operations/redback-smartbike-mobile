@@ -1,0 +1,3179 @@
+{
+	"info": {
+		"_postman_id": "7b5f7fbc-50db-490c-b7a1-8ded93abe7ad",
+		"name": "TestingSuite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43588132",
+		"_collection_link": "https://damien-9690805.postman.co/workspace/Damien's-Workspace~3f0a1008-d221-4eeb-81c2-139e55c7efe3/collection/43588132-7b5f7fbc-50db-490c-b7a1-8ded93abe7ad?action=share&source=collection_link&creator=43588132"
+	},
+	"item": [
+		{
+			"name": "Test for 1st Valid Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //user model - id, email, username, password, user_created, login_id, login_type, otp\r",
+							"    pm.expect(responseData).to.have.property('id').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('password').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('user_created');\r",
+							"    pm.expect(responseData).to.have.property('login_id');\r",
+							"    pm.expect(responseData).to.have.property('login_type');\r",
+							"    pm.expect(responseData).to.have.property('otp');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is the correct user (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData).to.have.property('email', 'test@test.com');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "TEST@test.com",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/signup/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test for 2nd Valid Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //user model - id, email, username, password, user_created, login_id, login_type, otp\r",
+							"    pm.expect(responseData).to.have.property('id').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('password').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('user_created');\r",
+							"    pm.expect(responseData).to.have.property('login_id');\r",
+							"    pm.expect(responseData).to.have.property('login_type');\r",
+							"    pm.expect(responseData).to.have.property('otp');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test2@test.com",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "test2",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/signup/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check for List of New Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  //array of AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"  pm.expect(responseData).to.be.an('array');\r",
+							"  pm.expect(responseData).length(2);\r",
+							"\r",
+							"  responseData.forEach(function(user) {\r",
+							"    pm.expect(user).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('dob');\r",
+							"    pm.expect(user).to.have.property('phone_number');\r",
+							"    pm.expect(user).to.have.property('image');\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct 1st user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData[0]).to.have.property('email', 'test@test.com');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct 2nd user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our 2nd user is there\r",
+							"  pm.expect(responseData[1]).to.have.property('email', 'test2@test.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url_base}}/users",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Update Endpoint Valid on User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required AccountDetails model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  //AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('dob');\r",
+							"    pm.expect(responseData).to.have.property('phone_number');\r",
+							"    pm.expect(responseData).to.have.property('image');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is the correct user (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData).to.have.property('email', 'test@test.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NTA0Njg2LCJpYXQiOjE3NDY1MDQzODYsImp0aSI6ImQyODk3N2EzOTg2NjRmMWFhNjYyNmRlZmQ5NWFhNGU5IiwidXNlcl9pZCI6IjEwMDAifQ.1_hARhzOTDu_jFeLfW2uJw1d8T5OjEd6Z12pW_hWL28",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{api_url_base}}/update/1000/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"update",
+						"1000",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Endpoint: PUT Valid ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct email (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData).to.have.property('email', 'test@test.com');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response hass the correct name update (Testname)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData).to.have.property('name', 'Testname');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct surname update (Testsur)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData).to.have.property('surname', 'Testsur');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Testname",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "Testsur",
+							"type": "text"
+						},
+						{
+							"key": "dob",
+							"value": "2000-01-01",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "0404555666",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/update/1000/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"update",
+						"1000",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Endpoint: Get Invalid ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/update/1002/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"update",
+						"1002",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Endpoint: PUT Invalid ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/update/1002/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"update",
+						"1002",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup Same but Case-Different Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 409\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(409);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@TEST.com",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Test2",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/signup/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check No New User Created (still 2 users)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response only has 1 user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  //array of AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"  pm.expect(responseData).to.be.an('array');\r",
+							"  pm.expect(responseData).length(2);\r",
+							"\r",
+							"  responseData.forEach(function(user) {\r",
+							"    pm.expect(user).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('dob');\r",
+							"    pm.expect(user).to.have.property('phone_number');\r",
+							"    pm.expect(user).to.have.property('image');\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is the correct user (Test)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData[0]).to.have.property('email', 'test@test.com');\r",
+							"  pm.expect(responseData[0]).to.have.property('username', 'Test');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url_base}}/users?=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NTA0Njg2LCJpYXQiOjE3NDY1MDQzODYsImp0aSI6ImQyODk3N2EzOTg2NjRmMWFhNjYyNmRlZmQ5NWFhNGU5IiwidXNlcl9pZCI6IjEwMDAifQ.1_hARhzOTDu_jFeLfW2uJw1d8T5OjEd6Z12pW_hWL28",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2NTA0Njg2LCJpYXQiOjE3NDY1MDQzODYsImp0aSI6ImQyODk3N2EzOTg2NjRmMWFhNjYyNmRlZmQ5NWFhNGU5IiwidXNlcl9pZCI6IjEwMDAifQ.1_hARhzOTDu_jFeLfW2uJw1d8T5OjEd6Z12pW_hWL28"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Valid Email (different case)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response only has 1 user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('message');\r",
+							"    pm.expect(responseData).to.have.property('id');\r",
+							"    pm.expect(responseData).to.have.property('account_details');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required AccountDetails model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"  \r",
+							"  //AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"    pm.expect(account).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('dob');\r",
+							"    pm.expect(account).to.have.property('phone_number');\r",
+							"    pm.expect(account).to.have.property('image');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is the correct user (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(account).to.have.property('email', 'test@test.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@TeSt.COM",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Invalid (Missing Email)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the message field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('error');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct error message (Invalid Login Fields!)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData['error']).to.eql('Invalid Login Fields!');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Invalid (Missing Password)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the message field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('error');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct error message (Invalid Login Fields!)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData['error']).to.eql('Invalid Login Fields!');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@TeSt.COM",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Bad Password (wrong case)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the message field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('error');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct error message (Email or password details incorrect)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData['error']).to.eql('Email or password details incorrect');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@TeSt.COM",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "t3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Bad Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the error field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('error');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct error message (user not found)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData['error']).to.eql('Email or password details incorrect');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "fail@test.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset Case-Insensitive Email (SLOW endpoint)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "TEST@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset Invalid Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "fail@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset OTP Invalid OTP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "otp",
+							"value": "100001",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/otp_validate",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"otp_validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset OTP Invalid Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "otp",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "fail@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/otp_validate",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"otp_validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset New Password Valid Email Invalidated Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "otp_token",
+							"value": "7b14cf2f0eb3c481fb8e96bc60762fae",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						},
+						{
+							"key": "re_password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/new_password",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"new_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset OTP Case-Insensitive Validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Received Correct HASH\", function () {\r",
+							"\r",
+							"  const responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.have.property('otp_token');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "otp",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/otp_validate",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"otp_validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset OTP Valid Email OTP Used",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401 - OTP Now Expired\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "otp",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/otp_validate",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"otp_validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset New Password Bad Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "otp",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/otp_validate",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"otp_validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset New Password Case-Insensitive Bad Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						},
+						{
+							"key": "otp_token",
+							"value": "bad",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						},
+						{
+							"key": "re_password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/new_password",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"new_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset New Password Mismatched Passwords",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						},
+						{
+							"key": "otp_token",
+							"value": "778ce2b7817cfdcaab132cf83ff4b205",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						},
+						{
+							"key": "re_password",
+							"value": "bad",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/new_password",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"new_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset New Password Case-Insensitive Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tEsT@test.com",
+							"type": "text"
+						},
+						{
+							"key": "otp_token",
+							"value": "778ce2b7817cfdcaab132cf83ff4b205",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						},
+						{
+							"key": "re_password",
+							"value": "newT3stT#ST",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/password_reset/new_password",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"password_reset",
+						"new_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Social Media Signup Insensitive Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response only has 1 user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('message');\r",
+							"    pm.expect(responseData).to.have.property('id');\r",
+							"    pm.expect(responseData).to.have.property('account_details');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required AccountDetails model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"  \r",
+							"  //AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"    pm.expect(account).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('dob');\r",
+							"    pm.expect(account).to.have.property('phone_number');\r",
+							"    pm.expect(account).to.have.property('image');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is the correct user (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(account).to.have.property('email', 'test@gmail.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "login_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "login_type",
+							"value": "google",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Damien",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login-sm/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login-sm",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Social Media Login Insensitive Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response only has 1 user\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    pm.expect(responseData).to.have.property('message');\r",
+							"    pm.expect(responseData).to.have.property('id');\r",
+							"    pm.expect(responseData).to.have.property('account_details');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required AccountDetails model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"  \r",
+							"  //AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"    pm.expect(account).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(account).to.have.property('dob');\r",
+							"    pm.expect(account).to.have.property('phone_number');\r",
+							"    pm.expect(account).to.have.property('image');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is the correct user (test@test.com)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  const account = responseData.account_details[0];\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(account).to.have.property('email', 'test@gmail.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "TEST@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "login_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "login_type",
+							"value": "google",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Damien",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login-sm/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login-sm",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Social Media Signup Used Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "login_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "login_type",
+							"value": "google",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "T3stT#st",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/login-sm/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"login-sm",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Valid Message",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //message model - thread_number, email, subject, topic, message_body, timestamp_sent, timestamp_read, status, actions\r",
+							"    pm.expect(responseData).to.have.property('thread_number').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('subject').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('topic').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('message_body');\r",
+							"    pm.expect(responseData).to.have.property('timestamp_sent');\r",
+							"    pm.expect(responseData).to.have.property('timestamp_read');\r",
+							"    pm.expect(responseData).to.have.property('status');\r",
+							"    pm.expect(responseData).to.have.property('actions');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "Test 0",
+							"type": "text"
+						},
+						{
+							"key": "topic",
+							"value": "Other",
+							"type": "text"
+						},
+						{
+							"key": "message_body",
+							"value": "message body 0",
+							"type": "text"
+						},
+						{
+							"key": "timestamp_sent",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text"
+						},
+						{
+							"key": "thread_number",
+							"value": "0b3a157215b645bfbc09e81ce5c93840",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/messages/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"messages",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Invalid Message (Bad Email)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var now = new Date();\r",
+							"var timestamp = now.format('YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]');\r",
+							"pm.variables.set(\"timestamp\", timestamp);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "fail@test.com",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "test 1",
+							"type": "text"
+						},
+						{
+							"key": "topic",
+							"value": "Other",
+							"type": "text"
+						},
+						{
+							"key": "message_body",
+							"value": "message body 1",
+							"type": "text"
+						},
+						{
+							"key": "timestamp_sent",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text"
+						},
+						{
+							"key": "thread_number",
+							"value": "0b3a157215b645bfbc09e81ce5c93841",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/messages/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"messages",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Invalid Message (Bad Topic)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var now = new Date();\r",
+							"var timestamp = now.format('YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]');\r",
+							"pm.variables.set(\"timestamp\", timestamp);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required TOPIC field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //\r",
+							"    pm.expect(responseData).to.have.property('topic');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "test 1",
+							"type": "text"
+						},
+						{
+							"key": "topic",
+							"value": "Fail Topic",
+							"type": "text"
+						},
+						{
+							"key": "message_body",
+							"value": "message body 1",
+							"type": "text"
+						},
+						{
+							"key": "timestamp_sent",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text"
+						},
+						{
+							"key": "thread_number",
+							"value": "0b3a157215b645bfbc09e81ce5c93841",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/messages/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"messages",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Invalid Message (Bad Sent Date)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var now = new Date();\r",
+							"var timestamp = now.format('YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]');\r",
+							"pm.variables.set(\"timestamp\", timestamp);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required TIMESTAMP_SENT field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //\r",
+							"    pm.expect(responseData).to.have.property('timestamp_sent');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "test 1",
+							"type": "text"
+						},
+						{
+							"key": "topic",
+							"value": "Other",
+							"type": "text"
+						},
+						{
+							"key": "message_body",
+							"value": "message body 1",
+							"type": "text"
+						},
+						{
+							"key": "timestamp_sent",
+							"value": "fail",
+							"type": "text"
+						},
+						{
+							"key": "thread_number",
+							"value": "0b3a157215b645bfbc09e81ce5c93841",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/messages/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"messages",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Valid Workout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('session_id').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('session_duration').that.is.a('number');\r",
+							"    pm.expect(responseData).to.have.property('level').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('type').that.is.a('string');\r",
+							"    pm.expect(responseData).to.have.property('finished').that.is.a('boolean');\r",
+							"    pm.expect(responseData).to.have.property('processed').that.is.a('boolean');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f10",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Bad Email)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "fail@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Bad Name)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required name field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('errors').with.property('name');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Fail",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Bad Duration)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required duration field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('errors').with.property('session_duration');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "Fail",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Bad Intensity-Level)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required level field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('errors').with.property('level');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Fail",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Bad Interval Type)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required type field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('errors').with.property('type');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Fail",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Invalid Workout (Session ID Clash)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required session id field\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('errors').with.property('session_id');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "VR Game",
+							"type": "text"
+						},
+						{
+							"key": "session_duration",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "Beginner",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "Interval",
+							"type": "text"
+						},
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f10",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "created_at",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "processed",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "finished",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/setworkout/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"setworkout",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Valid Workout Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f10",
+							"type": "text"
+						},
+						{
+							"key": "speed",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "rpm",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "distance",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "heart_rate",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "temperature",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "incline",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "timestamp",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/workoutdata/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"workoutdata",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invalid Workout Data (bad session ID)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "session_id",
+							"value": "0644c9e6-80de-4a23-ac71-60c133cb3f11",
+							"type": "text"
+						},
+						{
+							"key": "speed",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "rpm",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "distance",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "heart_rate",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "temperature",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "incline",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "timestamp",
+							"value": "2025-05-09 18:45:05.719838",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url_base}}/workoutdata/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"workoutdata",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Delete (bad ID)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"    //setworkout model\r",
+							"    pm.expect(responseData).to.have.property('error').that.is.a('string');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/delete/2000/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"delete",
+						"2000",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Delete 1st User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 204\", function () {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/delete/1000/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"delete",
+						"1000",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Delete SM user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 204\", function () {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/delete/1002/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"delete",
+						"1002",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check For Deleted Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the required user model fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  //array of AccountDetails models - email, username, name, surname, dob, phone_number, image\r",
+							"  pm.expect(responseData).to.be.an('array');\r",
+							"  pm.expect(responseData).length(1);\r",
+							"\r",
+							"  responseData.forEach(function(user) {\r",
+							"    pm.expect(user).to.have.property('email').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('username').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('surname').that.is.a('string');\r",
+							"    pm.expect(user).to.have.property('dob');\r",
+							"    pm.expect(user).to.have.property('phone_number');\r",
+							"    pm.expect(user).to.have.property('image');\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has the correct remaining user (test2)\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"    //make sure our first user is there\r",
+							"  pm.expect(responseData[0]).to.have.property('email', 'test2@test.com');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url_base}}/users",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Delete 2nd User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 204\", function () {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{api_url_base}}/user/delete/1001/",
+					"host": [
+						"{{api_url_base}}"
+					],
+					"path": [
+						"user",
+						"delete",
+						"1001",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
