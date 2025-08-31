@@ -331,7 +331,6 @@ def auth_password(request, format=None):
         password = request.data.get('password')
 
         target_uuid = uuid.UUID(userId)
-        print(f'userId: {target_uuid}, password: {password}') #debug
         try:
             user = MyUser.objects.get(id=target_uuid) 
             if check_password(password, user.password):  #compares received password to stored hashed
