@@ -20,7 +20,8 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
-from django.db.models import Q
+#from django.db.models import Q
+from mongoengine.queryset import Q #mongo version
 from datetime import datetime, timedelta 
 import hashlib
 from .tasks import clean_workout_data_task, analyse_workout_data_task
@@ -58,7 +59,7 @@ def user_detail(request, userId):
         print('userId received:' + userId)
 
         #find account via MyUser id
-        target_uuid = int(userId)
+        target_uuid = uuid.UUID(userId)
         print(userId)
         user = MyUser.objects(id=target_uuid).first()
         if (user == None):
@@ -135,7 +136,9 @@ def signup(request, format=None):
         elif username_is_exist:
             return Response("This username already exists in our records.", status=status.HTTP_409_CONFLICT)
         else:
+            target_uuid = request.data.get('id') if settings.DEBUG else None
             serializer = UserSerializer(data=request.data)
+            serializer.ID = target_uuid
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -152,18 +155,32 @@ def social_media_login(request, format=None):
         if request.method == 'POST':
             fetched_email = request.data.get("email")
             fetched_username = request.data.get("username")
-            fetched_id = request.data.get("login_id")
-            fetched_type = request.data.get("login_type")
+            fetched_id = request.data.get("login_id",'').strip()
+            fetched_type = request.data.get("login_type",'').strip()
+
+            if fetched_id == '': fetched_id = None
+            if fetched_type == '': fetched_type = None
+
+            print(fetched_email, fetched_username, fetched_id, fetched_type)
 
             if fetched_id is None and fetched_type is None:
                 return Response({"message": "Failed to Authenticate User", "errors": "login_id and type is required!"},
                                 status=status.HTTP_403_FORBIDDEN)
             
-
+            #try finding SM user first, then non-SM
+            user = MyUser.objects.filter(email__iexact=fetched_email).first()
+            if user: print(user.id, user.login_id, user.login_type)
+            
             user_is_enrolled = MyUser.objects.filter(
-                login_id=fetched_id, login_type=fetched_type, email__iexact=fetched_email).first() #update to work with MongoDB
+                Q(login_id=fetched_id) & Q(login_type=fetched_type) 
+                & Q(email__iexact=fetched_email)).first() #update to work with MongoDB
             user_is_registered = MyUser.objects.filter(
-                login_id=None, login_type = None, email__iexact=fetched_email).first() #update to work with MongoDB
+                (Q(login_id=None) | Q(login_id="")) 
+                & (Q(login_type=None)| Q(login_type="")) 
+                & Q(email__iexact=fetched_email)).first() #update to work with MongoDB
+
+            print(user_is_enrolled)
+            print(user_is_registered)
 
             if user_is_enrolled is not None:
                 account_details = AccountDetails.objects.filter(user=user_is_enrolled)
@@ -178,10 +195,16 @@ def social_media_login(request, format=None):
                 return Response({"message": "User is already registered directly to the platform", "code": 1001},
                                 status=status.HTTP_400_BAD_REQUEST)
             else:
+                print("making new user")
+                target_uuid = request.data.get('id') if settings.DEBUG else None #allow set ID in debug mode
                 serializer = SocialMediaUserSerializer(data=request.data)
+                serializer.ID = target_uuid
+
+                print(serializer)
                 if serializer.is_valid():
                     serializer.save()
                     
+                    print("serializer saved")
                     user = MyUser.objects.get(email__iexact=fetched_email)
                     account_details = AccountDetails.objects.filter(user=user)
                     account_serializer = AccountDetailsSerializer(account_details, many=True)
@@ -307,9 +330,9 @@ def auth_password(request, format=None):
         userId = request.data.get('userId')
         password = request.data.get('password')
 
-        print(f'userId: {userId}, password: {password}') #debug
+        target_uuid = uuid.UUID(userId)
         try:
-            user = MyUser.objects.get(id=userId) 
+            user = MyUser.objects.get(id=target_uuid) 
             if check_password(password, user.password):  #compares received password to stored hashed
                 return Response(status=status.HTTP_200_OK)
             else:
@@ -324,18 +347,22 @@ def auth_password(request, format=None):
 @api_view(['DELETE']) #replaced email with userID for more security
 @csrf_exempt
 def delete_user(request, userId):
-    print('userId received:' + userId)
+    try:
+        print('userId received:' + userId)
 
-    if request.method == 'DELETE':
-        try:
-            user = MyUser.objects.get(id=userId)
-            user.delete()
-            return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-        except MyUser.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'DELETE':
+            try:
+                target_uuid = uuid.UUID(userId)
+                user = MyUser.objects.get(id=target_uuid)
+                user.delete()
+                return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            except MyUser.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    else:  
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        else:  
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    except Exception as e:
+        return Response({"error": "Failed to login", "errors": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def get_all_details(request):
     if request.method == 'POST':

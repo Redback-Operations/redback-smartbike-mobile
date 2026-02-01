@@ -11,20 +11,22 @@ from datetime import datetime, timedelta
 #   TODO:   - set password max length to 20 in Flutter
 #           - used in Flutter in signup.dart
 class MyUser(Document):
-    id = IntField(primary_key=True, binary=False)  # Explicit ID field (can be UUID, etc.)
+    id = UUIDField(primary_key=True, default=uuid.uuid4, binary=False)  # Explicit ID field (was int, now UUIDv4)
     email = StringField(required=True)
     username = StringField(required=True, unique=True)
     password = StringField(required=True)
     user_created = DateTimeField(default=datetime.utcnow)
-    login_type = StringField(default='')
-    login_id = StringField(unique=True, required=False, sparse=True, default='') #added sparse to ensure nulls don't clash in MongoDB
-    otp = StringField(default='')
+    login_type = StringField(required=False, sparse=True, default=None)
+    login_id = StringField(unique=True, required=False, sparse=True, default=None) #added sparse to ensure nulls don't clash in MongoDB
+    otp = StringField(default=None)
     otp_created_at = DateTimeField()
 
     # generate the id, starting at 1000, and add 1 to each new user
     def save(self, *args, **kwargs):
         self.email = self.email.strip().lower() ##lowercase email
+
         #old ID system
+        '''        
         if not self.id:  # If id is not already set
             last_user = MyUser.objects.order_by('-id').first()
             if last_user:
@@ -32,6 +34,7 @@ class MyUser(Document):
             else:
                 last_id = 999  # Starting from 1000
             self.id = str(last_id + 1)  # Increment the id
+            '''
     
         super(MyUser, self).save(*args, **kwargs)
 
