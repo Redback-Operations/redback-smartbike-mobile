@@ -52,6 +52,11 @@
 					"mode": "formdata",
 					"formdata": [
 						{
+							"key": "id",
+							"value": "374669d8-4fd5-4d6c-8cbb-107c9f229290",
+							"type": "text"
+						},
+						{
 							"key": "email",
 							"value": "TEST@test.com",
 							"type": "text"
@@ -119,6 +124,11 @@
 				"body": {
 					"mode": "formdata",
 					"formdata": [
+						{
+							"key": "id",
+							"value": "57544e52-e6dc-4fc9-af33-c80ee567f16e",
+							"type": "text"
+						},
 						{
 							"key": "email",
 							"value": "test2@test.com",
@@ -268,13 +278,13 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "{{api_url_base}}/update/1000/",
+					"raw": "{{api_url_base}}/update/374669d8-4fd5-4d6c-8cbb-107c9f229290/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"update",
-						"1000",
+						"374669d8-4fd5-4d6c-8cbb-107c9f229290",
 						""
 					]
 				}
@@ -348,13 +358,13 @@
 					]
 				},
 				"url": {
-					"raw": "{{api_url_base}}/update/1000/",
+					"raw": "{{api_url_base}}/update/374669d8-4fd5-4d6c-8cbb-107c9f229290/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"update",
-						"1000",
+						"374669d8-4fd5-4d6c-8cbb-107c9f229290",
 						""
 					]
 				}
@@ -395,13 +405,13 @@
 					]
 				},
 				"url": {
-					"raw": "{{api_url_base}}/update/1002/",
+					"raw": "{{api_url_base}}/update/074669d8-4fd5-4d6c-8cbb-107c9f229290/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"update",
-						"1002",
+						"074669d8-4fd5-4d6c-8cbb-107c9f229290",
 						""
 					]
 				}
@@ -439,13 +449,13 @@
 					]
 				},
 				"url": {
-					"raw": "{{api_url_base}}/update/1002/",
+					"raw": "{{api_url_base}}/update/074669d8-4fd5-4d6c-8cbb-107c9f229290/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"update",
-						"1002",
+						"074669d8-4fd5-4d6c-8cbb-107c9f229290",
 						""
 					]
 				}
@@ -1512,6 +1522,11 @@
 					"mode": "formdata",
 					"formdata": [
 						{
+							"key": "id",
+							"value": "fbaf10d3-957c-4632-baf7-a47fe876a6f7",
+							"type": "text"
+						},
+						{
 							"key": "email",
 							"value": "test@gmail.com",
 							"type": "text"
@@ -1656,7 +1671,7 @@
 			"response": []
 		},
 		{
-			"name": "Social Media Signup Used Email",
+			"name": "BAD REQUEST Social Media Signup Used Email",
 			"event": [
 				{
 					"listen": "test",
@@ -2990,14 +3005,14 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{api_url_base}}/user/delete/2000/",
+					"raw": "{{api_url_base}}/user/delete/07544e52-e6dc-4fc9-af33-c80ee567f16e/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"user",
 						"delete",
-						"2000",
+						"07544e52-e6dc-4fc9-af33-c80ee567f16e",
 						""
 					]
 				}
@@ -3028,14 +3043,14 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{api_url_base}}/user/delete/1000/",
+					"raw": "{{api_url_base}}/user/delete/374669d8-4fd5-4d6c-8cbb-107c9f229290/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"user",
 						"delete",
-						"1000",
+						"374669d8-4fd5-4d6c-8cbb-107c9f229290",
 						""
 					]
 				}
@@ -3066,14 +3081,14 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{api_url_base}}/user/delete/1002/",
+					"raw": "{{api_url_base}}/user/delete/fbaf10d3-957c-4632-baf7-a47fe876a6f7/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"user",
 						"delete",
-						"1002",
+						"fbaf10d3-957c-4632-baf7-a47fe876a6f7",
 						""
 					]
 				}
@@ -3161,14 +3176,14 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{api_url_base}}/user/delete/1001/",
+					"raw": "{{api_url_base}}/user/delete/57544e52-e6dc-4fc9-af33-c80ee567f16e/",
 					"host": [
 						"{{api_url_base}}"
 					],
 					"path": [
 						"user",
 						"delete",
-						"1001",
+						"57544e52-e6dc-4fc9-af33-c80ee567f16e",
 						""
 					]
 				}

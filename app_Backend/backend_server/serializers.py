@@ -14,7 +14,9 @@ class UserSerializer(DocumentSerializer):
     class Meta:
         model = MyUser  
         fields = ['id','email', 'username', 'password', 'user_created', 'login_id', 'login_type','otp']
-        #extra_kwargs = {'password': {'write_only': True}} #don't return passwords whith user object
+        extra_kwargs = {
+            'id': {'required': False, 'read_only': False}  # allow manual ID setting
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,7 +39,10 @@ class SocialMediaUserSerializer(DocumentSerializer):
     otp = serializers.CharField(required=False) 
     class Meta:
         model = MyUser  
-        fields = ['id', 'email', 'username', 'password', 'user_created', 'login_id', 'login_type', 'otp']        
+        fields = ['id', 'email', 'username', 'password', 'user_created', 'login_id', 'login_type', 'otp']
+        extra_kwargs = {
+            'id': {'required': False, 'read_only': False}  # allow manual ID setting
+        }     
         #extra_kwargs = {'password': {'write_only': True}} #don't return passwords whith sm user object
 
     def __init__(self, *args, **kwargs):
