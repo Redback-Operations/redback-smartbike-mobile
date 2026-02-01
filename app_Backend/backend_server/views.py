@@ -350,14 +350,13 @@ def delete_user(request, userId):
     try:
         print('userId received:' + userId)
 
-        if request.method == 'DELETE':
-            try:
-                target_uuid = uuid.UUID(userId)
-                user = MyUser.objects.get(id=target_uuid)
-                user.delete()
-                return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-            except MyUser.DoesNotExist:
-                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'DELETE':
+        try:
+            user = MyUser.objects.get(id=userId)
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT) #Do not return any message body with NO CONTENT
+        except MyUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
         else:  
             return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
